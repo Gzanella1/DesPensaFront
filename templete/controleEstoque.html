@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestão de Materiais</title>
+  <link rel="icon" type="image/png" href="assets/logo_perfil.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'green-dark': '#2B9569',
+            'green-medium': '#2B9569',
+            'green-light': '#2B9569'
+          }
+        }
+      }
+    }
+  </script>
+
+
+  </style>
+</head>
+
+<body>
+  
+  <div class="app">
+    <!-- Sidebar -->
+    <div id="sidebar-container"></div>
+    <!-- Conteúdo principal -->
+         <!--modal para fornecedor-->
+    <div id="modalFornecedor"
+      class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div class="bg-white p-8 rounded-2xl w-full max-w-lg shadow-2xl transform transition-all duration-300">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-bold text-gray-800">Novo Fornecedor</h2>
+          <button onclick="abrirModalFornecedor()" class="text-gray-400 hover:text-gray-600 transition-colors">
+          </button>
+        </div>
+
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Nome</label>
+            <input id="nomeFornecedor"
+              class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-medium focus:border-transparent transition-all"
+              placeholder="Insira o nome do fornecedor" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">CNPJ</label>
+            <textarea id="cnpjFornecedor"
+              class="w-full border border-gray-300 rounded-lg p-3 resize-none focus:ring-2 focus:ring-green-medium focus:border-transparent transition-all"
+              placeholder="Insira o CNPJ"></textarea>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Telefone</label>
+            <textarea id="telefoneFornecedor"
+              class="w-full border border-gray-300 rounded-lg p-3  resize-none focus:ring-2 focus:ring-green-medium focus:border-transparent transition-all"
+              placeholder="Insira o telefone"></textarea>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+            <textarea id="emailFornecedor"
+              class="w-full border border-gray-300 rounded-lg p-3 resize-none focus:ring-2 focus:ring-green-medium focus:border-transparent transition-all"
+              placeholder="Insira o email"></textarea>
+          </div>
+          <p id="mensagemFornecedor" class="text-center text-white bg-green-medium rounded-lg p-2 hidden"></p>
+        </div>
+
+        <div class="flex justify-end space-x-3 mt-6">
+          <button onclick="fecharModal()"
+            class="px-6 py-3 text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors font-medium">Cancelar</button>
+          <button onclick="salvarFornecedor()"
+            class="px-6 py-3 bg-gradient-to-r from-green-dark to-green-medium text-white rounded-lg hover:shadow-lg transform hover:scale-110 transition-all duration-300 font-medium">Cadastrar
+            Fornecedor</button>
+        </div>
+      </div>
+    </div>
+    <!--modal para venda-->
+    <div id="modalVenda"
+      class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div class="bg-white p-8 rounded-2xl w-full max-w-lg shadow-2xl transform transition-all duration-300">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-bold text-gray-800">Nova Venda</h2>
+          <button onclick="abrirModalVenda()" class="text-gray-400 hover:text-gray-600 transition-colors">
+          </button>
+        </div>
+
+        <div class="space-y-4">
+          <div>
+            <label  class="block text-gray-700 text-sm font-semibold mb-2">Item</label>
+            <select id="selectColheita"
+              class="border border-gray-300 rounded-lg p-3 w-full focus:ring-2 focus:ring-green-light focus:border-transparent">
+              <option value="">Selecione o Item</option>
+            </select>
+          </div>
+          <div class="flex gap-4">
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-gray-700 mb-2">Quantidade</label>
+              <input id="quantidadeVendida"
+                class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-medium focus:border-transparent"
+                placeholder="Insira a quantidade" />
+            </div>
+
+            <div class="w-32">
+              <label class="block text-sm font-medium text-gray-700 mb-2">Unidade</label>
+              <select id="unidadeMedidaVenda"
+                class="border border-gray-300 rounded-lg p-3 w-full focus:ring-2 focus:ring-green-light focus:border-transparent">
+                <option value="">UN</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Preço Unitário</label>
+            <input id="precoUnitario"
+              class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-medium focus:border-transparent transition-all"
+              placeholder="Insira o preço da Unidade" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Comprador</label>
+            <input id="comprador"
+              class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-medium focus:border-transparent transition-all"
+              placeholder="Insira o nome e sobrenome do comprador" />
+          </div>
+
+        </div>
+
+        <div class="flex justify-end space-x-3 mt-6">
+          <button onclick="fecharModalVenda()"
+            class="px-6 py-3 text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors font-medium">Cancelar</button>
+          <button onclick="registrarVenda()"
+            class="px-6 py-3 bg-gradient-to-r from-green-dark to-green-medium text-white rounded-lg hover:shadow-lg transform hover:scale-110 transition-all duration-300 font-medium">Registrar
+            Venda
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Main Content -->
+    <div class="flex-1 ml-16 p-4 sm:p-6 lg:p-8">
+      <!-- Header com botão -->
+      <div class="flex items-center justify-between mb-8">
+        <div>
+          <h1 class="text-2xl lg:text-3xl font-bold text-gray-800">Gestão Financeira</h1>
+        </div>
+
+      </div>
+      <!-- Enhanced cards with gradients and better responsive grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-10">
+        <!-- Card Saldo -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 card-hover border border-green-100">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center">
+              <div
+                class="w-12 h-12 bg-gradient-to-br from-green-100 to-green-200 rounded-xl flex items-center justify-center shadow-sm">
+                <svg class="w-6 h-6 text-green-medium" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M7 14l5-5 5 5z" />
+                </svg>
+              </div>
+              <span class="ml-3 text-gray-600 font-medium">Saldo Do Mês</span>
+            </div>
+          </div>
+          <div id="receitaMes" class="text-2xl lg:text-3xl font-bold text-gray-800 mb-1">Carregando..</div>
+        </div>
+
+        <!-- Card Receita -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 card-hover border border-blue-100">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center">
+              <div
+                class="w-12 h-12 bg-gradient-to-br from-green-100 to-green-200 rounded-xl flex items-center justify-center shadow-sm">
+                <svg class="w-6 h-6 text-green-medium" fill="currentColor" viewBox="0 0 24 24">
+                  <path
+                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                </svg>
+              </div>
+              <span class="ml-3 text-gray-600 font-medium">Receita Total da Propriedade</span>
+            </div>
+          </div>
+          <div id="receita" class="text-2xl lg:text-3xl font-bold text-gray-800 mb-1">Carregando...</div>
+
+        </div>
+
+        <!-- Card Fornecedores -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 card-hover border border-blue-100">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center">
+              <div
+                class="w-12 h-12 bg-gradient-to-br from-green-100 to-green-200 rounded-xl flex items-center justify-center shadow-sm">
+                <svg class="w-6 h-6 text-green-medium" fill="currentColor" viewBox="0 0 24 24">
+                  <path
+                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                </svg>
+              </div>
+              <span class="ml-3 text-gray-600 font-medium">Fornecedores</span>
+            </div>
+          </div>
+          <div id="fornecedores" class="text-2xl lg:text-3xl font-bold text-gray-800 mb-1">0</div>
+          <button onclick="abrirModalFornecedor()"
+            class="bg-gradient-to-r from-green-medium to-green-dark hover:from-green-dark hover:to-green-medium text-white px-6 py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 font-medium">
+            + Adicionar Fornecedor
+          </button>
+        </div>
+
+
+      </div>
+
+      <!-- Enhanced main content with better responsive layout -->
+      <div class="grid grid-cols-1  gap-6 lg:gap-8">
+        <!-- Tabela de Transações -->
+        <div class="xl:col-span-2">
+          <div class="bg-white rounded-2xl shadow-lg p-6 lg:p-8 border border-white/20">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
+              <div>
+                <h2 class="text-xl lg:text-2xl font-bold text-gray-800">Transações</h2>
+
+              </div>
+              <button onclick="abrirModalVenda()"
+                class="bg-gradient-to-r from-green-medium to-green-dark hover:from-green-dark hover:to-green-medium text-white px-6 py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 font-medium">
+                + Nova Transação
+              </button>
+            </div>
+
+            <div class="overflow-x-auto rounded-xl border border-gray-100">
+              <table class="w-full">
+                <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
+                  <tr>
+                    <th class="text-center py-4 px-6 font-semibold text-gray-700">Item</th>
+                    <th class="text-center py-4 px-6 font-semibold text-gray-700">Quantidade</th>
+                    <th class="text-center py-4 px-6 font-semibold text-gray-700">Unidade de Medida</th>
+                    <th class="text-center py-4 px-6 font-semibold text-gray-700">Valor</th>
+                    <th class="text-center py-4 px-6 font-semibold text-gray-700">Comprador</th>
+                    <th class="text-center py-4 px-6 font-semibold text-gray-700">Data</th>
+                  </tr>
+                </thead>
+                <tbody id="vendas" class="divide-y divide-gray-100 overflow-y-auto space-y-3 max-h-96">
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </div>
+  <script src="../scriptTemplete/carregarSidebar.js"></script>
+</body>
+
+</html>

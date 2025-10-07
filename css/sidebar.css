@@ -1,0 +1,77 @@
+ /* Animação suave para expandir sidebar */
+ .sidebar {
+     background-color: #2B9569;
+     position: fixed;
+     left: 0;
+     top: 0;
+     height: 100vh;
+     z-index: 50;
+     transition: width 0.3s ease;
+     width: 4rem;
+     /* 16 */
+     overflow-x: hidden;
+ }
+
+ .sidebar:hover {
+     width: 16rem;
+     /* 64 */
+ }
+
+ /* Texto fica invisível, e aparece só no hover da sidebar */
+ .sidebar:hover .nav-text {
+     opacity: 1;
+     margin-left: 1rem;
+     /* espaço entre ícone e texto */
+     pointer-events: auto;
+ }
+
+ .nav-text {
+     opacity: 0;
+     pointer-events: none;
+     transition: opacity 0.3s ease, margin-left 0.3s ease;
+     white-space: nowrap;
+ }
+
+ /* Added body margin to accommodate fixed sidebar */
+ body {
+     margin-left: 4rem;
+     transition: margin-left 0.3s ease;
+ }
+
+ .sidebar:hover~.main-content,
+ .sidebar:hover~body {
+     margin-left: 16rem;
+ }
+
+ /* Alternative approach using CSS hover on body */
+ body:has(.sidebar:hover) {
+     margin-left: 16rem;
+ }
+
+ /* --- Regras do submenu dentro de Home --- */
+ /* Container .home para controlar o hover sobre o item Home */
+ .home {
+     position: relative;
+ }
+
+ /* Submenu escondido por padrão */
+ .home .submenu {
+     max-height: 0;
+     opacity: 0;
+     overflow: hidden;
+     transition: max-height 0.25s ease, opacity 0.25s ease;
+     pointer-events: none;
+ }
+
+ /* Ao passar o mouse sobre o item Home, mostra o submenu */
+ .home:hover .submenu {
+     max-height: 200px;
+     /* espaço suficiente para os itens */
+     opacity: 1;
+     pointer-events: auto;
+ }
+
+ /* Pequeno recuo do submenu (mantém alinhamento quando sidebar expandida) */
+ .home .submenu a {
+     padding-left: 1.5rem;
+ }
