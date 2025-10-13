@@ -1,0 +1,56 @@
+    
+    body 
+            {
+        
+      font-family: "Segoe UI", sans-serif;
+    }
+    .content {
+      margin-left: 90px;
+      padding: 2rem;
+    }
+
+    h3 {
+      font-weight: 600;
+      color: #555;
+    }
+
+    .card {
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .btn-success {
+      background: #2e7d32;
+      border: none;
+      border-radius: 6px;
+    }
+
+    .btn-danger {
+      background: #b71c1c;
+      border: none;
+      border-radius: 6px;
+    }
+
+    .table thead {
+      background: #f3f3f3;
+      color: #555;
+    }
+
+    .table tbody tr {
+      background: #f9f9f9;
+    }
+
+    .table td,
+    .table th {
+      vertical-align: middle;
+    }
+
+    .input-group-text {
+      background: white;
+      border-left: none;
+    }
+
+    .form-control {
+      border-right: none;
+    }
