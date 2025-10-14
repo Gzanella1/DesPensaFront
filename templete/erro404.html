@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>404 · Page not found</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom scrollbar só para ficar parecido com o exemplo */
+    .nice-scroll::-webkit-scrollbar { width: 10px; }
+    .nice-scroll::-webkit-scrollbar-thumb { background-color: rgba(0,0,0,0.15); border-radius: 9999px; }
+  </style>
+</head>
+<body class="bg-gray-50 antialiased">
+  <main class="min-h-screen flex items-center justify-center p-6">
+    <!-- Card container -->
+    <div class="w-full max-w-6xl bg-white rounded-lg border shadow-sm overflow-hidden grid grid-cols-1 md:grid-cols-2"
+         style="min-height: 72vh;">
+      
+      <!-- LEFT: conteúdo -->
+      <div class="p-10 md:px-16 md:py-12 flex flex-col justify-between">
+        <header>
+          <!-- logo simples em SVG (pode trocar) -->
+          <div class="mb-8">
+            <svg width="40" height="28" viewBox="0 0 64 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 24c12-8 25-8 38 0" stroke="#6D28D9" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M3 12c12-8 25-8 38 0" stroke="#8B5CF6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+            </svg>
+          </div>
+
+          <!-- 404 small label -->
+          <div class="text-sm text-indigo-600 font-medium mb-3">404</div>
+
+          <!-- Título -->
+          <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 leading-tight mb-4">
+            Page not found
+          </h1>
+
+          <!-- Descrição -->
+          <p class="text-slate-500 max-w-xl mb-8">
+            Sorry, we couldn’t find the page you’re looking for.
+          </p>
+
+          <!-- Link voltar -->
+          <a href="/" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-medium">
+            <span class="mr-2">←</span>
+            Back to home
+          </a>
+        </header>
+
+        <!-- Footer do card (links) -->
+        <footer class="mt-8 border-t pt-6 text-sm text-slate-500">
+          <div class="flex gap-6">
+            <a href="#" class="hover:underline">Contact support</a>
+            <span>·</span>
+            <a href="#" class="hover:underline">Status</a>
+          </div>
+        </footer>
+      </div>
+
+      <!-- RIGHT: imagem (com scroll interno se altura maior) -->
+      <div class="relative md:h-auto h-56 md:overflow-hidden overflow-auto nice-scroll">
+        <!-- Use sua imagem local: substitua o src pelo caminho ./images/sua-imagem.jpg -->
+        <img
+          src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=80"
+          alt="Deserto"
+          class="w-full h-full object-cover"
+        />
+      </div>
+    </div>
+  </main>
+</body>
+</html>
