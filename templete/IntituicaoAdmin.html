@@ -2,7 +2,7 @@
 <html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
-    <title>Nutricionistas</title>
+    <title>intituição - admin</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -21,9 +21,7 @@
 
   <body>
     <div class="content">
-      <h3 class="mb-4">ID - Nome intituição</h3>
-      <h12 class="mb-4">Tipo da intituição: </h12><br />
-      <h12 class="mb-4">Endereço: </h12><br /><br />
+      <h3 class="mb-4">Instituições</h3>
 
       <div class="card p-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -32,7 +30,7 @@
               type="text"
               id="buscar"
               class="form-control"
-              placeholder="Buscar Pessoa..."
+              placeholder="Busca intituição..."
               aria-label="Buscar"
             />
             <span class="input-group-text"><i class="bi bi-search"></i></span>
@@ -42,7 +40,7 @@
             data-bs-toggle="modal"
             data-bs-target="#modalForm"
           >
-            Adicionar pessoa
+            nova instituição
           </button>
         </div>
 
@@ -51,9 +49,8 @@
             <thead>
               <tr>
                 <th>Nome</th>
-                <th>Idd</th>
-                <th>sexo</th>
-                <th>restrições</th>
+                <th>Tipo da instituição</th>
+                <th>Endereço</th>
                 <th>Ações</th>
               </tr>
             </thead>
@@ -69,9 +66,7 @@
         <div class="modal-content">
           <form id="formNutricionista">
             <div class="modal-header">
-              <h5 class="modal-title" id="modalLabel">
-                Adicionar Nutricionista
-              </h5>
+              <h5 class="modal-title" id="modalLabel">nova instituição</h5>
               <button
                 type="button"
                 class="btn-close"
@@ -83,28 +78,22 @@
               <input
                 type="text"
                 class="form-control mb-2"
-                id="nome"
+                id="Nome"
                 placeholder="Nome"
                 required
               />
               <input
                 type="text"
                 class="form-control mb-2"
-                id="Idd"
-                placeholder="Idd"
+                id="Tipo_da_instituição"
+                placeholder="Tipo_da_instituição"
                 required
               />
-
-              <!-- Novos campos -->
-              <select class="form-control mb-2" id="sexo" required>
-                <option value="Masculino">Masculino</option>
-                <option value="Feminino">Feminino</option>
-              </select>
               <input
                 type="text"
                 class="form-control mb-2"
-                id="restrições"
-                placeholder="Restrições"
+                id="Endereço"
+                placeholder="Endereço"
                 required
               />
             </div>
@@ -124,7 +113,7 @@
     </div>
 
     <!-- Importa o JS -->
-    <script src="/scriptTemplete/instituicaoNutricionista.js"></script>
+    <script src="/scriptTemplete/IntituicaoAdmin.js"></script>
     <script src="../scriptTemplete/carregarSidebar.js"></script>
   </body>
 </html>
