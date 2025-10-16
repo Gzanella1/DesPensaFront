@@ -5,8 +5,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sidebar Tailwind Expandida</title>
-  
-   <script src="https://cdn.tailwindcss.com"></script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
@@ -25,83 +25,83 @@
   </script>
 
   <style>
-     /* Animação suave para expandir sidebar */
- .sidebar {
-     background-color: #2B9569;
-     position: fixed;
-     left: 0;
-     top: 0;
-     height: 100vh;
-     z-index: 50;
-     transition: width 0.3s ease;
-     width: 4rem;
-     /* 16 */
-     overflow-x: hidden;
- }
+    /* Animação suave para expandir sidebar */
+    .sidebar {
+      background-color: #2B9569;
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100vh;
+      z-index: 50;
+      transition: width 0.3s ease;
+      width: 4rem;
+      /* 16 */
+      overflow-x: hidden;
+    }
 
- .sidebar:hover {
-     width: 16rem;
-     /* 64 */
- }
+    .sidebar:hover {
+      width: 16rem;
+      /* 64 */
+    }
 
- /* Texto fica invisível, e aparece só no hover da sidebar */
- .sidebar:hover .nav-text {
-     opacity: 1;
-     margin-left: 1rem;
-     /* espaço entre ícone e texto */
-     pointer-events: auto;
- }
+    /* Texto fica invisível, e aparece só no hover da sidebar */
+    .sidebar:hover .nav-text {
+      opacity: 1;
+      margin-left: 1rem;
+      /* espaço entre ícone e texto */
+      pointer-events: auto;
+    }
 
- .nav-text {
-     opacity: 0;
-     pointer-events: none;
-     transition: opacity 0.3s ease, margin-left 0.3s ease;
-     white-space: nowrap;
- }
+    .nav-text {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease, margin-left 0.3s ease;
+      white-space: nowrap;
+    }
 
- /* Added body margin to accommodate fixed sidebar */
- body {
-     margin-left: 4rem;
-     transition: margin-left 0.3s ease;
- }
+    /* Added body margin to accommodate fixed sidebar */
+    body {
+      margin-left: 4rem;
+      transition: margin-left 0.3s ease;
+    }
 
- .sidebar:hover~.main-content,
- .sidebar:hover~body {
-     margin-left: 16rem;
- }
+    .sidebar:hover~.main-content,
+    .sidebar:hover~body {
+      margin-left: 16rem;
+    }
 
- /* Alternative approach using CSS hover on body */
- body:has(.sidebar:hover) {
-     margin-left: 16rem;
- }
+    /* Alternative approach using CSS hover on body */
+    body:has(.sidebar:hover) {
+      margin-left: 16rem;
+    }
 
- /* --- Regras do submenu dentro de Home --- */
- /* Container .home para controlar o hover sobre o item Home */
- .home {
-     position: relative;
- }
+    /* --- Regras do submenu dentro de Home --- */
+    /* Container .home para controlar o hover sobre o item Home */
+    .home {
+      position: relative;
+    }
 
- /* Submenu escondido por padrão */
- .home .submenu {
-     max-height: 0;
-     opacity: 0;
-     overflow: hidden;
-     transition: max-height 0.25s ease, opacity 0.25s ease;
-     pointer-events: none;
- }
+    /* Submenu escondido por padrão */
+    .home .submenu {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 0.25s ease, opacity 0.25s ease;
+      pointer-events: none;
+    }
 
- /* Ao passar o mouse sobre o item Home, mostra o submenu */
- .home:hover .submenu {
-     max-height: 200px;
-     /* espaço suficiente para os itens */
-     opacity: 1;
-     pointer-events: auto;
- }
+    /* Ao passar o mouse sobre o item Home, mostra o submenu */
+    .home:hover .submenu {
+      max-height: 200px;
+      /* espaço suficiente para os itens */
+      opacity: 1;
+      pointer-events: auto;
+    }
 
- /* Pequeno recuo do submenu (mantém alinhamento quando sidebar expandida) */
- .home .submenu a {
-     padding-left: 1.5rem;
- }
+    /* Pequeno recuo do submenu (mantém alinhamento quando sidebar expandida) */
+    .home .submenu a {
+      padding-left: 1.5rem;
+    }
   </style>
 </head>
 
@@ -112,10 +112,10 @@
     <div class="mb-6 flex items-center justify-center">
       <div class="w-10 h-10 rounded-full bg-green-dark flex items-center justify-center relative overflow-hidden">
         <!-- Logo padrão -->
-        <img src="../asset/Captura de tela 2025-01-12 200122.png" alt="Logo"
+        <img src="/asset/despensa-ico.png" alt="Logo"
           class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-0" />
         <!-- Logo ao passar o mouse -->
-        <img src="../asset/Captura de tela 2025-01-12 200122.png" alt="Logo Hover"
+        <img src="/asset/despensa-ico.png" alt="Logo Hover"
           class="absolute inset-0 w-full h-full object-cover  transition-opacity duration-300 group-hover:opacity-100" />
 
       </div>
@@ -129,7 +129,7 @@
     <!-- home -->
     <nav class="flex flex-col space-y-6 flex-1 px-2">
       <div class="home w-full">
-        <a href="home.html" 
+        <a href="home.html"
           class="flex items-center text-white hover:bg-white/10 rounded px-3 py-2 transition-colors w-full justify-start no-underline flex items-center">
           <i class="bi-house"></i>
           <span class="nav-text font-semibold">Home</span>
@@ -149,16 +149,16 @@
       </div>
 
       <!-- painel -->
-      <a href="TabelaNutri.html"
+      <a href=""
         class="flex items-center text-white hover:bg-white/10 rounded px-3 py-2 transition-colors w-full justify-start no-underline flex items-center">
         <i class="bi-table"></i>
-        <span class="nav-text font-semibold">MATHEUS</span>
+        <span class="nav-text font-semibold">nada </span>
       </a>
       <!-- painel -->
       <a href="instituicaoNutricionista.html"
         class="flex items-center text-white hover:bg-white/10 rounded px-3 py-2 transition-colors w-full justify-start no-underline flex items-center">
         <i class="bi-grid"></i>
-        <span class="nav-text font-semibold">Gabriel</span>
+        <span class="nav-text font-semibold">controle instituição</span>
       </a>
       <!-- painel -->
       <a href="controleEstoque.html"
@@ -170,9 +170,34 @@
       <a href="controleEstoque.html"
         class="flex items-center text-white hover:bg-white/10 rounded px-3 py-2 transition-colors w-full justify-start no-underline flex items-center">
         <i class="bi-people"></i>
-        <span class="nav-text font-semibold">Controle de Estoque</span>
+        <span class="nav-text font-semibold">CARLOS- BUSCA usuários </span>
       </a>
+
+
+      <!-- Separador administrativo -->
+      <div class="w-8 h-px bg-white mb-6 mx-auto"></div>
+
+            <!-- intituição  -->
+      <a href="IntituicaoAdmin.html"
+        class="flex items-center text-white hover:bg-white/10 rounded px-3 py-2 transition-colors w-full justify-start no-underline flex items-center">
+        <i class="bi-people"></i>
+        <span class="nav-text font-semibold">intituição - admin  </span>
+      </a>
+
+            <!-- adicionar nutri  -->
+      <a href="TabelaNutri.html"
+        class="flex items-center text-white hover:bg-white/10 rounded px-3 py-2 transition-colors w-full justify-start no-underline flex items-center">
+        <i class="bi-table"></i>
+        <span class="nav-text font-semibold">Nutricionista - admin </span>
+      </a>
+
     </nav>
+
+
+
+
+
+
 
     <!-- Separador -->
     <div class="w-8 h-px bg-white mb-6 mx-auto"></div>
@@ -180,7 +205,9 @@
     <!-- Rodapé -->
     <div class="flex flex-col items-center space-y-4 px-3">
       <div class="w-8 h-8 rounded-full overflow-hidden">
-        <img src="../asset/Captura de tela 2025-01-12 200122.png" alt="Profile" class="w-full h-full object-cover" />
+        <a href="meu-perfil.html">
+          <img src="../asset/Captura de tela 2025-01-12 200122.png" alt="Profile" class="w-full h-full object-cover" />
+        </a>
       </div>
 
       <button id="logout"

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt" class="h-full">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil | DesPensa</title>
+    <link rel="icon" type="image/png" href="/asset/despensa2-ico-01.png" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'green-dark': '#2B9569',
+                        'green-medium': '#2B9569',
+                        'green-light': '#2B9569',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/sidebar.css">
+</head>
+
+<body class="h-full">
+    <div id="sidebar-container">
+        </div>
+
+    <main class="main-content">
+
+        <h1 class="perfil-h1">Meu Perfil</h1>
+
+        <div class="resultado-form-container meu-perfil-container">
+
+            <div class="profile-photo-area" style="margin-top: 20px; margin-bottom: 30px;">
+                <div class="profile-photo-circle">
+                    <i class="bi-person-circle profile-icon-placeholder"></i>
+                </div>
+                <button type="button" class="upload-btn">
+                    <i class="bi-camera"></i> Adicionar Foto
+                </button>
+            </div>
+
+            <form id="perfil-form">
+
+                <div class="form-row">
+                    <div class="form-group-result" style="flex: 100%;">
+                        <label>Nome Completo</label>
+                        <input type="text" name="nome" value="Giovani Pereira" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group-result" style="flex: 2;">
+                        <label for="funcao">Função</label>
+                        <select id="funcao" name="funcao" class="form-group-result-select">
+                            <option value="gestor" selected>Gestor(a) de Food Service</option>
+                            <option value="nutricionista">Nutricionista</option>
+                            <option value="nutrologo">Nutrólogo(a)</option>
+                            <option value="cozinheiro">Chef de Cozinha/Cozinheiro(a)</option>
+                            <option value="administrador">Administrador(a)</option>
+                            <option value="logistica">Logística/Estoque</option>
+                            <option value="outro">Outro</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group-result" style="flex: 1;">
+                        <label>Perfil Acesso</label>
+                        <input type="text" name="perfil_acesso" value="Admin" disabled>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group-result">
+                        <label>Cidade</label>
+                        <input type="text" name="cidade" value="Blumenau">
+                    </div>
+                    <div class="form-group-result">
+                        <label>Região (Estado)</label>
+                        <input type="text" name="regiao" value="SC">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group-result" style="flex: 100%;">
+                        <label>E-mail</label>
+                        <input type="email" name="email" value="giovani@despensa.com" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group-result" style="flex: 100%;">
+                        <label>Senha (Deixe vazio para não alterar)</label>
+                        <input type="password" name="senha" placeholder="********">
+                    </div>
+                </div>
+
+                <div class="form-row" style="justify-content: flex-end; margin-top: 30px;">
+                    <button type="submit" class="search-submit-btn salvar-btn" style="background-color: #006400;">
+                        Salvar Alterações
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </main>
+
+    <script src="/scriptTemplete/carregarSidebar.js"></script>
+</body>
+
+</html>
