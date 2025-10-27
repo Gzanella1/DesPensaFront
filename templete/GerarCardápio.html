@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Gerar Cardápio</title>
+<link rel="stylesheet" href="/DesPensaFront/css/GerarCardápio.css">
+</head>
+<body>
+  <div class="container">
+    <button class="btn-novo" id="btnNovo">+ Novo cardápio</button>
+    <h1>Gerar cardápio</h1>
+
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Instituição</th>
+            <th>Data</th>
+            <th>Status</th>
+            <th>Diário/Semanal</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="tabela">
+          <!-- Linhas serão adicionadas dinamicamente -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <h2 id="tituloModal">Criar cardápio</h2>
+
+      <label>Tipo</label>
+      <select id="tipo">
+        <option>Diário</option>
+        <option>Semanal</option>
+      </select>
+
+      <label>Número de pessoas</label>
+      <input id="pessoas" type="text" placeholder="Digite o número de pessoas" />
+
+      <label>Instituição</label>
+      <input id="instituicao" type="text" placeholder="Nome da instituição" />
+
+      <label>Priorizar...</label>
+      <select id="priorizar">
+        <option>Quantidade</option>
+        <option>Validade</option>
+      </select>
+
+      <label>Restrições</label>
+      <input id="restricoes" type="text" placeholder="Checklist com as restrições" />
+
+      <div class="modal-footer">
+        <button class="btn-limpar" id="btnFechar">Cancelar</button>
+        <button class="btn-confirmar" id="btnConfirmar">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/DesPensaFront/scriptTemplete/GerarCardápio.js"></script>
+</body>
+</html>
