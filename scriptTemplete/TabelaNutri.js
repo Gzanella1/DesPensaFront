@@ -1,7 +1,7 @@
 const tabela = document.getElementById("tabelaNutricionistas");
 const form = document.getElementById("formNutricionista");
 let editandoLinha = null;
-
+ 
 // ---------- Persistência ----------
 function salvarDados() {
   const dados = Array.from(tabela.rows).map(row => ({
@@ -13,12 +13,12 @@ function salvarDados() {
   }));
   localStorage.setItem("nutricionistas", JSON.stringify(dados));
 }
-
+ 
 function carregarDados() {
   const dados = JSON.parse(localStorage.getItem("nutricionistas")) || [];
   dados.forEach(d => adicionarLinha(d.nome, d.instituicao, d.contato, d.status, d.frequencia));
 }
-
+ 
 // ---------- Função para adicionar linha ----------
 function adicionarLinha(nome, instituicao, contato, status, frequencia) {
   const linha = tabela.insertRow();
@@ -34,17 +34,17 @@ function adicionarLinha(nome, instituicao, contato, status, frequencia) {
     </td>
   `;
 }
-
+ 
 // ---------- Salvar (adicionar ou editar) ----------
 form.addEventListener("submit", e => {
   e.preventDefault();
-
+ 
   const nome = document.getElementById("nome").value;
   const instituicao = document.getElementById("instituicao").value;
   const contato = document.getElementById("contato").value;
   const status = document.getElementById("status").value;
   const frequencia = document.getElementById("frequencia").value;
-
+ 
   if (editandoLinha) {
     editandoLinha.cells[0].innerText = nome;
     editandoLinha.cells[1].innerText = instituicao;
@@ -55,25 +55,25 @@ form.addEventListener("submit", e => {
   } else {
     adicionarLinha(nome, instituicao, contato, status, frequencia);
   }
-
+ 
   salvarDados();
   form.reset();
   bootstrap.Modal.getInstance(document.getElementById("modalForm")).hide();
 });
-
+ 
 // ---------- Editar / Remover ----------
 tabela.addEventListener("click", e => {
   const btn = e.target.closest("button");
   if (!btn) return;
   const linha = btn.closest("tr");
-
+ 
   if (btn.classList.contains("remover")) {
     if (confirm("Deseja realmente remover este nutricionista?")) {
       linha.remove();
       salvarDados();
     }
   }
-
+ 
   if (btn.classList.contains("editar")) {
     editandoLinha = linha;
     document.getElementById("nome").value = linha.cells[0].innerText;
@@ -85,14 +85,14 @@ tabela.addEventListener("click", e => {
     new bootstrap.Modal(document.getElementById("modalForm")).show();
   }
 });
-
+ 
 // ---------- Reset modal ----------
 document.getElementById("modalForm").addEventListener("hidden.bs.modal", () => {
   editandoLinha = null;
   document.getElementById("modalLabel").innerText = "Adicionar Nutricionista";
   form.reset();
 });
-
+ 
 // ---------- Busca ----------
 document.getElementById("buscar").addEventListener("keyup", () => {
   const termo = document.getElementById("buscar").value.toLowerCase();
@@ -100,6 +100,6 @@ document.getElementById("buscar").addEventListener("keyup", () => {
     row.style.display = row.innerText.toLowerCase().includes(termo) ? "" : "none";
   });
 });
-
+ 
 // ---------- Carregar dados ao iniciar ----------
 window.addEventListener("DOMContentLoaded", carregarDados);
