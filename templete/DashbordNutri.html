@@ -140,86 +140,8 @@
 
 <body>
 
-  <!-- SIDEBAR -->
-  <div class="sidebar group flex flex-col py-4 shadow-lg">
-
-    <!-- Logo -->
-    <div class="mb-6 flex items-center justify-center">
-      <div class="w-10 h-10 rounded-full bg-green-dark flex items-center justify-center relative overflow-hidden">
-        <img src="../asset/Captura de tela 2025-01-12 200122.png" alt="Logo"
-          class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-0" />
-        <img src="../asset/Captura de tela 2025-01-12 200122.png" alt="Logo Hover"
-          class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-100" />
-      </div>
-    </div>
-
-    <div class="w-8 h-px bg-white mb-6 mx-auto"></div>
-
-    <!-- MENU -->
-    <nav class="flex flex-col space-y-6 flex-1 px-2">
-
-      <div class="home w-full">
-        <a href="home.html"
-          class="flex items-center text-white hover:bg-white/10 rounded px-3 py-2 transition-colors w-full justify-start">
-          <i class="bi-house"></i>
-          <span class="nav-text font-semibold">Home</span>
-        </a>
-
-        <div class="submenu flex flex-col mt-2 space-y-1">
-          <a href="#cadastrar-giovani"
-            class="flex items-center text-white hover:bg-white/10 rounded px-3 py-2 transition-colors text-sm">
-            <span class="nav-text font-medium">Cadastrar Giovani</span>
-          </a>
-          <a href="#visualizar-giovani"
-            class="flex items-center text-white hover:bg-white/10 rounded px-3 py-2 transition-colors text-sm">
-            <span class="nav-text font-medium">Visualizar Giovani</span>
-          </a>
-        </div>
-      </div>
-
-      <a href="TabelaNutri.html"
-        class="flex items-center text-white hover:bg-white/10 rounded px-3 py-2 transition-colors w-full">
-        <i class="bi-table"></i>
-        <span class="nav-text font-semibold">Matheus</span>
-      </a>
-
-      <a href="controleFinanceiro.html"
-        class="flex items-center text-white hover:bg-white/10 rounded px-3 py-2 transition-colors w-full">
-        <i class="bi-grid"></i>
-        <span class="nav-text font-semibold">Gestão Financeira</span>
-      </a>
-
-      <a href="controleEstoque.html"
-        class="flex items-center text-white hover:bg-white/10 rounded px-3 py-2 transition-colors w-full">
-        <i class="bi-speedometer2"></i>
-        <span class="nav-text font-semibold">Controle de Estoque</span>
-      </a>
-
-      <a href="usuarios.html"
-        class="flex items-center text-white hover:bg-white/10 rounded px-3 py-2 transition-colors w-full">
-        <i class="bi-people"></i>
-        <span class="nav-text font-semibold">Usuários</span>
-      </a>
-    </nav>
-
-    <div class="w-8 h-px bg-white mb-6 mx-auto"></div>
-
-    <!-- LOGOUT -->
-    <div class="flex flex-col items-center space-y-4 px-3">
-      <div class="w-8 h-8 rounded-full overflow-hidden">
-        <img src="../asset/Captura de tela 2025-01-12 200122.png" alt="Profile" class="w-full h-full object-cover" />
-      </div>
-
-      <button id="logout"
-        class="flex items-center text-white hover:bg-white/10 rounded px-3 py-2 transition-colors w-full justify-start">
-        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-        </svg>
-        <span class="nav-text font-semibold">Logout</span>
-      </button>
-    </div>
-  </div>
+    <!-- Sidebar -->
+    <div id="sidebar-container"></div>
 
   <!-- CONTEÚDO PRINCIPAL -->
   <div class="main-content transition-all">
@@ -294,11 +216,6 @@
           <p>&copy; 2025 - Sistema de Gestão de Estoque</p>
         </footer>
 
-
-
-
-
-
         
       </div>
     </main>
@@ -306,5 +223,6 @@
 
   <!-- JS -->
   <script src="../scriptTemplete/DashbordNutri.js"></script>
+  <script src="../scriptTemplete/carregarSidebar.js"></script>
 </body>
 </html>
