@@ -1,0 +1,104 @@
+/* ===================== */
+/*      MODO ESCURO      */
+/* ===================== */
+
+/* Transição suave global entre os temas */
+body,
+.sidebar,
+.main-content,
+.bg-white,
+.card,
+.rounded-lg,
+.shadow-md {
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+body.dark-mode {
+  background-color: #121212; /* fundo geral escuro */
+  color: #eaeaea;
+}
+
+/* Sidebar escura */
+body.dark-mode .sidebar,
+body.dark-mode #sidebar-container {
+  background-color: #1f1f1f !important;
+  color: #f5f5f5;
+}
+
+/* Fundo da área principal */
+body.dark-mode .main-content {
+  background-color: #1a1a1a !important;
+}
+
+/* Mantém os cards e painéis brancos */
+body.dark-mode .bg-white,
+body.dark-mode .card,
+body.dark-mode .rounded-lg,
+body.dark-mode .shadow-md {
+  background-color: #ffffff !important;
+  color: #222 !important;
+}
+
+/* Títulos e textos dos cards */
+body.dark-mode .bg-white h1,
+body.dark-mode .bg-white h2,
+body.dark-mode .bg-white p,
+body.dark-mode .bg-white span {
+  color: #222 !important;
+}
+
+/* Texto e ícones gerais permanecem claros */
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode p,
+body.dark-mode span,
+body.dark-mode a {
+  color: #eaeaea;
+}
+
+/* Botões coloridos mantêm cor original, com leve escurecimento */
+body.dark-mode .btn,
+body.dark-mode a[class*="bg-"] {
+  filter: brightness(0.9);
+  transition: filter 0.4s ease;
+}
+
+/* ===================== */
+/*   BOTÃO DO MODO DARK  */
+/* ===================== */
+
+#dark-mode-toggle-container {
+  position: absolute;
+  top: 25px;
+  right: 40px;
+  z-index: 1000;
+}
+
+/* Botão no estilo da sidebar */
+#darkModeToggle {
+  background-color: #2B9569; /* verde institucional */
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 22px;
+  border-radius: 8px;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease, color 0.4s ease;
+}
+
+#darkModeToggle:hover {
+  background-color: #42A92D; /* verde mais claro */
+  transform: scale(1.1);
+}
+
+/* Aparência invertida no modo escuro */
+body.dark-mode #darkModeToggle {
+  background-color: #f0f0f0;
+  color: #2B9569;
+}

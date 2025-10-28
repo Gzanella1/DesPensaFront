@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="h-full">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Perfil | DesPensa </title>
+    <link rel="icon" type="image/png" href="/asset/despensa2-ico-01.png" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'despensa-green-dark': '#2B9569',
+                        'despensa-green-medium': '#42A92D',
+                        'despensa-green-light': '#A5C96F',
+                        'despensa-offwhite': '#EFEFEF',
+                        'despensa-text-dark': '#333333',
+                        'despensa-text-light': '#f0f0f0',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="/css/dashboard-perfil.css">
+    <link rel="stylesheet" href="/css/botaoModoEscuro.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-gauge@0.3.0/dist/chartjs-gauge.min.js"></script>
+
+</head>
+
+<body class="h-full flex">
+    <div id="sidebar-container">
+    </div>
+
+    <main class="main-content flex-1 p-8 bg-despensa-offwhite">
+
+        <!-- Botão de modo escuro -->
+        <div id="dark-mode-toggle-container">
+            <button id="darkModeToggle" title="Alternar modo escuro">
+                🌙
+            </button>
+        </div>
+
+        <h1 class="text-4xl font-bold text-despensa-text-dark mb-10">Dashboard do Perfil</h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+            <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                <p class="text-gray-500 text-sm">Itens na Despensa</p>
+                <p class="text-5xl font-extrabold text-despensa-green-dark mt-2" id="totalItens">125</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                <p class="text-gray-500 text-sm">Próximos a Vencer</p>
+                <p class="text-5xl font-extrabold text-red-500 mt-2" id="vencendoItens">12</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                <p class="text-gray-500 text-sm">Receitas Salvas</p>
+                <p class="text-5xl font-extrabold text-blue-500 mt-2" id="totalReceitas">48</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                <p class="text-gray-500 text-sm">Desperdício Estimado</p>
+                <p class="text-5xl font-extrabold text-orange-500 mt-2" id="desperdicio">5%</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-semibold text-despensa-text-dark mb-4">Itens por Categoria</h2>
+                <div class="chart-container">
+                    <canvas id="categoriasChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-semibold text-despensa-text-dark mb-4">Nível de Organização</h2>
+                <div class="chart-container">
+                    <canvas id="organizacaoGauge"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-wrap justify-center gap-6">
+            <a href="buscaUsuario.html"
+                class="flex-1 min-w-[200px] max-w-[300px] bg-despensa-green-dark text-white px-6 py-4 rounded-lg shadow-lg 
+                      hover:bg-despensa-green-medium transition-colors duration-300 text-center font-semibold text-lg flex items-center justify-center gap-3 no-underline">
+                <i class="bi-search text-2xl"></i> Buscar Usuário
+            </a>
+            <a href="meu-perfil.html"
+                class="flex-1 min-w-[200px] max-w-[300px] bg-blue-600 text-white px-6 py-4 rounded-lg shadow-lg 
+                      hover:bg-blue-700 transition-colors duration-300 text-center font-semibold text-lg flex items-center justify-center gap-3 no-underline">
+                <i class="bi-person-circle text-2xl"></i> Meu Perfil
+            </a>
+            <a href="/templete/outra-pagina-do-sidebar.html"
+                class="flex-1 min-w-[200px] max-w-[300px] bg-purple-600 text-white px-6 py-4 rounded-lg shadow-lg 
+                      hover:bg-purple-700 transition-colors duration-300 text-center font-semibold text-lg flex items-center justify-center gap-3 no-underline">
+                <i class="bi-list-ul text-2xl"></i> Gerenciar Listas
+            </a>
+        </div>
+
+    </main>
+
+    <script src="/scriptTemplete/carregarSidebar.js"></script>
+    <script src="/scriptTemplete/dashboard-perfil.js"></script>
+    <script src="/scriptTemplete/botaoModoEscuro.js"></script>
+</body>
+
+</html>
