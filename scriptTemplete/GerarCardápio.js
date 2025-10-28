@@ -27,33 +27,33 @@ window.addEventListener('click', (e) => {
 
 // Confirmar criação/edição
 btnConfirmar.addEventListener('click', () => {
+  const nome = document.getElementById('nome').value.trim();
+  const pessoas = document.getElementById('pessoas').value.trim();
   const tipo = document.getElementById('tipo').value;
-  const pessoas = document.getElementById('pessoas').value;
-  const instituicao = document.getElementById('instituicao').value;
-  const priorizar = document.getElementById('priorizar').value;
-  const restricoes = document.getElementById('restricoes').value;
+  const priorizar = document.getElementById('Priorizar').value.trim();
+  const restricoes = document.getElementById('restricoes').value.trim();
 
-  if (!pessoas || !instituicao) {
+  if (!nome || !pessoas) {
     alert('Preencha todos os campos obrigatórios!');
     return;
   }
 
   if (editando) {
     // Editar linha existente
-    editando.cells[0].textContent = instituicao;
-    editando.cells[1].textContent = instituicao;
-    editando.cells[2].textContent = new Date().toLocaleDateString('pt-BR');
-    editando.cells[3].textContent = 'Atualizado';
-    editando.cells[4].textContent = tipo;
+    editando.cells[0].textContent = nome;
+    editando.cells[1].textContent = pessoas;
+    editando.cells[2].textContent = tipo;
+    editando.cells[3].textContent = priorizar;
+    editando.cells[4].textContent = restricoes;
   } else {
     // Criar nova linha
     const novaLinha = document.createElement('tr');
     novaLinha.innerHTML = `
-      <td>${instituicao}</td>
-      <td>${instituicao}</td>
-      <td>${new Date().toLocaleDateString('pt-BR')}</td>
-      <td>Ativo</td>
+      <td>${nome}</td>
+      <td>${pessoas}</td>
       <td>${tipo}</td>
+      <td>${priorizar}</td>
+      <td>${restricoes}</td>
       <td>
         <button class="btn-editar">Editar</button>
         <button class="btn-deletar">Deletar</button>
@@ -63,6 +63,7 @@ btnConfirmar.addEventListener('click', () => {
   }
 
   modal.style.display = 'none';
+  limparCampos();
   adicionarEventos();
 });
 
@@ -72,7 +73,11 @@ function adicionarEventos() {
     btn.onclick = () => {
       editando = btn.closest('tr');
       tituloModal.textContent = "Editar cardápio";
-      document.getElementById('instituicao').value = editando.cells[0].textContent;
+      document.getElementById('nome').value = editando.cells[0].textContent;
+      document.getElementById('pessoas').value = editando.cells[1].textContent;
+      document.getElementById('tipo').value = editando.cells[2].textContent;
+      document.getElementById('Priorizar').value = editando.cells[3].textContent;
+      document.getElementById('restricoes').value = editando.cells[4].textContent;
       modal.style.display = 'flex';
     };
   });
@@ -87,9 +92,9 @@ function adicionarEventos() {
 }
 
 function limparCampos() {
-  document.getElementById('tipo').value = 'Diário';
+  document.getElementById('nome').value = '';
   document.getElementById('pessoas').value = '';
-  document.getElementById('instituicao').value = '';
-  document.getElementById('priorizar').value = 'Quantidade';
+  document.getElementById('tipo').value = 'Diario';
+  document.getElementById('Priorizar').value = '';
   document.getElementById('restricoes').value = '';
 }
