@@ -30,14 +30,14 @@
     </div>
 
     <!-- Mensagem de erro -->
-    <p id="erroMsg" class="hidden text-red-600 text-sm mb-2"></p>
+    <p id="erroMsg" class="hidden text-red-600 text-sm mb-4"></p>
 
     <!-- Formulário -->
-    <form id="loginForm" class="w-full max-w-sm space-y-5">
+    <form id="loginForm" class="w-full max-w-sm space-y-5" novalidate>
 
       <!-- Campo de e-mail -->
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1" for="email">Email</label>
+        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
         <div class="flex items-center bg-white border border-gray-300 rounded-md px-3 py-2">
           <!-- Ícone de carta -->
           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -50,7 +50,7 @@
 
       <!-- Campo de senha -->
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1" for="senha">Senha</label>
+        <label for="senha" class="block text-sm font-medium text-gray-700 mb-1">Senha</label>
         <div class="flex items-center bg-white border border-gray-300 rounded-md px-3 py-2">
           <!-- Ícone de cadeado -->
           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -63,7 +63,7 @@
 
       <!-- Lembrar e Esqueceu -->
       <div class="flex items-center justify-between text-sm">
-        <label class="flex items-center space-x-2">
+        <label class="flex items-center space-x-2" for="lembrar">
           <input id="lembrar" type="checkbox" class="rounded text-green-600 focus:ring-green-500" />
           <span class="text-gray-600">Lembrar de mim</span>
         </label>
