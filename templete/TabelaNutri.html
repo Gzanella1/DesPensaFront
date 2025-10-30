@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
+ 
 <head>
   <meta charset="UTF-8">
   <title>Nutricionistas</title>
@@ -10,19 +10,19 @@
   <link rel="icon" type="image/png" href="assets/logo_perfil.png" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="../css/tabelaNutri.css">
-
-
+ 
+ 
 </head>
-
+ 
 <div id="sidebar-container"></div>
-
-
+ 
+ 
 <body>
-
-
+ 
+ 
   <div class="content">
     <h3 class="mb-4">Nutricionistas</h3>
-
+ 
     <div class="card p-4">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <div class="input-group w-50">
@@ -33,7 +33,7 @@
           + Adicionar Nutricionista
         </button>
       </div>
-
+ 
       <div class="table-responsive">
         <table class="table align-middle text-center">
           <thead>
@@ -51,7 +51,7 @@
       </div>
     </div>
   </div>
-
+ 
   <!-- Modal -->
   <div class="modal fade" id="modalForm" tabindex="-1">
     <div class="modal-dialog">
@@ -66,7 +66,7 @@
             <input type="text" class="form-control mb-2" id="nome" placeholder="Nome" required>
             <input type="text" class="form-control mb-2" id="instituicao" placeholder="Instituição" required>
             <input type="text" class="form-control mb-2" id="contato" placeholder="Contato" required>
-
+ 
             <!-- Novos campos -->
             <select class="form-control mb-2" id="status" required>
               <option value="Ativo">Ativo</option>
@@ -85,10 +85,10 @@
       </div>
     </div>
   </div>
-
+ 
   <!-- Importa o JS -->
-  <script src="/scriptTemplete/TabelaNutri.js"></script>
-  <script src="../scriptTemplete/carregarSidebar.js"></script>
+  <script src="/DesPensaFront/scriptTemplete/TabelaNutri.js"></script>
+  <script src="/DesPensaFront/scriptTemplete/carregarSidebar.js"></script>
 </body>
-
+ 
 </html>
