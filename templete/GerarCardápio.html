@@ -1,78 +1,91 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gerar Cardápio</title>
-  <link rel="stylesheet" href="/DesPensaFront/css/GerarCardápio.css" />
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerar Cardápio</title>
+    <link rel="stylesheet" href="../css/GerarCardápio.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
 
 
-  <div class="app">
+    <div class="app">
     <!-- Sidebar -->
     <div id="sidebar-container"></div>
 
 
 
-    <div class="container">
-      <button class="btn-novo" id="btnNovo">+ Novo cardápio</button>
-      <h1>Gerar cardápio</h1>
+      <div class="container">
+        <button class="btn-novo" id="btnNovo">+ Novo cardápio</button>
+        <h1>Gerar cardápio</h1>
 
-      <div class="card">
-        <table>
-          <thead>
-            <tr>
-              <th>instituição</th>
-              <th>Número de pessoas</th>
-              <th>Diário/Semanal</th>
-              <th>Priorizar</th>
-              <th>Restrições</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody id="tabela">
-            <!-- Linhas serão adicionadas dinamicamente -->
-          </tbody>
-        </table>
+        <div class="card">
+          <table>
+            <thead>
+              <tr>
+                <th>instituição</th>
+                <th>Número de pessoas</th>
+                <th>Diário/Semanal</th>
+                <th>Priorizar</th>
+                <th>Restrições</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tabela">
+              <!-- Linhas serão adicionadas dinamicamente -->
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
 
-    <!-- Modal -->
-    <div class="modal" id="modal">
-      <div class="modal-content">
-        <h2 id="tituloModal">Criar cardápio</h2>
+      <!-- Modal -->
+      <div class="modal" id="modal">
+        <div class="modal-content">
+          <h2 id="tituloModal">Criar cardápio</h2>
 
-        <label>Nome da instituição </label>
-        <input id="nome" type="text" placeholder="Digite o Nome da instituição" />
+          <label>Nome da instituição </label>
+          <input
+            id="nome"
+            type="text"
+            placeholder="Digite o Nome da instituição"
+          />
 
-        <label>Número de pessoas</label>
-        <input id="pessoas" type="text" placeholder="Digite o número de pessoas" />
+          <label>Número de pessoas</label>
+          <input
+            id="pessoas"
+            type="text"
+            placeholder="Digite o número de pessoas"
+          />
 
-        <label>Diário/Semanal</label>
-        <select id="tipo">
-          <option>Diario</option>
-          <option>semanal</option>
-        </select>
+          <label>Diário/Semanal</label>
+          <select id="tipo">
+            <option>Diario</option>
+            <option>semanal</option>
+          </select>
 
-        <label>Priorizar...</label>
-        <input id="Priorizar" type="text" placeholder="Quantidade / Validade " />
+          <label>Priorizar...</label>
+          <input
+            id="Priorizar"
+            type="text"
+            placeholder="Quantidade / Validade "
+          />
 
-        <label>Restrições</label>
-        <input id="restricoes" type="text" placeholder="Checklist com as restrições" />
+          <label>Restrições</label>
+          <input
+            id="restricoes"
+            type="text"
+            placeholder="Checklist com as restrições"
+          />
 
-        <div class="modal-footer">
-          <button class="btn-limpar" id="btnFechar">Cancelar</button>
-          <button class="btn-confirmar" id="btnConfirmar">Confirmar</button>
+          <div class="modal-footer">
+            <button class="btn-limpar" id="btnFechar">Cancelar</button>
+            <button class="btn-confirmar" id="btnConfirmar">Confirmar</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <script src="../scriptTemplete/carregarSidebar.js"></script>
-  <script src="/DesPensaFront/scriptTemplete/GerarCardápio.js"></script>
-</body>
-
+    <script src="../scriptTemplete/carregarSidebar.js"></script>
+    <script src="../scriptTemplete/GerarCardápio.js"></script>
+  </body>
 </html>
