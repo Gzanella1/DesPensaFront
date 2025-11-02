@@ -1,119 +1,88 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <title>intituição - admin</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
-      rel="stylesheet"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="icon" type="image/png" href="assets/logo_perfil.png" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="../css/tabelaNutri.css" />
-  </head>
+
+<head>
+  <meta charset="UTF-8" />
+  <title> Instituição - Administrador</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="icon" type="image/png" href="assets/logo_perfil.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script src="/scriptTemplete/botaoModoEscuro.js"></script>
+
+  <link rel="stylesheet" href="../css/tabelaNutri.css" />
+  <link rel="stylesheet" href="/css/background.css" />
+
+  <link rel="stylesheet" href="/css/botaoModoEscuro.css">
+
+</head>
+
+<body class="h-full flex">
 
   <div id="sidebar-container"></div>
 
-  <body>
-    <div class="content">
-      <h3 class="mb-4">Instituições - admin </h3>
-      <p> Adicionar intituição </p>
-      <div class="card p-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <div class="input-group w-50">
-            <input
-              type="text"
-              id="buscar"
-              class="form-control"
-              placeholder="Busca intituição..."
-              aria-label="Buscar"
-            />
-            <span class="input-group-text"><i class="bi bi-search"></i></span>
+  <main class="main-content flex-1 p-8">
+
+    <h3 class="mb-4 text-4xl font-bold text-despensa-text-dark">Instituição - Administrador</h3>
+
+    <p class="text-gray-700 dark:text-gray-300"> Adicionar Instituição </p>
+
+    <div class="card p-4">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="input-group w-50">
+          <input type="text" id="buscar" class="form-control" placeholder="Buscar Instituição" aria-label="Buscar" />
+          <span class="input-group-text"><i class="bi bi-search"></i></span>
+        </div>
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalForm">
+          + Nova Instituição
+        </button>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table align-middle text-center">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Tipo da instituição</th>
+              <th>Endereço</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tabelaNutricionistas"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </main> <div class="modal fade" id="modalForm" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="formNutricionista">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">Nova Instituição</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
-          <button
-            class="btn btn-success"
-            data-bs-toggle="modal"
-            data-bs-target="#modalForm"
-          >
-            nova instituição
-          </button>
-        </div>
-
-        <div class="table-responsive">
-          <table class="table align-middle text-center">
-            <thead>
-              <tr>
-                <th>Nome</th>
-                <th>Tipo da instituição</th>
-                <th>Endereço</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-            <tbody id="tabelaNutricionistas"></tbody>
-          </table>
-        </div>
+          <div class="modal-body">
+            <input type="hidden" id="editIndex" />
+            <input type="text" class="form-control mb-2" id="Nome" placeholder="Nome" required />
+            <input type="text" class="form-control mb-2" id="Tipo_da_instituição" placeholder="Tipo_da_instituição" required />
+            <input type="text" class="form-control mb-2" id="Endereço" placeholder="Endereço" required />
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              Cancelar
+            </button>
+          </div>
+        </form>
       </div>
     </div>
+  </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="modalForm" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <form id="formNutricionista">
-            <div class="modal-header">
-              <h5 class="modal-title" id="modalLabel">nova instituição</h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-              ></button>
-            </div>
-            <div class="modal-body">
-              <input type="hidden" id="editIndex" />
-              <input
-                type="text"
-                class="form-control mb-2"
-                id="Nome"
-                placeholder="Nome"
-                required
-              />
-              <input
-                type="text"
-                class="form-control mb-2"
-                id="Tipo_da_instituição"
-                placeholder="Tipo_da_instituição"
-                required
-              />
-              <input
-                type="text"
-                class="form-control mb-2"
-                id="Endereço"
-                placeholder="Endereço"
-                required
-              />
-            </div>
-            <div class="modal-footer">
-              <button type="submit" class="btn btn-primary">Salvar</button>
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Cancelar
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+  <script src="/scriptTemplete/IntituicaoAdmin.js"></script>
+  <script src="../scriptTemplete/carregarSidebar.js"></script>
+</body>
 
-    <!-- Importa o JS -->
-    <script src="/scriptTemplete/IntituicaoAdmin.js"></script>
-    <script src="../scriptTemplete/carregarSidebar.js"></script>
-  </body>
 </html>

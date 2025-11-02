@@ -2,11 +2,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
+
 :root {
   --green-dark: #2B9569;
 }
- 
+
 /* SIDEBAR */
 .sidebar {
   background-color: var(--green-dark);
@@ -33,7 +33,7 @@
   pointer-events: auto;
   margin-left: 1rem;
 }
- 
+
 /* SUBMENU */
 .home {
   position: relative;
@@ -50,7 +50,7 @@
   opacity: 1;
   pointer-events: auto;
 }
- 
+
 /* MAIN CONTENT */
 body {
   margin-left: 4rem;
@@ -68,7 +68,7 @@ body {
   padding: 2rem;
   margin-top: 2rem;
 }
- 
+
 /* BOTÕES */
 .btn {
   display: flex;
@@ -83,7 +83,7 @@ body {
 .btn:hover {
   background-color: #f3f4f6;
 }
- 
+
 /* BOTÃO DE ADICIONAR INSUMO */
 .novo-insumo,
 button.bg-green-dark {
@@ -95,14 +95,14 @@ button.bg-green-dark {
   cursor: pointer;
   animation: pulseGlow 3s infinite;
 }
- 
+
 .novo-insumo:hover,
 button.bg-green-dark:hover {
   background-color: #237b56;
   transform: scale(1.05);
   transition: all 0.2s ease;
 }
- 
+
 /* EFEITO DE PULSO SUAVE NO BOTÃO */
 @keyframes pulseGlow {
   0%, 100% {
@@ -112,13 +112,13 @@ button.bg-green-dark:hover {
     box-shadow: 0 0 12px rgba(43, 149, 105, 0.4);
   }
 }
- 
+
 /* MODAL */
 #formInsumo {
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
 }
- 
+
 /* ANIMAÇÃO DO MODAL */
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.95); }
@@ -127,4 +127,3 @@ button.bg-green-dark:hover {
 .animate-fadeIn {
   animation: fadeIn 0.25s ease-in-out;
 }
- 

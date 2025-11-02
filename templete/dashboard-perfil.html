@@ -10,6 +10,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
@@ -29,22 +30,35 @@
     <link rel="stylesheet" href="/css/sidebar.css">
     <link rel="stylesheet" href="/css/dashboard-perfil.css">
     <link rel="stylesheet" href="/css/botaoModoEscuro.css">
+    <link rel="stylesheet" href="/css/background.css">
+    <script src="/scriptTemplete/botaoModoEscuro.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-gauge@0.3.0/dist/chartjs-gauge.min.js"></script>
 
 </head>
 
 <body class="h-full flex">
+
     <div id="sidebar-container">
     </div>
 
-    <main class="main-content flex-1 p-8 bg-despensa-offwhite">
+    <main class="main-content flex-1 p-8 bg-despensa-offwhite relative">
 
         <!-- Botão de modo escuro -->
-        <div id="dark-mode-toggle-container">
-            <button id="darkModeToggle" title="Alternar modo escuro">
-                🌙
-            </button>
+        <div id="dark-mode-toggle-container" class="absolute top-8 right-8">
+            <label class="inline-flex items-center cursor-pointer">
+                <input id="theme-toggle" type="checkbox" class="sr-only peer">
+                <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700
+             peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full
+             peer-checked:after:border-white
+             after:content-[''] after:absolute after:top-0.5 after:start-[2px]
+             after:bg-white after:border-gray-300 after:border after:rounded-full
+             after:h-5 after:w-5 after:transition-all
+             peer-checked:bg-green-600 dark:peer-checked:bg-green-600"></div>
+                <span class="ms-3 text-sm font-semibold text-gray-900 dark:text-gray-300">
+                    Modo Escuro
+                </span>
+            </label>
         </div>
 
         <h1 class="text-4xl font-bold text-despensa-text-dark mb-10">Dashboard do Perfil</h1>
@@ -86,17 +100,17 @@
 
         <div class="flex flex-wrap justify-center gap-6">
             <a href="buscaUsuario.html"
-                class="flex-1 min-w-[200px] max-w-[300px] bg-despensa-green-dark text-white px-6 py-4 rounded-lg shadow-lg 
+                class="flex-1 min-w-[200px] max-w-[300px] bg-despensa-green-dark text-white px-6 py-4 rounded-lg shadow-lg
                       hover:bg-despensa-green-medium transition-colors duration-300 text-center font-semibold text-lg flex items-center justify-center gap-3 no-underline">
                 <i class="bi-search text-2xl"></i> Buscar Usuário
             </a>
             <a href="meu-perfil.html"
-                class="flex-1 min-w-[200px] max-w-[300px] bg-blue-600 text-white px-6 py-4 rounded-lg shadow-lg 
+                class="flex-1 min-w-[200px] max-w-[300px] bg-blue-600 text-white px-6 py-4 rounded-lg shadow-lg
                       hover:bg-blue-700 transition-colors duration-300 text-center font-semibold text-lg flex items-center justify-center gap-3 no-underline">
                 <i class="bi-person-circle text-2xl"></i> Meu Perfil
             </a>
             <a href="/templete/outra-pagina-do-sidebar.html"
-                class="flex-1 min-w-[200px] max-w-[300px] bg-purple-600 text-white px-6 py-4 rounded-lg shadow-lg 
+                class="flex-1 min-w-[200px] max-w-[300px] bg-purple-600 text-white px-6 py-4 rounded-lg shadow-lg
                       hover:bg-purple-700 transition-colors duration-300 text-center font-semibold text-lg flex items-center justify-center gap-3 no-underline">
                 <i class="bi-list-ul text-2xl"></i> Gerenciar Listas
             </a>
@@ -104,9 +118,11 @@
 
     </main>
 
+    <link rel="stylesheet" href="/css/loader.css">
+    <script src="/scriptTemplete/injetarloader.js"></script>
+    <script src="/scriptTemplete/loader.js"></script>
     <script src="/scriptTemplete/carregarSidebar.js"></script>
     <script src="/scriptTemplete/dashboard-perfil.js"></script>
-    <script src="/scriptTemplete/botaoModoEscuro.js"></script>
 </body>
 
 </html>
