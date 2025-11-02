@@ -5,7 +5,7 @@
 /* ... (transições) ... */
 
 /* MUDANÇA PRINCIPAL:
-  Trocamos 'body.dark-mode' por 'html.dark'
+  Troquei 'body.dark-mode' por 'html.dark'
   para funcionar com o novo script e o Tailwind.
 */
 html.dark body {
@@ -22,7 +22,7 @@ html.dark #sidebar-container {
 
 /* Fundo da área principal */
 html.dark .main-content {
-  background-color: #1a1a1a !important;
+  background-color: #2e2929 !important;
 }
 
 /* Mantém os cards e painéis brancos */

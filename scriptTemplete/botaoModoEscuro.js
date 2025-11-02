@@ -64,3 +64,61 @@ document.addEventListener('DOMContentLoaded', () => {
   sincronizarCheckbox();
   ativarToggle();
 });
+
+// ===================================================
+// ---  FUNÇÃO DE TOAST  ---
+// ===================================================
+
+/**
+ * Exibe uma notificação (toast) na tela.
+ * @param {string} message - A mensagem a ser exibida.
+ * @param {string} type - O tipo de toast ('error' ou 'success').
+ */
+function showToast(message, type = 'error') {
+  const container = document.getElementById('toast-container');
+  if (!container) {
+    console.error('Container de toast não encontrado.');
+    return;
+  }
+
+  // 1. Define o estilo com base no tipo
+  const isError = type === 'error';
+  const title = isError ? 'Ocorreu um Erro!' : 'Sucesso!';
+  const bgColor = isError ? 'bg-red-500' : 'bg-green-500';
+  const iconClass = isError ? 'bi-x-circle-fill' : 'bi-check-circle-fill';
+
+  // 2. Cria o elemento HTML do toast
+  const toastElement = document.createElement('div');
+  toastElement.className = `toast-animate-in w-full max-w-sm overflow-hidden rounded-lg shadow-lg ${bgColor} text-white flex items-center`;
+
+  toastElement.innerHTML = `
+    <div class="p-4 text-2xl">
+      <i class="bi ${iconClass}"></i>
+    </div>
+
+    <div class="flex-1 p-4 py-3">
+      <strong class="font-semibold">${title}</strong>
+      <p class="text-sm">${message}</p>
+    </div>
+
+    <button class="p-4 text-xl hover:opacity-75" onclick="this.parentElement.remove()">
+      <i class="bi bi-x-lg"></i>
+    </button>
+  `;
+
+  // 3. Adiciona o toast ao container
+  container.appendChild(toastElement);
+
+  // 4. Define o tempo para o toast desaparecer (5 segundos)
+  const DURATION = 5000; // 5 segundos
+
+  setTimeout(() => {
+    toastElement.classList.remove('toast-animate-in');
+    toastElement.classList.add('toast-animate-out');
+
+    setTimeout(() => {
+      toastElement.remove();
+    }, 400); // 400ms = 0.4s (duração da animação toast-fadeOut)
+
+  }, DURATION);
+}
