@@ -1,100 +1,109 @@
-const modal = document.getElementById('modal');
-const btnNovo = document.getElementById('btnNovo');
-const btnFechar = document.getElementById('btnFechar');
-const btnConfirmar = document.getElementById('btnConfirmar');
-const tabela = document.getElementById('tabela');
-const tituloModal = document.getElementById('tituloModal');
+const tabela = document.getElementById("tabelaNutricionistas");
+const form = document.getElementById("formNutricionista");
+let editandoLinha = null;
 
-let editando = null;
+// ---------- Persistência ----------
+function salvarDados() {
+  const dados = Array.from(tabela.rows).map(row => ({
+    instituição: row.cells[0].innerText,
+    Número_de_pessoas: row.cells[1].innerText,
+    tipo: row.cells[2].innerText,
+    Priorizar: row.cells[3].innerText,
+    restrições: row.cells[4].innerText,
 
-// Abrir modal (novo cardápio)
-btnNovo.addEventListener('click', () => {
-  limparCampos();
-  editando = null;
-  tituloModal.textContent = "Criar cardápio";
-  modal.style.display = 'flex';
-});
 
-// Fechar modal
-btnFechar.addEventListener('click', () => {
-  modal.style.display = 'none';
-});
+    
+  }));
+  localStorage.setItem("nutricionistas", JSON.stringify(dados));
+}
 
-// Fechar clicando fora
-window.addEventListener('click', (e) => {
-  if (e.target === modal) modal.style.display = 'none';
-});
+function carregarDados() {
+  const dados = JSON.parse(localStorage.getItem("nutricionistas")) || [];
+  dados.forEach(d => adicionarLinha(d.instituição, d.Número_de_pessoas, d.tipo, d.Priorizar, d.restrições));
+}
 
-// Confirmar criação/edição
-btnConfirmar.addEventListener('click', () => {
-  const nome = document.getElementById('nome').value.trim();
-  const pessoas = document.getElementById('pessoas').value.trim();
-  const tipo = document.getElementById('tipo').value;
-  const priorizar = document.getElementById('Priorizar').value.trim();
-  const restricoes = document.getElementById('restricoes').value.trim();
+// ---------- Função para adicionar linha ----------
+function adicionarLinha(instituição, Número_de_pessoas, tipo, Priorizar, restrições) {
+  const linha = tabela.insertRow();
+  linha.innerHTML = `
+    <td>${instituição}</td>
+    <td>${Número_de_pessoas}</td>
+    <td>${tipo}</td>
+    <td>${Priorizar}</td>
+    <td>${restrições}</td>
+   
+    <td>
+      <button class="btn btn-success btn-sm me-1 editar" aria-label="Editar"><i class="bi bi-pencil"></i></button>
+      <button class="btn btn-danger btn-sm remover" aria-label="Remover"><i class="bi bi-x"></i></button>
+    </td>
+  `;
+}
 
-  if (!nome || !pessoas) {
-    alert('Preencha todos os campos obrigatórios!');
-    return;
-  }
+// ---------- Salvar (adicionar ou editar) ----------
+form.addEventListener("submit", e => {
+  e.preventDefault();
 
-  if (editando) {
-    // Editar linha existente
-    editando.cells[0].textContent = nome;
-    editando.cells[1].textContent = pessoas;
-    editando.cells[2].textContent = tipo;
-    editando.cells[3].textContent = priorizar;
-    editando.cells[4].textContent = restricoes;
+  const instituição = document.getElementById("instituição").value;
+  const Número_de_pessoas = document.getElementById("Número_de_pessoas").value;
+  const tipo = document.getElementById("tipo").value;
+  const Priorizar = document.getElementById("Priorizar").value;
+  const restrições = document.getElementById("restrições").value;
+
+  if (editandoLinha) {
+    editandoLinha.cells[0].innerText = instituição;
+    editandoLinha.cells[1].innerText = Número_de_pessoas;
+    editandoLinha.cells[2].innerText = tipo;
+    editandoLinha.cells[3].innerText = Priorizar;
+    editandoLinha.cells[4].innerText = restrições;
+    editandoLinha = null;
   } else {
-    // Criar nova linha
-    const novaLinha = document.createElement('tr');
-    novaLinha.innerHTML = `
-      <td>${nome}</td>
-      <td>${pessoas}</td>
-      <td>${tipo}</td>
-      <td>${priorizar}</td>
-      <td>${restricoes}</td>
-      <td>
-        <button class="btn-editar">Editar</button>
-        <button class="btn-deletar">Deletar</button>
-      </td>
-    `;
-    tabela.appendChild(novaLinha);
+    adicionarLinha(instituição, Número_de_pessoas, tipo, Priorizar, restrições);
   }
 
-  modal.style.display = 'none';
-  limparCampos();
-  adicionarEventos();
+  salvarDados();
+  form.reset();
+  bootstrap.Modal.getInstance(document.getElementById("modalForm")).hide();
 });
 
-// Adiciona eventos a botões dinâmicos
-function adicionarEventos() {
-  document.querySelectorAll('.btn-editar').forEach(btn => {
-    btn.onclick = () => {
-      editando = btn.closest('tr');
-      tituloModal.textContent = "Editar cardápio";
-      document.getElementById('nome').value = editando.cells[0].textContent;
-      document.getElementById('pessoas').value = editando.cells[1].textContent;
-      document.getElementById('tipo').value = editando.cells[2].textContent;
-      document.getElementById('Priorizar').value = editando.cells[3].textContent;
-      document.getElementById('restricoes').value = editando.cells[4].textContent;
-      modal.style.display = 'flex';
-    };
-  });
+// ---------- Editar / Remover ----------
+tabela.addEventListener("click", e => {
+  const btn = e.target.closest("button");
+  if (!btn) return;
+  const linha = btn.closest("tr");
 
-  document.querySelectorAll('.btn-deletar').forEach(btn => {
-    btn.onclick = () => {
-      if (confirm('Deseja realmente excluir este cardápio?')) {
-        btn.closest('tr').remove();
-      }
-    };
-  });
-}
+  if (btn.classList.contains("remover")) {
+    if (confirm("Deseja realmente remover esta cardápio?")) {
+      linha.remove();
+      salvarDados();
+    }
+  }
 
-function limparCampos() {
-  document.getElementById('nome').value = '';
-  document.getElementById('pessoas').value = '';
-  document.getElementById('tipo').value = 'Diario';
-  document.getElementById('Priorizar').value = '';
-  document.getElementById('restricoes').value = '';
-}
+  if (btn.classList.contains("editar")) {
+    editandoLinha = linha;
+    document.getElementById("instituição").value = linha.cells[0].innerText;
+    document.getElementById("Número_de_pessoas").value = linha.cells[1].innerText;
+    document.getElementById("tipo").value = linha.cells[2].innerText;
+    document.getElementById("Priorizar").value = linha.cells[3].innerText;
+    document.getElementById("restrições").value = linha.cells[4].innerText;
+    document.getElementById("modalLabel").innerText = "Editar Nutricionista";
+    new bootstrap.Modal(document.getElementById("modalForm")).show();
+  }
+});
+
+// ---------- Reset modal ----------
+document.getElementById("modalForm").addEventListener("hidden.bs.modal", () => {
+  editandoLinha = null;
+  document.getElementById("modalLabel").innerText = "Adicionar cardápio";
+  form.reset();
+});
+
+// ---------- Busca ----------
+document.getElementById("buscar").addEventListener("keyup", () => {
+  const termo = document.getElementById("buscar").value.toLowerCase();
+  Array.from(tabela.rows).forEach(row => {
+    row.style.display = row.innerText.toLowerCase().includes(termo) ? "" : "none";
+  });
+});
+
+// ---------- Carregar dados ao iniciar ----------
+window.addEventListener("DOMContentLoaded", carregarDados);
