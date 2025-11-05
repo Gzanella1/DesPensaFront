@@ -1,13 +1,20 @@
-/* Tailwind Custom Theme */
+/* ===============================
+   ESTILO - DASHBOARD NUTRICIONISTA
+   =============================== */
+
+/* TAILWIND BASE */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
+
+/* --- CORES E VARIÁVEIS --- */
 :root {
   --green-dark: #2B9569;
+  --green-light: #E8F6EF;
+  --text-dark: #1F2937;
 }
- 
-/* SIDEBAR */
+
+/* --- SIDEBAR --- */
 .sidebar {
   background-color: var(--green-dark);
   position: fixed;
@@ -33,8 +40,8 @@
   pointer-events: auto;
   margin-left: 1rem;
 }
- 
-/* SUBMENU */
+
+/* --- SUBMENU --- */
 .home {
   position: relative;
 }
@@ -50,41 +57,49 @@
   opacity: 1;
   pointer-events: auto;
 }
- 
-/* MAIN CONTENT */
+
+/* --- LAYOUT PRINCIPAL --- */
 body {
   margin-left: 4rem;
   background-color: #f3f4f6;
   font-family: 'Inter', sans-serif;
   transition: margin-left 0.3s ease;
+  color: var(--text-dark);
 }
 .sidebar:hover ~ .main-content {
   margin-left: 16rem;
 }
-.dashboard-container {
+
+main {
+  max-width: 1200px;
+}
+
+/* --- TÍTULOS --- */
+h1, h2, h3 {
+  font-family: 'Poppins', sans-serif;
+}
+h1 {
+  color: var(--green-dark);
+}
+h2 {
+  color: var(--green-dark);
+}
+
+/* --- CARDS --- */
+.card {
   background: white;
   border-radius: 1rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  padding: 2rem;
-  margin-top: 2rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  border: 1px solid #e5e7eb;
+  padding: 1.5rem;
 }
- 
-/* BOTÕES */
-.btn {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  background: white;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  padding: 1rem 1.5rem;
-  border-radius: 0.5rem;
-  transition: background 0.3s;
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(43, 149, 105, 0.2);
 }
-.btn:hover {
-  background-color: #f3f4f6;
-}
- 
-/* BOTÃO DE ADICIONAR INSUMO */
+
+/* --- BOTÕES --- */
 .novo-insumo,
 button.bg-green-dark {
   background-color: var(--green-dark);
@@ -94,32 +109,33 @@ button.bg-green-dark {
   border: none;
   cursor: pointer;
   animation: pulseGlow 3s infinite;
+  transition: all 0.2s ease;
+  border-radius: 0.5rem;
+  padding: 0.6rem 1.5rem;
 }
- 
 .novo-insumo:hover,
 button.bg-green-dark:hover {
   background-color: #237b56;
   transform: scale(1.05);
-  transition: all 0.2s ease;
 }
- 
-/* EFEITO DE PULSO SUAVE NO BOTÃO */
+
+/* --- EFEITO DE PULSO NO BOTÃO --- */
 @keyframes pulseGlow {
   0%, 100% {
     box-shadow: 0 0 0 rgba(43, 149, 105, 0);
   }
   50% {
-    box-shadow: 0 0 12px rgba(43, 149, 105, 0.4);
+    box-shadow: 0 0 14px rgba(43, 149, 105, 0.5);
   }
 }
- 
-/* MODAL */
+
+/* --- MODAL --- */
 #formInsumo {
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
 }
- 
-/* ANIMAÇÃO DO MODAL */
+
+/* --- ANIMAÇÃO MODAL --- */
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.95); }
   to { opacity: 1; transform: scale(1); }
@@ -127,4 +143,74 @@ button.bg-green-dark:hover {
 .animate-fadeIn {
   animation: fadeIn 0.25s ease-in-out;
 }
- 
+
+/* --- TABELA DE ESTOQUE --- */
+#listaInsumos {
+  overflow-x: auto;
+  border-radius: 0.75rem;
+}
+
+#listaInsumos table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.9rem;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+#listaInsumos th {
+  background-color: var(--green-dark);
+  color: white;
+  font-weight: 600;
+}
+
+#listaInsumos td,
+#listaInsumos th {
+  padding: 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+#listaInsumos tr:hover {
+  background-color: var(--green-light);
+}
+
+/* Bordas arredondadas no cabeçalho */
+#listaInsumos thead tr:first-child th:first-child {
+  border-top-left-radius: 0.75rem;
+}
+#listaInsumos thead tr:first-child th:last-child {
+  border-top-right-radius: 0.75rem;
+}
+
+/* --- HISTÓRICO --- */
+#historico li {
+  background-color: var(--green-light);
+  border-left: 4px solid var(--green-dark);
+  padding: 0.6rem 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+#historico li:hover {
+  transform: scale(1.02);
+  background-color: #dff1e9;
+}
+
+/* --- AVISOS --- */
+.card .bg-yellow-100,
+.card .bg-red-100 {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card .bg-yellow-100:hover,
+.card .bg-red-100:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* --- RODAPÉ --- */
+footer {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin-top: 2rem;
+  text-align: center;
+}

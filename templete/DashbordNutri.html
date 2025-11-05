@@ -1,115 +1,142 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Estoque de Alimentos</title>
- 
+
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
- 
+
   <!-- Ícones Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
- 
+
   <!-- CSS personalizado -->
-  <link rel="stylesheet" href="../css/DashbordNutri.css">
+  <link rel="stylesheet" href="../css/DashbordNutri.css" />
 </head>
- 
-<body>
- 
+
+<body class="bg-gray-100">
+
   <!-- SIDEBAR -->
-  <div id="sidebar-container" class="sidebar">
-    <!-- Conteúdo carregado via JS -->
-  </div>
- 
+  <div id="sidebar-container" class="sidebar"></div>
+
   <!-- CONTEÚDO PRINCIPAL -->
   <div class="main-content transition-all">
     <main class="container mx-auto p-8">
-      <div class="dashboard-container">
- 
-        <!-- CABEÇALHO -->
-        <header class="flex justify-between items-center mb-8">
-          <h1 class="text-2xl font-bold text-green-dark">Estoque de Alimentos</h1>
-          <button onclick="abrirFormulario()"
-                  class="novo-insumo bg-green-dark text-white px-5 py-2.5 rounded-lg shadow-md hover:bg-green-700 transition-all">
-            + Novo insumo
-          </button>
-        </header>
- 
-        <!-- MODAL DE NOVO INSUMO -->
-        <div id="formInsumo"
-             class="hidden fixed inset-0 bg-gray-100 bg-opacity-60 flex items-center justify-center z-50">
-          <div class="bg-white w-full max-w-lg rounded-lg shadow-xl p-6 relative animate-fadeIn">
-            <h2 class="text-xl font-semibold text-gray-800 mb-6">Adicionar Insumos</h2>
- 
-            <div class="space-y-4">
-              <input type="text" placeholder="tipo" class="w-full border border-gray-300 rounded px-3 py-2" />
-              <input type="text" placeholder="insira o endereço da propriedade" class="w-full border border-gray-300 rounded px-3 py-2" />
-              <input type="text" placeholder="lista de instituição" class="w-full border border-gray-300 rounded px-3 py-2" />
-              <input type="text" placeholder="Quantidade / Validade" class="w-full border border-gray-300 rounded px-3 py-2" />
-              <input type="text" placeholder="CheckList com as restrição" class="w-full border border-gray-300 rounded px-3 py-2" />
-            </div>
- 
-            <div class="flex justify-between items-center mt-6">
-              <div>
-                <button onclick="limparFormulario()"
-                        class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded mr-2">
-                  Limpar
-                </button>
-                <button onclick="confirmarFormulario()"
-                        class="bg-green-dark hover:bg-green-700 text-white px-4 py-2 rounded">
-                  Confirmar
-                </button>
-              </div>
-            </div>
- 
-            <button onclick="fecharFormulario()"
-                    class="absolute top-4 right-4 text-red-500 hover:text-red-700 text-2xl">
-              <i class="bi bi-x-circle"></i>
+      <h1 class="text-3xl font-bold text-green-dark mb-10 text-center">
+        Painel do Nutricionista
+      </h1>
+
+      <!-- GRID DE CARDS -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+        <!-- CARD 1 - ADICIONAR INSUMO -->
+        <section class="card bg-white p-6 rounded-2xl shadow-md flex flex-col justify-between">
+          <div>
+            <h2 class="text-xl font-semibold text-green-dark mb-4 flex items-center gap-2">
+              <i class="bi bi-plus-circle text-2xl"></i> Adicionar Novo Insumo
+            </h2>
+            <p class="text-gray-600 mb-6">
+              Cadastre novos insumos informando tipo, endereço, instituição, quantidade, validade e restrições.
+            </p>
+          </div>
+          <div class="text-center">
+            <button onclick="abrirFormulario()" 
+              class="novo-insumo bg-green-dark text-white px-5 py-2.5 rounded-lg shadow-md hover:bg-green-700 transition-all">
+              + Novo insumo
             </button>
           </div>
-        </div>
- 
-        <!-- BOTÕES DE AÇÃO -->
-        <section class="botoes flex flex-wrap gap-6 justify-center mb-10">
-          <button class="btn flex items-center gap-3 bg-white shadow-md px-6 py-3 rounded-lg hover:bg-gray-100">
-            <i class="bi bi-clock-history text-green-dark text-2xl"></i>
-            <div class="text-left">
-              <strong>Histórico de</strong><br>movimentação
-            </div>
-          </button>
- 
-          <button class="btn flex items-center gap-3 bg-white shadow-md px-6 py-3 rounded-lg hover:bg-gray-100">
-            <i class="bi bi-box-seam text-green-dark text-2xl"></i>
-            <div class="text-left">
-              <strong>Visualizar</strong><br>Estoque
-            </div>
-          </button>
         </section>
- 
-        <!-- CARDS DE AVISO -->
-        <section class="cards grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="card bg-yellow-100 p-4 rounded-lg shadow">
-            <h3 class="font-bold text-yellow-700 mb-3 text-lg">Próximo ao vencimento</h3>
-            <div class="item flex justify-between"><span>Tomate</span><span>10/11/2025</span></div>
-            <div class="item flex justify-between"><span>Feijão</span><span>18/11/2025</span></div>
-          </div>
- 
-          <div class="card bg-red-100 p-4 rounded-lg shadow">
-            <h3 class="font-bold text-red-700 mb-3 text-lg">Baixa quantidade</h3>
-            <div class="item flex justify-between"><span>Arroz</span><span>5 unid.</span></div>
-            <div class="item flex justify-between"><span>Macarrão</span><span>3 unid.</span></div>
+
+        <!-- CARD 2 - VISUALIZAR ESTOQUE -->
+        <section class="card bg-white p-6 rounded-2xl shadow-md">
+          <h2 class="text-xl font-semibold text-green-dark mb-4 flex items-center gap-2">
+            <i class="bi bi-box-seam text-2xl"></i> Visualizar Estoque
+          </h2>
+          <div id="listaInsumos" class="text-sm text-gray-700">
+            <p class="text-gray-500">Nenhum insumo cadastrado ainda.</p>
           </div>
         </section>
- 
-       
-        </footer>
+
+        <!-- CARD 3 - HISTÓRICO DE MOVIMENTAÇÃO -->
+        <section class="card bg-white p-6 rounded-2xl shadow-md">
+          <h2 class="text-xl font-semibold text-green-dark mb-4 flex items-center gap-2">
+            <i class="bi bi-clock-history text-2xl"></i> Histórico de Movimentação
+          </h2>
+          <ul id="historico" class="text-gray-600 space-y-2">
+            <li class="text-gray-500 italic">Nenhuma movimentação registrada ainda.</li>
+          </ul>
+        </section>
+
+        <!-- CARD 4 - AVISOS -->
+        <section class="card bg-white p-6 rounded-2xl shadow-md">
+          <h2 class="text-xl font-semibold text-green-dark mb-4 flex items-center gap-2">
+            <i class="bi bi-exclamation-triangle text-2xl"></i> Avisos Importantes
+          </h2>
+
+          <div class="grid grid-cols-1 gap-4">
+            <!-- Próximo ao vencimento -->
+            <div class="bg-yellow-100 p-4 rounded-lg shadow-sm">
+              <h3 class="font-bold text-yellow-700 mb-2">Próximo ao vencimento</h3>
+              <ul id="avisoVencimento" class="text-sm text-gray-700">
+                <li class="text-gray-500 italic">Nenhum produto próximo do vencimento.</li>
+              </ul>
+            </div>
+
+            <!-- Baixa quantidade / Vencidos -->
+            <div class="bg-red-100 p-4 rounded-lg shadow-sm">
+              <h3 class="font-bold text-red-700 mb-2">Baixa quantidade / Vencidos</h3>
+              <ul id="avisoQuantidade" class="text-sm text-gray-700">
+                <li class="text-gray-500 italic">Nenhum produto com baixa quantidade.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
       </div>
-      <footer class="mt-10 text-center text-gray-500">
-          <p>&copy; 2025 - Sistema de Gestão de Estoque</p>
     </main>
   </div>
- 
+
+  <!-- MODAL DE ADICIONAR INSUMOS -->
+  <div id="formInsumo"
+       class="hidden fixed inset-0 bg-gray-200 bg-opacity-100 flex items-center justify-center z-50">
+    <div class="bg-white w-full max-w-lg rounded-lg shadow-xl p-6 relative animate-fadeIn">
+      <h2 class="text-xl font-semibold text-gray-800 mb-6">Adicionar Insumos</h2>
+
+      <div class="space-y-4">
+        <input type="text" id="tipo" placeholder="Tipo"
+               class="w-full border border-gray-300 rounded px-3 py-2" />
+        <input type="text" id="endereco" placeholder="Endereço da propriedade"
+               class="w-full border border-gray-300 rounded px-3 py-2" />
+        <input type="text" id="instituicao" placeholder="Instituição"
+               class="w-full border border-gray-300 rounded px-3 py-2" />
+        <input type="number" id="quantidade" placeholder="Quantidade (em unidades)"
+               class="w-full border border-gray-300 rounded px-3 py-2" />
+        <input type="date" id="validade" placeholder="Validade"
+               class="w-full border border-gray-300 rounded px-3 py-2" />
+        <input type="text" id="checklist" placeholder="Restrições"
+               class="w-full border border-gray-300 rounded px-3 py-2" />
+      </div>
+
+      <div class="flex justify-between items-center mt-6">
+        <div>
+          <button onclick="limparFormulario()"
+                  class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded mr-2">
+            Limpar
+          </button>
+          <button onclick="confirmarFormulario();"
+                  class="bg-green-dark hover:bg-green-700 text-white px-4 py-2 rounded">
+            Confirmar
+          </button>
+        </div>
+      </div>
+
+      <button onclick="fecharFormulario()"
+              class="absolute top-4 right-4 text-red-500 hover:text-red-700 text-2xl">
+        <i class="bi bi-x-circle"></i>
+      </button>
+    </div>
+  </div>
+
   <!-- JS -->
   <script src="../scriptTemplete/DashbordNutri.js"></script>
   <script src="../scriptTemplete/carregarSidebar.js"></script>
