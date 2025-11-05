@@ -1,44 +1,40 @@
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("DOM carregado e script ativo.");
-  const form = document.getElementById('loginForm');
+  console.log("✅ validalogin.js foi carregado!");
+  
+  const form = document.getElementById("loginForm");
   if (!form) {
-    console.error("Formulário não encontrado!");
+    console.error("❌ Formulário não encontrado!");
     return;
   }
-  form.addEventListener('submit', function (e) {
+
+  console.log("✅ DOM carregado e listener ativo.");
+
+  form.addEventListener("submit", function (e) {
     e.preventDefault();
-    console.log("Formulário enviado");
+    console.log("📩 Formulário enviado");
 
-    const email = document.getElementById('email').value.trim();
-    const senha = document.getElementById('senha').value.trim();
-    const lembrar = document.getElementById('lembrar').checked;
-    const erroMsg = document.getElementById('erroMsg');
-    const btn = document.getElementById('btnConfirmar');
-
-    erroMsg.classList.add('hidden');
-    erroMsg.textContent = '';
+    const email = document.getElementById("email").value.trim();
+    const senha = document.getElementById("senha").value.trim();
+    const lembrar = document.getElementById("lembrar").checked;
+    const btn = document.getElementById("btnConfirmar");
 
     if (!email || !senha) {
-      console.warn("Campos obrigatórios faltando");
-      erroMsg.textContent = "Todos os campos são obrigatórios.";
-      erroMsg.classList.remove('hidden');
+      showAlert("Todos os campos são obrigatórios.", "warning");
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      console.warn("Formato de email inválido");
-      erroMsg.textContent = "Formato de e-mail inválido.";
-      erroMsg.classList.remove('hidden');
+      showAlert("Formato de e-mail inválido.", "error");
       return;
     }
 
-    btn.innerHTML = 'Entrando...';
+    btn.innerHTML = "Entrando...";
     btn.disabled = true;
 
     setTimeout(() => {
-      const sucesso = (email === "teste@teste.com" && senha === "123456");
-      console.log("Checando credenciais, sucesso?", sucesso);
+      const sucesso = email === "teste@teste.com" && senha === "123456";
+      console.log("🔍 Credenciais válidas?", sucesso);
 
       if (sucesso) {
         if (lembrar) {
@@ -46,15 +42,18 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
           sessionStorage.setItem("auth", JSON.stringify({ email }));
         }
-        console.log("Redirecionando para index.html");
-        window.location.href = "index.html";
+
+        showAlert("Login realizado com sucesso!", "success");
+        console.log("🚀 Redirecionando...");
+
+        setTimeout(() => {
+          window.location.href = "../index.html";
+        }, 1500);
       } else {
-        console.warn("Credenciais inválidas");
-        erroMsg.textContent = "Usuário ou senha incorretos.";
-        erroMsg.classList.remove('hidden');
+        showAlert("Usuário ou senha incorretos.", "error");
         btn.innerHTML = "Confirmar";
         btn.disabled = false;
       }
-    }, 1500);
+    }, 1200);
   });
 });
