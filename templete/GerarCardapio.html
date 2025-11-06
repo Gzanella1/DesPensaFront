@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Gerar GerarCardapio</title>
+  <link rel="stylesheet" href="/css/loader.css">
+  <script src="/scriptTemplete/injetarloader.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="stylesheet" href="../css/GerarCardápio.css">
+</head>
+
+  <div id="sidebar-container"></div>
+<body>
+  <div class="content">
+    <h3 class="mb-4 text-success fw-bold">Gerar GerarCardapio</h3>
+
+    <div class="card p-4">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="input-group w-50">
+          <input type="text" id="buscar" class="form-control" placeholder="Buscar nutricionista..." aria-label="Buscar">
+          <span class="input-group-text"><i class="bi bi-search"></i></span>
+        </div>
+        <button class="btn btn-success px-4 fw-semibold" data-bs-toggle="modal" data-bs-target="#modalForm">
+          + Adicionar cardápio
+        </button>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table align-middle text-center">
+          <thead>
+            <tr>
+              <th>Instituição</th>
+              <th>Número de Pessoas</th>
+              <th>Tipo</th>
+              <th>Quantidade / Validade</th>
+              <th>Restrições</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tabelaNutricionistas"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="modalForm" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg rounded-3">
+        <div class="p-4 relative bg-white rounded-lg">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 id="tituloModal" class="modal-title text-success fw-bold">Adicionar Cardapio</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+          </div>
+
+          <form id="formNutricionista">
+            <div class="mb-3">
+              <input type="text" id="instituicao" class="form-control" placeholder="Instituição" required>
+            </div>
+            <div class="mb-3">
+              <input type="number" id="numero_pessoas" class="form-control" placeholder="Número de Pessoas" min="1" required>
+            </div>
+            <div class="mb-3">
+              <select id="tipo" class="form-control" required>
+                <option value="Diário">Diário</option>
+                <option value="Semanal">Semanal</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <input type="text" id="Quantidade" class="form-control" placeholder="Quantidade " required>
+            </div>
+            <div class="mb-3">
+              <input type="text" id="Validade" class="form-control" placeholder="Validade" required>
+            </div>
+            <div class="mb-4">
+              <input type="text" id="restricoes" class="form-control" placeholder="Restrições alimentares" required>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+              <button type="reset" class="btn btn-secondary px-4">Limpar</button>
+              <button type="submit" class="btn btn-success px-4">Confirmar</button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Script personalizado -->
+  <script src="/scriptTemplete/loader.js"></script>
+  <script src="../scriptTemplete/GerarCardapio.js"></script>
+  <script src="../scriptTemplete/carregarSidebar.js"></script>
+</body>
+</html>

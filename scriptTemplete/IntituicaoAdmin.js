@@ -1,79 +1,70 @@
-const tabela = document.getElementById("tabelaNutricionistas");
+const tabela = document.getElementById("tabelaInstituicoes");
 const form = document.getElementById("formNutricionista");
 let editandoLinha = null;
 
-// ---------- Persistência ----------
 function salvarDados() {
   const dados = Array.from(tabela.rows).map(row => ({
     Nome: row.cells[0].innerText,
-    Tipo_da_instituição: row.cells[1].innerText,
-    Endereço: row.cells[2].innerText,
-    
-   
+    Tipo: row.cells[1].innerText,
+    Endereco: row.cells[2].innerText
   }));
-  localStorage.setItem("intituição nutricionista", JSON.stringify(dados));
+  localStorage.setItem("instituicoes", JSON.stringify(dados));
 }
 
 function carregarDados() {
-  const dados = JSON.parse(localStorage.getItem("intituição nutricionista")) || [];
-  dados.forEach(d => adicionarLinha(d.Nome, d.Tipo_da_instituição, d.Endereço,));
+  const dados = JSON.parse(localStorage.getItem("instituicoes")) || [];
+  dados.forEach(d => adicionarLinha(d.Nome, d.Tipo, d.Endereco));
 }
 
-// ---------- Função para adicionar linha ----------
-function adicionarLinha(Nome, Tipo_da_instituição, Endereço,) {
+function adicionarLinha(Nome, Tipo, Endereco) {
   const linha = tabela.insertRow();
   linha.innerHTML = `
     <td>${Nome}</td>
-    <td>${Tipo_da_instituição}</td>
-    <td>${Endereço}</td>
-    
-    
+    <td>${Tipo}</td>
+    <td>${Endereco}</td>
     <td>
-      <button class="btn btn-success btn-sm me-1 editar" aria-label="Editar"><i class="bi bi-pencil"></i></button>
-      <button class="btn btn-danger btn-sm remover" aria-label="Remover"><i class="bi bi-x"></i></button>
+      <button class="btn btn-success btn-sm editar"><i class="bi bi-pencil"></i></button>
+      <button class="btn btn-danger btn-sm remover"><i class="bi bi-x"></i></button>
     </td>
   `;
+  salvarDados();
 }
 
-// ---------- Salvar (adicionar ou editar) ----------
 form.addEventListener("submit", e => {
   e.preventDefault();
 
-  const Nome = document.getElementById("Nome").value;
-  const Tipo_da_instituição = document.getElementById("Tipo_da_instituição").value;
-  const Endereço = document.getElementById("Endereço").value;
-  
-  
+  const Nome = document.getElementById("Nome").value.trim();
+  const Tipo = document.getElementById("Tipo_da_instituição").value.trim();
+  const Endereco = document.getElementById("Endereço").value.trim();
+
+  if (!Nome || !Tipo || !Endereco) {
+    alert("Preencha todos os campos!");
+    return;
+  }
 
   if (editandoLinha) {
     editandoLinha.cells[0].innerText = Nome;
-    editandoLinha.cells[1].innerText = Tipo_da_instituição;
-    editandoLinha.cells[2].innerText = Endereço;
-    
- 
+    editandoLinha.cells[1].innerText = Tipo;
+    editandoLinha.cells[2].innerText = Endereco;
     editandoLinha = null;
   } else {
-    adicionarLinha(Nome, Tipo_da_instituição, Endereço, );
+    adicionarLinha(Nome, Tipo, Endereco);
   }
 
   salvarDados();
   form.reset();
   bootstrap.Modal.getInstance(document.getElementById("modalForm")).hide();
+  document.getElementById("tituloModal").innerText = "Adicionar Instituição";
 });
 
-// ---------- Editar / Remover ----------
 tabela.addEventListener("click", e => {
   const btn = e.target.closest("button");
   if (!btn) return;
   const linha = btn.closest("tr");
 
   if (btn.classList.contains("remover")) {
-    if (confirm("Deseja realmente remover este intituição?")) 
-      {
-      linha.remove();
-      salvarDados();
-      
-    }
+    linha.remove();
+    salvarDados();
   }
 
   if (btn.classList.contains("editar")) {
@@ -81,20 +72,11 @@ tabela.addEventListener("click", e => {
     document.getElementById("Nome").value = linha.cells[0].innerText;
     document.getElementById("Tipo_da_instituição").value = linha.cells[1].innerText;
     document.getElementById("Endereço").value = linha.cells[2].innerText;
-    
-    document.getElementById("modalLabel").innerText = "Editar intituição";
+    document.getElementById("tituloModal").innerText = "Editar Instituição";
     new bootstrap.Modal(document.getElementById("modalForm")).show();
   }
 });
 
-// ---------- Reset modal ----------
-document.getElementById("modalForm").addEventListener("hidden.bs.modal", () => {
-  editandoLinha = null;
-  document.getElementById("modalLabel").innerText = "Adicionar intituição ";
-  form.reset();
-});
-
-// ---------- Busca ----------
 document.getElementById("buscar").addEventListener("keyup", () => {
   const termo = document.getElementById("buscar").value.toLowerCase();
   Array.from(tabela.rows).forEach(row => {
@@ -102,5 +84,4 @@ document.getElementById("buscar").addEventListener("keyup", () => {
   });
 });
 
-// ---------- Carregar dados ao iniciar ----------
 window.addEventListener("DOMContentLoaded", carregarDados);

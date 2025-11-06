@@ -5,16 +5,15 @@ let insumos = []; // Armazena os insumos adicionados
 function abrirFormulario() {
   document.getElementById("formInsumo").classList.remove("hidden");
 }
-
+ 
 function fecharFormulario() {
   document.getElementById("formInsumo").classList.add("hidden");
 }
-
+ 
 function limparFormulario() {
-  const inputs = document.querySelectorAll("#formInsumo input");
-  inputs.forEach(input => input.value = "");
+  document.querySelectorAll("#formInsumo input").forEach(i => i.value = "");
 }
-
+ 
 function confirmarFormulario() {
   const inputs = document.querySelectorAll("#formInsumo input");
   const dados = {};
@@ -56,39 +55,42 @@ function visualizarEstoque() {
   container.appendChild(titulo);
 
   if (insumos.length === 0) {
-    container.innerHTML += `<p class="text-gray-500">Nenhum insumo cadastrado ainda.</p>`;
+    container.innerHTML = `<p class="text-gray-500">Nenhum insumo cadastrado ainda.</p>`;
     return;
   }
 
   // Cria tabela
   const tabela = document.createElement("table");
   tabela.className = "min-w-full border border-gray-300 rounded-lg overflow-hidden text-sm";
-
+ 
   const cabecalho = `
     <thead class="bg-green-dark text-white">
       <tr>
         <th class="px-4 py-2 text-left">Tipo</th>
         <th class="px-4 py-2 text-left">Endereço</th>
         <th class="px-4 py-2 text-left">Instituição</th>
-        <th class="px-4 py-2 text-left">Quantidade / Validade</th>
+        <th class="px-4 py-2 text-left">Quantidade</th>
+        <th class="px-4 py-2 text-left">Validade</th>
         <th class="px-4 py-2 text-left">Restrições</th>
       </tr>
     </thead>
   `;
+
   let corpo = "<tbody class='divide-y divide-gray-200'>";
   insumos.forEach(item => {
     corpo += `
       <tr class="hover:bg-gray-50">
-        <td class="px-4 py-2">${item["tipo"] || "-"}</td>
-        <td class="px-4 py-2">${item["insira o endereço da propriedade"] || "-"}</td>
-        <td class="px-4 py-2">${item["lista de instituição"] || "-"}</td>
-        <td class="px-4 py-2">${item["Quantidade / Validade"] || "-"}</td>
-        <td class="px-4 py-2">${item["CheckList com as restrição"] || "-"}</td>
+        <td class="px-4 py-2">${item.tipo}</td>
+        <td class="px-4 py-2">${item.endereco}</td>
+        <td class="px-4 py-2">${item.instituicao}</td>
+        <td class="px-4 py-2">${item.quantidade}</td>
+        <td class="px-4 py-2">${item.validade}</td>
+        <td class="px-4 py-2">${item.checklist}</td>
       </tr>
     `;
   });
   corpo += "</tbody>";
-
+ 
   tabela.innerHTML = cabecalho + corpo;
   container.appendChild(tabela);
 }
