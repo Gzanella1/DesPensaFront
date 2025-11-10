@@ -1,68 +1,81 @@
 // --- VARIÁVEIS GLOBAIS ---
-let insumos = []; // Armazena os insumos adicionados
+let insumos = [];
 
 // --- FUNÇÕES DO FORMULÁRIO ---
 function abrirFormulario() {
   document.getElementById("formInsumo").classList.remove("hidden");
 }
- 
+
 function fecharFormulario() {
   document.getElementById("formInsumo").classList.add("hidden");
 }
- 
+
 function limparFormulario() {
   document.querySelectorAll("#formInsumo input").forEach(i => i.value = "");
 }
- 
+
 function confirmarFormulario() {
-  const inputs = document.querySelectorAll("#formInsumo input");
-  const dados = {};
+  const tipo = document.getElementById("tipo").value.trim();
+  const endereco = document.getElementById("endereco").value.trim();
+  const instituicao = document.getElementById("instituicao").value.trim();
+  const quantidadeRaw = document.getElementById("quantidade").value.trim();
+  const validadeRaw = document.getElementById("validade").value.trim();
+  const checklist = document.getElementById("checklist").value.trim();
 
-  inputs.forEach(input => {
-    dados[input.placeholder] = input.value.trim();
-  });
-
-  if (Object.values(dados).some(v => v === "")) {
-    alert("⚠️ Preencha todos os campos antes de confirmar!");
+  if (!tipo || !endereco || !instituicao || !quantidadeRaw || !validadeRaw) {
+    alert("⚠️ Preencha todos os campos obrigatórios (Tipo, Endereço, Instituição, Quantidade, Validade)!");
     return;
   }
 
-  insumos.push(dados); // Adiciona insumo ao array
+  const quantidade = parseInt(quantidadeRaw, 10);
+  if (isNaN(quantidade) || quantidade < 0) {
+    alert("Quantidade inválida.");
+    return;
+  }
+
+  // Normaliza validade para dd/mm/yyyy se vier como yyyy-mm-dd (input type=date)
+  let validade = validadeRaw;
+  if (/\d{4}-\d{2}-\d{2}/.test(validadeRaw)) {
+    const parts = validadeRaw.split("-");
+    validade = `${parts[2].padStart(2,"0")}/${parts[1].padStart(2,"0")}/${parts[0]}`;
+  }
+
+  const novoInsumo = { tipo, endereco, instituicao, quantidade, validade, checklist };
+  insumos.push(novoInsumo);
+
+  adicionarHistorico(`Entrada de ${tipo} — ${new Date().toLocaleDateString("pt-BR")}`);
+  atualizarAvisos();
+  visualizarEstoque();
+
   alert("✅ Insumo adicionado com sucesso!");
   limparFormulario();
   fecharFormulario();
 }
 
-// --- FUNÇÃO PARA EXIBIR INSUMOS ---
+// --- HISTÓRICO ---
+function adicionarHistorico(texto) {
+  const lista = document.getElementById("historico");
+  const vazio = lista.querySelector(".text-gray-500");
+  if (vazio) vazio.remove();
+
+  const item = document.createElement("li");
+  item.textContent = texto;
+  lista.prepend(item);
+}
+
+// --- ESTOQUE ---
 function visualizarEstoque() {
-  const containerId = "listaInsumos";
-  let container = document.getElementById(containerId);
-
-  // Cria a seção se ainda não existir
-  if (!container) {
-    container = document.createElement("section");
-    container.id = containerId;
-    container.className = "mt-8 bg-white border rounded-lg shadow-md p-6";
-    document.querySelector(".dashboard-container").appendChild(container);
-  }
-
-  // Limpa conteúdo antigo
+  const container = document.getElementById("listaInsumos");
   container.innerHTML = "";
-
-  const titulo = document.createElement("h2");
-  titulo.textContent = "📦 Estoque Atual";
-  titulo.className = "text-xl font-semibold text-green-dark mb-4";
-  container.appendChild(titulo);
 
   if (insumos.length === 0) {
     container.innerHTML = `<p class="text-gray-500">Nenhum insumo cadastrado ainda.</p>`;
     return;
   }
 
-  // Cria tabela
   const tabela = document.createElement("table");
   tabela.className = "min-w-full border border-gray-300 rounded-lg overflow-hidden text-sm";
- 
+
   const cabecalho = `
     <thead class="bg-green-dark text-white">
       <tr>
@@ -90,17 +103,56 @@ function visualizarEstoque() {
     `;
   });
   corpo += "</tbody>";
- 
+
   tabela.innerHTML = cabecalho + corpo;
   container.appendChild(tabela);
 }
 
-// --- BOTÃO VISUALIZAR ---
-document.querySelector(".btn:nth-child(2)").addEventListener("click", visualizarEstoque);
+// --- AVISOS AUTOMÁTICOS ---
+function atualizarAvisos() {
+  const avisoVenc = document.getElementById("avisoVencimento");
+  const avisoQtd = document.getElementById("avisoQuantidade");
 
-// --- LOGOUT ---
-document.getElementById("logout").addEventListener("click", function () {
-  if (confirm("Deseja realmente sair?")) {
-    window.location.href = "login.html"; // redirecionamento simples
-  }
-});
+  if (!avisoVenc || !avisoQtd) return;
+
+  avisoVenc.innerHTML = "";
+  avisoQtd.innerHTML = "";
+
+  const hoje = new Date();
+  let proximos = 0, vencidos = 0, baixos = 0;
+
+  insumos.forEach(i => {
+    // parse validade no formato dd/mm/yyyy
+    const val = i.validade;
+    let dataValidade = null;
+
+    if (/\d{2}\/\d{2}\/\d{4}/.test(val)) {
+      const parts = val.split("/");
+      dataValidade = new Date(Number(parts[2]), Number(parts[1]) - 1, Number(parts[0]));
+    }
+
+    // se não conseguiu parse, ignora vencimento desta linha
+    if (dataValidade) {
+      const diffDias = Math.ceil((dataValidade - hoje) / (1000 * 60 * 60 * 24));
+
+      if (diffDias < 0) {
+        avisoQtd.insertAdjacentHTML('beforeend', `<li class="text-red-600 font-semibold">${i.tipo} vencido (${i.validade})</li>`);
+        vencidos++;
+      } else if (diffDias <= 7) { // ajuste: 7 dias pra aviso próximo (você pode trocar)
+        avisoVenc.insertAdjacentHTML('beforeend', `<li>${i.tipo} — ${i.validade} (${diffDias} dias)</li>`);
+        proximos++;
+      }
+    }
+
+    if (Number(i.quantidade) <= 5) {
+      avisoQtd.insertAdjacentHTML('beforeend', `<li>${i.tipo} - baixa quantidade (${i.quantidade} unid.)</li>`);
+      baixos++;
+    }
+  });
+
+  if (proximos === 0) avisoVenc.innerHTML = `<li class="text-gray-500 italic">Nenhum produto próximo do vencimento.</li>`;
+  if (vencidos === 0 && baixos === 0) avisoQtd.innerHTML = `<li class="text-gray-500 italic">Nenhum produto com baixa quantidade.</li>`;
+}
+
+// opção: expõe função global para console se quiser testar
+window._insumos = insumos;

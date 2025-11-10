@@ -25,7 +25,7 @@ function adicionarLinha(instituicao, numero_pessoas, tipo, Quantidade, Validade,
     <td>${instituicao}</td>
     <td>${numero_pessoas}</td>
     <td>${tipo}</td>
-    <td>${Quantidade} | ${Validade}</td>
+    <td>${Quantidade} unid - ${Validade}</td>
     <td>${restricoes}</td>
     <td>
       <button class="btn btn-success btn-sm editar"><i class="bi bi-pencil"></i></button>
