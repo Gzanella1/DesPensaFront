@@ -1,116 +1,141 @@
-const tabela = document.getElementById("tabelaNutricionistas");
+/**
+ * Script for managing a nutritional stock table.
+ * Handles adding, editing, removing, searching, and persisting data via localStorage.
+ */
+
+// DOM Elements
+const table = document.getElementById("tabelaNutricionistas");
 const form = document.getElementById("formNutricionista");
-let editandoLinha = null;
+let editingRow = null; // Tracks the row being edited
 
-// ---------- Persistência ----------
-function salvarDados() {
-    const dados = Array.from(tabela.rows).map(row => ({
+// ---------- Persistence Functions ----------
+/**
+ * Saves table data to localStorage.
+ */
+function saveData() {
+    const data = Array.from(table.rows).map(row => ({
         codigo: row.cells[0].innerText,
-        Nome_Do_Alimento: row.cells[1].innerText,
-        Validade: row.cells[2].innerText,
-        Quantidade: row.cells[3].innerText,
-        Tipo: row.cells[4].innerText,
-
-
-
+        nomeDoAlimento: row.cells[1].innerText,
+        validade: row.cells[2].innerText,
+        quantidade: row.cells[3].innerText,
+        tipo: row.cells[4].innerText,
     }));
-    localStorage.setItem("intituição nutricionista", JSON.stringify(dados));
+    localStorage.setItem("instituicaoNutricionista", JSON.stringify(data));
 }
 
-function carregarDados() {
-    const dados = JSON.parse(localStorage.getItem("intituição nutricionista")) || [];
-    dados.forEach(d => adicionarLinha(d.codigo, d.Nome_Do_Alimento, d.Validade, d.Quantidade, d.Tipo,));
+/**
+ * Loads data from localStorage and populates the table.
+ */
+function loadData() {
+    const data = JSON.parse(localStorage.getItem("instituicaoNutricionista")) || [];
+    data.forEach(item => addRow(item.codigo, item.nomeDoAlimento, item.validade, item.quantidade, item.tipo));
 }
 
-// ---------- Função para adicionar linha ----------
-function adicionarLinha(codigo, Nome_Do_Alimento, Validade, Quantidade, Tipo,) {
-    const linha = tabela.insertRow();
-    linha.innerHTML = `
-    <td>${codigo}</td>
-    <td>${Nome_Do_Alimento}</td>
-    <td>${Validade}</td>
-    <td>${Quantidade}</td>
-    <td>${Tipo}</td>
-    
-    
-    <td>
-      <button class="btn btn-success btn-sm me-1 editar" aria-label="Editar"><i class="bi bi-pencil"></i></button>
-      <button class="btn btn-danger btn-sm remover" aria-label="Remover"><i class="bi bi-x"></i></button>
-    </td>
-  `;
+// ---------- Table Row Management ----------
+/**
+ * Adds a new row to the table.
+ * @param {string} codigo - Item code.
+ * @param {string} nomeDoAlimento - Food name.
+ * @param {string} validade - Expiration date.
+ * @param {string} quantidade - Quantity.
+ * @param {string} tipo - Type.
+ */
+function addRow(codigo, nomeDoAlimento, validade, quantidade, tipo) {
+    const row = table.insertRow();
+    row.innerHTML = `
+        <td>${codigo}</td>
+        <td>${nomeDoAlimento}</td>
+        <td>${validade}</td>
+        <td>${quantidade}</td>
+        <td>${tipo}</td>
+        <td>
+            <button class="btn btn-success btn-sm me-1 edit" aria-label="Editar">
+                <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn btn-danger btn-sm remove" aria-label="Remover">
+                <i class="bi bi-x"></i>
+            </button>
+        </td>
+    `;
 }
 
-// ---------- Salvar (adicionar ou editar) ----------
-form.addEventListener("submit", e => {
+// ---------- Form Submission (Add or Edit) ----------
+form.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    const codigo = document.getElementById("codigo").value;
-    const Nome_Do_Alimento = document.getElementById("Nome_Do_Alimento").value;
-    const Validade = document.getElementById("Validade").value;
-    const Quantidade = document.getElementById("Quantidade").value;
-    const Tipo = document.getElementById("Tipo").value;
+    // Get form values
+    const codigo = document.getElementById("codigo").value.trim();
+    const nomeDoAlimento = document.getElementById("Nome_Do_Alimento").value.trim();
+    const validade = document.getElementById("Validade").value.trim();
+    const quantidade = document.getElementById("Quantidade").value.trim();
+    const tipo = document.getElementById("Tipo").value.trim();
 
-
-
-    if (editandoLinha) {
-        editandoLinha.cells[0].innerText = codigo;
-        editandoLinha.cells[1].innerText = Nome_Do_Alimento;
-        editandoLinha.cells[2].innerText = Validade;
-        editandoLinha.cells[3].innerText = Quantidade;
-        editandoLinha.cells[4].innerText = Tipo;
-
-
-        editandoLinha = null;
-    } else {
-        adicionarLinha(codigo, Nome_Do_Alimento, Validade, Quantidade, Tipo);
+    // Basic validation
+    if (!codigo || !nomeDoAlimento || !validade || !quantidade || !tipo) {
+        alert("Por favor, preencha todos os campos.");
+        return;
     }
 
-    salvarDados();
+    if (editingRow) {
+        // Edit existing row
+        editingRow.cells[0].innerText = codigo;
+        editingRow.cells[1].innerText = nomeDoAlimento;
+        editingRow.cells[2].innerText = validade;
+        editingRow.cells[3].innerText = quantidade;
+        editingRow.cells[4].innerText = tipo;
+        editingRow = null;
+    } else {
+        // Add new row
+        addRow(codigo, nomeDoAlimento, validade, quantidade, tipo);
+    }
+
+    saveData();
     form.reset();
     bootstrap.Modal.getInstance(document.getElementById("modalForm")).hide();
 });
 
-// ---------- Editar / Remover ----------
-tabela.addEventListener("click", e => {
-    const btn = e.target.closest("button");
-    if (!btn) return;
-    const linha = btn.closest("tr");
+// ---------- Edit and Remove Handlers ----------
+table.addEventListener("click", (e) => {
+    const button = e.target.closest("button");
+    if (!button) return;
 
-    if (btn.classList.contains("remover")) {
-        if (confirm("Deseja realmente remover este intituição?")) {
-            linha.remove();
-            salvarDados();
+    const row = button.closest("tr");
 
+    if (button.classList.contains("remove")) {
+        if (confirm("Deseja realmente remover este item?")) {
+            row.remove();
+            saveData();
         }
     }
 
-    if (btn.classList.contains("editar")) {
-        editandoLinha = linha;
-        document.getElementById("codigo").value = linha.cells[0].innerText;
-        document.getElementById("Nome_Do_Alimento").value = linha.cells[1].innerText;
-        document.getElementById("Validade").value = linha.cells[2].innerText;
-        document.getElementById("Quantidade").value = linha.cells[3].innerText;
-        document.getElementById("Tipo").value = linha.cells[4].innerText;
+    if (button.classList.contains("edit")) {
+        editingRow = row;
+        document.getElementById("codigo").value = row.cells[0].innerText;
+        document.getElementById("Nome_Do_Alimento").value = row.cells[1].innerText;
+        document.getElementById("Validade").value = row.cells[2].innerText;
+        document.getElementById("Quantidade").value = row.cells[3].innerText;
+        document.getElementById("Tipo").value = row.cells[4].innerText;
 
-        document.getElementById("modalLabel").innerText = "Editar intituição";
+        document.getElementById("modalLabel").innerText = "Editar Item";
         new bootstrap.Modal(document.getElementById("modalForm")).show();
     }
 });
 
-// ---------- Reset modal ----------
+// ---------- Modal Reset ----------
 document.getElementById("modalForm").addEventListener("hidden.bs.modal", () => {
-    editandoLinha = null;
-    document.getElementById("modalLabel").innerText = "Adicionar intituição ";
+    editingRow = null;
+    document.getElementById("modalLabel").innerText = "Adicionar Item";
     form.reset();
 });
 
-// ---------- Busca ----------
+// ---------- Search Functionality ----------
 document.getElementById("buscar").addEventListener("keyup", () => {
-    const termo = document.getElementById("buscar").value.toLowerCase();
-    Array.from(tabela.rows).forEach(row => {
-        row.style.display = row.innerText.toLowerCase().includes(termo) ? "" : "none";
+    const searchTerm = document.getElementById("buscar").value.toLowerCase();
+    Array.from(table.rows).forEach(row => {
+        const isVisible = row.innerText.toLowerCase().includes(searchTerm);
+        row.style.display = isVisible ? "" : "none";
     });
 });
 
-// ---------- Carregar dados ao iniciar ----------
-window.addEventListener("DOMContentLoaded", carregarDados);
+// ---------- Initialize on Page Load ----------
+window.addEventListener("DOMContentLoaded", loadData);

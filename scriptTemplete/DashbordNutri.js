@@ -79,12 +79,11 @@ function visualizarEstoque() {
   const cabecalho = `
     <thead class="bg-green-dark text-white">
       <tr>
-        <th class="px-4 py-2 text-left">Tipo</th>
-        <th class="px-4 py-2 text-left">Endereço</th>
-        <th class="px-4 py-2 text-left">Instituição</th>
-        <th class="px-4 py-2 text-left">Quantidade</th>
-        <th class="px-4 py-2 text-left">Validade</th>
-        <th class="px-4 py-2 text-left">Restrições</th>
+        <th class="px-2 py-2 text-left">Tipo</th>
+        <th class="px-2 py-2 text-left">Endereço</th>
+        <th class="px-1 py-2 text-left">Instituição</th>
+        <th class="px-3py-1text-left">Quantidade - Validade</th>
+        <th class="px-1 py-2 text-left">Restrições</th>
       </tr>
     </thead>
   `;
@@ -95,10 +94,9 @@ function visualizarEstoque() {
       <tr class="hover:bg-gray-50">
         <td class="px-4 py-2">${item.tipo}</td>
         <td class="px-4 py-2">${item.endereco}</td>
-        <td class="px-4 py-2">${item.instituicao}</td>
-        <td class="px-4 py-2">${item.quantidade}</td>
-        <td class="px-4 py-2">${item.validade}</td>
-        <td class="px-4 py-2">${item.checklist}</td>
+        <td class="px-5 py-2">${item.instituicao}</td>
+        <td class="px-2 py-2">${item.quantidade} - ${item.validade}</td>
+        <td class="px-3 py-2">${item.checklist}</td>
       </tr>
     `;
   });

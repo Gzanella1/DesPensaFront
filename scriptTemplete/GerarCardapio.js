@@ -41,7 +41,7 @@ form.addEventListener("submit", e => {
   const instituicao = document.getElementById("instituicao").value.trim();
   const numero_pessoas = document.getElementById("numero_pessoas").value.trim();
   const tipo = document.getElementById("tipo").value.trim();
-  const Quantidade  = document.getElementById("Quantidade").value.trim();
+  const Quantidade = document.getElementById("Quantidade").value.trim();
   const Validade = document.getElementById("Validade").value.trim();
   const restricoes = document.getElementById("restricoes").value.trim();
 
@@ -59,7 +59,7 @@ form.addEventListener("submit", e => {
     editandoLinha.cells[5].innerText = restricoes;
     editandoLinha = null;
   } else {
-    adicionarLinha(instituicao, numero_pessoas, tipo, Quantidade,Validade,  restricoes);
+    adicionarLinha(instituicao, numero_pessoas, tipo, Quantidade, Validade, restricoes);
   }
 
   salvarDados();
@@ -97,5 +97,55 @@ document.getElementById("buscar").addEventListener("keyup", () => {
     row.style.display = row.innerText.toLowerCase().includes(termo) ? "" : "none";
   });
 });
+
+// --- AVISOS AUTOMÁTICOS ---
+function atualizarAvisos() {
+  const avisoVenc = document.getElementById("avisoVencimento");
+  const avisoQtd = document.getElementById("avisoQuantidade");
+
+  if (!avisoVenc || !avisoQtd) return;
+
+  avisoVenc.innerHTML = "";
+  avisoQtd.innerHTML = "";
+
+  const hoje = new Date();
+  let proximos = 0, vencidos = 0, baixos = 0;
+
+  Array.from(tabela.rows).forEach(row => {
+    const tipo = row.cells[0].innerText;
+    const validade = row.cells[3].innerText;
+    const quantidade = row.cells[1].innerText;
+
+    // parse validade no formato dd/mm/yyyy ou similar
+    const val = validade.split(" ")[0]; // pega apenas a primeira parte se houver múltiplas
+    let dataValidade = null;
+
+    if (/\d{2}\/\d{2}\/\d{4}/.test(val)) {
+      const parts = val.split("/");
+      dataValidade = new Date(Number(parts[2]), Number(parts[1]) - 1, Number(parts[0]));
+    }
+
+    // se não conseguiu parse, ignora vencimento desta linha
+    if (dataValidade) {
+      const diffDias = Math.ceil((dataValidade - hoje) / (1000 * 60 * 60 * 24));
+
+      if (diffDias < 0) {
+        avisoQtd.insertAdjacentHTML('beforeend', `<li class="text-red-600 font-semibold">${tipo} Validade (${val})</li>`);
+        vencidos++;
+      } else if (diffDias <= 7) {
+        avisoVenc.insertAdjacentHTML('beforeend', `<li>${tipo} — ${val} (${diffDias} dias)</li>`);
+        proximos++;
+      }
+    }
+
+    if (Number(quantidade) <= 5) {
+      avisoQtd.insertAdjacentHTML('beforeend', `<li>${tipo} - baixa quantidade (${Quantidade} unid.)</li>`);
+      baixos++;
+    }
+  });
+
+  if (proximos === 0) avisoVenc.innerHTML = `<li class="text-gray-500 italic">Nenhum produto próximo do vencimento.</li>`;
+  if (vencidos === 0 && baixos === 0) avisoQtd.innerHTML = `<li class="text-gray-500 italic">Nenhum produto com baixa quantidade.</li>`;
+}
 
 window.addEventListener("DOMContentLoaded", carregarDados);
