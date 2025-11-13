@@ -47,7 +47,9 @@ function confirmarFormulario() {
   atualizarAvisos();
   visualizarEstoque();
 
- 
+  // --- AVISO DE SUCESSO ---
+  mostrarAvisoSucesso("✅ Insumo adicionado com sucesso!");
+
   limparFormulario();
   fecharFormulario();
 }
@@ -131,14 +133,13 @@ function atualizarAvisos() {
       dataValidade = new Date(Number(parts[2]), Number(parts[1]) - 1, Number(parts[0]));
     }
 
-    // se não conseguiu parse, ignora vencimento desta linha
     if (dataValidade) {
       const diffDias = Math.ceil((dataValidade - hoje) / (1000 * 60 * 60 * 24));
 
       if (diffDias < 0) {
         avisoQtd.insertAdjacentHTML('beforeend', `<li class="text-red-600 font-semibold">${i.tipo} vencido (${i.validade})</li>`);
         vencidos++;
-      } else if (diffDias <= 7) { // ajuste: 7 dias pra aviso próximo (você pode trocar)
+      } else if (diffDias <= 7) {
         avisoVenc.insertAdjacentHTML('beforeend', `<li>${i.tipo} — ${i.validade} (${diffDias} dias)</li>`);
         proximos++;
       }
@@ -154,5 +155,36 @@ function atualizarAvisos() {
   if (vencidos === 0 && baixos === 0) avisoQtd.innerHTML = `<li class="text-gray-500 italic">Nenhum produto com baixa quantidade.</li>`;
 }
 
-// opção: expõe função global para console se quiser testar
+// --- AVISO DE SUCESSO (CANTO SUPERIOR DIREITO) ---
+function mostrarAvisoSucesso(mensagem) {
+  const aviso = document.createElement("div");
+  aviso.textContent = mensagem;
+  aviso.className = `
+    fixed top-6 right-6
+    bg-green-dark text-black font-semibold px-6 py-3 rounded-lg shadow-2xl
+    opacity-0 transition-all duration-300 z-[999999] pointer-events-none
+    translate-y-[-10px]
+  `;
+
+  aviso.style.position = "fixed";
+  aviso.style.zIndex = "999999";
+
+  document.body.appendChild(aviso);
+
+  // Fade-in + leve descida
+  setTimeout(() => {
+    aviso.classList.add("opacity-100");
+    aviso.style.transform = "translateY(0)";
+  }, 50);
+
+  // Fade-out e remoção após 2 segundos
+  setTimeout(() => {
+    aviso.classList.remove("opacity-100");
+    aviso.style.transform = "translateY(-10px)";
+    setTimeout(() => aviso.remove(), 300);
+  }, 2000);
+}
+
+
+// opção: expõe função global para console
 window._insumos = insumos;
