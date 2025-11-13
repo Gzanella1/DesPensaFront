@@ -11,5 +11,3 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Erro ao carregar a sidebar:", error);
       });
   });
-
-

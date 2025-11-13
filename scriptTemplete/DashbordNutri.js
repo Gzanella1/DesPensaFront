@@ -47,7 +47,7 @@ function confirmarFormulario() {
   atualizarAvisos();
   visualizarEstoque();
 
-  alert("✅ Insumo adicionado com sucesso!");
+ 
   limparFormulario();
   fecharFormulario();
 }

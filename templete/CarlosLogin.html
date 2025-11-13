@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt" class="h-full">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | DesPensa</title>
+    <link rel="icon" type="image/png" href="/asset/despensa2-ico-01.png" />
+
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'green-dark': '#2B9569',
+                        'green-medium': '#2B9569',
+                        'green-light': '#2B9569',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Estilos básicos para o layout centralizado */
+        .login-body {
+            background-color: #f0fdf4;
+            /* Fundo verde muito suave (Menta) */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Container do formulário de login */
+        .login-card {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            max-width: 380px;
+            width: 90%;
+            text-align: center;
+            border-top: 5px solid #2B9569;
+            /* Linha de destaque verde */
+        }
+
+        /* Estilo para os inputs */
+        .login-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .login-input:focus {
+            border-color: #2B9569;
+            /* Borda verde no foco */
+            outline: none;
+        }
+
+        /* Botão de Login (Reutilizando a estética verde) */
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #2B9569;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .login-btn:hover {
+            background-color: #006400;
+            /* Verde mais escuro no hover */
+        }
+
+        /* Link de Cadastro/Recuperação */
+        .login-links {
+            margin-top: 20px;
+        }
+
+        .login-links a {
+            color: #2B9569;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .login-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body class="login-body">
+
+    <div class="login-card">
+        <h1 class="text-3xl font-semibold mb-2" style="color: #2B9569;">DesPensa</h1>
+        <p class="text-gray-600 mb-6">Acesse seu sistema de gestão</p>
+
+        <form action="dashboard.html" method="POST">
+
+            <input type="email" name="email" placeholder="E-mail" required class="login-input">
+
+            <input type="password" name="senha" placeholder="Senha" required class="login-input">
+
+            <button type="submit" class="login-btn">ENTRAR</button>
+        </form>
+
+        <div class="login-links">
+            <a href="#">Esqueceu a senha?</a>
+            <span class="mx-2 text-gray-400">|</span>
+            <a href="#">Criar Conta</a>
+        </div>
+    </div>
+
+</body>
+
+</html>

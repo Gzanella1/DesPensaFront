@@ -1,0 +1,16 @@
+/* css/dashboard-perfil.css */
+
+/* Garantir que os containers dos gráficos tenham um tamanho definido */
+.chart-container {
+    position: relative;
+    margin: auto;
+    height: 300px; /* Altura padrão para os gráficos */
+    width: 100%; /* Largura total do seu container pai */
+}
+
+/* Ajustes para responsividade de gráficos, se necessário, mas Chart.js já é bem responsivo */
+@media (max-width: 768px) {
+    .chart-container {
+        height: 250px; /* Um pouco menor em telas menores */
+    }
+}
