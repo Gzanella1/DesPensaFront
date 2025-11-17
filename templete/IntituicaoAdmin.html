@@ -3,29 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <title>Instituição - Admin</title>
+
+    <!-- Loader -->
     <link rel="stylesheet" href="/css/loader.css" />
     <script src="/scriptTemplete/injetarloader.js"></script>
 
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
-      rel="stylesheet"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
 
-    <link rel="icon" type="image/png" href="assets/logo_perfil.png" />
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Estilos locais -->
     <link rel="stylesheet" href="../css/IntituicaoAdmin.css" />
     <link rel="stylesheet" href="../css/botaoModoEscuro.css" />
 
-    <!-- Leaflet (mapa gratuito) -->
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    />
+    <!-- Leaflet (Mapa gratuito) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <style>
@@ -37,32 +29,22 @@
     </style>
   </head>
 
-<div id="sidebar-container"></div>
-
   <body>
     <div class="content container-fluid">
       <h3 class="mb-4 text-success fw-bold">Instituições - Admin</h3>
       <p>Adicionar instituição</p>
 
       <div class="row">
+        <!-- TABELA -->
         <div class="col-lg-7">
           <div class="card p-4 mb-3">
             <div class="d-flex justify-content-between align-items-center mb-4">
               <div class="input-group w-50">
-                <input
-                  type="text"
-                  id="buscar"
-                  class="form-control"
-                  placeholder="Buscar instituição..."
-                  aria-label="Buscar"
-                />
+                <input type="text" id="buscar" class="form-control" placeholder="Buscar instituição..." />
                 <span class="input-group-text"><i class="bi bi-search"></i></span>
               </div>
-              <button
-                class="btn btn-success"
-                data-bs-toggle="modal"
-                data-bs-target="#modalForm"
-              >
+
+              <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalForm">
                 Nova instituição
               </button>
             </div>
@@ -72,7 +54,7 @@
                 <thead>
                   <tr>
                     <th>Nome</th>
-                    <th>Tipo da instituição</th>
+                    <th>Tipo</th>
                     <th>Endereço</th>
                     <th>Ações</th>
                   </tr>
@@ -83,7 +65,7 @@
           </div>
         </div>
 
-        <!-- 🗺️ Mapa -->
+        <!-- MAPA -->
         <div class="col-lg-5">
           <div class="card p-3 shadow-sm">
             <h5 class="text-success fw-bold mb-2">Localização</h5>
@@ -93,64 +75,53 @@
       </div>
     </div>
 
-    <!-- Modal -->
+    <!-- MODAL FORM -->
     <div class="modal fade" id="modalForm" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg rounded-3">
-          <div class="p-4 relative bg-white rounded-lg">
+          <div class="p-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
-              <h5 id="tituloModal" class="modal-title text-success fw-bold">
-                Adicionar Instituição
-              </h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Fechar"
-              ></button>
+              <h5 id="tituloModal" class="modal-title text-success fw-bold">Adicionar Instituição</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
+
             <form id="formInstituicao">
               <div class="modal-body">
-                <input
-                  type="text"
-                  class="form-control mb-2"
-                  id="Nome"
-                  placeholder="Nome"
-                  required
-                />
-                <input
-                  type="text"
-                  class="form-control mb-2"
-                  id="Tipo_da_instituição"
-                  placeholder="Tipo da instituição"
-                  required
-                />
-                <input
-                  type="text"
-                  class="form-control mb-2"
-                  id="Endereço"
-                  placeholder="Endereço"
-                  required
-                />
+                <input type="text" class="form-control mb-2" id="Nome" placeholder="Nome da instituição" required />
+
+                <input type="text" class="form-control mb-2" id="Tipo_da_instituicao" placeholder="Tipo da instituição" required />
+
+                <input type="text" class="form-control mb-2" id="endereco" placeholder="Rua" required />
+
+                <input type="text" class="form-control mb-2" id="bairro" placeholder="Bairro (opcional)" />
+
+                <input type="text" class="form-control mb-2" id="cep" placeholder="CEP (opcional)" />
+
+                <input type="text" class="form-control mb-2" id="cidade" placeholder="Cidade" required />
+
+                <input type="text" class="form-control mb-2" id="estado" placeholder="Estado" required />
               </div>
+
               <div class="d-flex justify-content-between mt-4">
-                <button type="reset" class="btn btn-secondary px-4">
-                  Limpar
-                </button>
-                <button type="submit" class="btn btn-success px-4">
-                  Confirmar
-                </button>
+                <button type="reset" class="btn btn-secondary px-4">Limpar</button>
+                <button type="submit" class="btn btn-success px-4">Confirmar</button>
               </div>
             </form>
+
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Scripts -->
-    <script src="/scriptTemplete/loader.js"></script>
-    <script src="../scriptTemplete/IntituicaoAdmin.js"></script>
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Scripts do template -->
+    <script src="../scriptTemplete/loader.js"></script>
     <script src="../scriptTemplete/carregarSidebar.js"></script>
     <script src="../scriptTemplete/botaoModoEscuro.js"></script>
+
+    <!-- Nosso JS separado -->
+    <script src="../scriptTemplete/IntituicaoAdmin.js"></script>
   </body>
 </html>
