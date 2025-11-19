@@ -1,164 +1,149 @@
-const tabela = document.getElementById("tabelaNutricionistas");
-const form = document.getElementById("formNutricionista");
-let editandoLinha = null;
+let tabela = document.getElementById("tabelaCardapio");
+let form = document.getElementById("formCardapio");
 
-// === SALVAR E CARREGAR DADOS ===
-function salvarDados() {
-  const dados = Array.from(tabela.rows).map(row => ({
-    instituicao: row.cells[0].innerText,
-    numero_pessoas: row.cells[1].innerText,
-    tipo: row.cells[2].innerText,
-    quantidade: row.cells[3].innerText.split(" - ")[0].trim(),
-    validade: row.cells[3].innerText.split(" - ")[1]?.trim() || "",
-    restricoes: row.cells[4].innerText,
-  }));
-  localStorage.setItem("cardapios", JSON.stringify(dados));
-}
+let listaAlimentos = [];
+let linhaEditando = null;
 
-function carregarDados() {
-  const dados = JSON.parse(localStorage.getItem("cardapios")) || [];
-  dados.forEach(d =>
-    adicionarLinha(d.instituicao, d.numero_pessoas, d.tipo, d.quantidade, d.validade, d.restricoes)
-  );
-  atualizarAvisos();
-}
+// ===============================
+// ADICIONAR ALIMENTO
+// ===============================
+document.getElementById("btnAddAlimento").addEventListener("click", () => {
+    let alimento = document.getElementById("alimentoInput").value.trim();
+    if (alimento === "") return;
 
-// === ADICIONAR LINHA ===
-function adicionarLinha(instituicao, numero_pessoas, tipo, quantidade, validade, restricoes) {
-  const linha = tabela.insertRow();
-  linha.innerHTML = `
-    <td>${instituicao}</td>
-    <td>${numero_pessoas}</td>
-    <td>${tipo}</td>
-    <td>${quantidade} unid - ${validade}</td>
-    <td>${restricoes}</td>
-    <td>
-      <button class="btn btn-success btn-sm editar"><i class="bi bi-pencil"></i></button>
-      <button class="btn btn-danger btn-sm remover"><i class="bi bi-x"></i></button>
-    </td>
-  `;
-  salvarDados();
-  atualizarAvisos();
-}
+    listaAlimentos.push(alimento);
+    atualizarListaAlimentos();
 
-// === FORMULÁRIO ===
-form.addEventListener("submit", e => {
-  e.preventDefault();
-
-  const instituicao = document.getElementById("instituicao").value.trim();
-  const numero_pessoas = document.getElementById("numero_pessoas").value.trim();
-  const tipo = document.getElementById("tipo").value.trim();
-  const quantidade = document.getElementById("Quantidade").value.trim();
-  const validade = document.getElementById("Validade").value.trim();
-  const restricoes = document.getElementById("restricoes").value.trim();
-
-  if (numero_pessoas <= 0) {
-    alert("O número de pessoas deve ser maior que zero.");
-    return;
-  }
-
-  if (editandoLinha) {
-    editandoLinha.cells[0].innerText = instituicao;
-    editandoLinha.cells[1].innerText = numero_pessoas;
-    editandoLinha.cells[2].innerText = tipo;
-    editandoLinha.cells[3].innerText = `${quantidade} unid - ${validade}`;
-    editandoLinha.cells[4].innerText = restricoes;
-    editandoLinha = null;
-  } else {
-    adicionarLinha(instituicao, numero_pessoas, tipo, quantidade, validade, restricoes);
-  }
-
-  salvarDados();
-  atualizarAvisos();
-  document.getElementById("tituloModal").innerText = "Adicionar Cardápio";
-  form.reset();
-  bootstrap.Modal.getInstance(document.getElementById("modalForm")).hide();
+    document.getElementById("alimentoInput").value = "";
 });
 
-// === EDITAR / REMOVER ===
-tabela.addEventListener("click", e => {
-  const btn = e.target.closest("button");
-  if (!btn) return;
-  const linha = btn.closest("tr");
+function atualizarListaAlimentos() {
+    let ul = document.getElementById("listaAlimentos");
+    ul.innerHTML = "";
 
-  if (btn.classList.contains("remover")) {
-    linha.remove();
-    salvarDados();
-    atualizarAvisos();
-  }
+    listaAlimentos.forEach((alimento, index) => {
+        let li = document.createElement("li");
+        li.className = "list-group-item d-flex justify-content-between align-items-center";
+        li.innerHTML = `
+            ${alimento}
+            <button class="btn btn-danger btn-sm" onclick="removerAlimento(${index})">
+                <i class="bi bi-trash"></i>
+            </button>
+        `;
+        ul.appendChild(li);
+    });
+}
 
-  if (btn.classList.contains("editar")) {
-    editandoLinha = linha;
-    const [quantidade, validade] = linha.cells[3].innerText.split(" - ");
+function removerAlimento(index) {
+    listaAlimentos.splice(index, 1);
+    atualizarListaAlimentos();
+}
 
-    document.getElementById("instituicao").value = linha.cells[0].innerText;
-    document.getElementById("numero_pessoas").value = linha.cells[1].innerText;
-    document.getElementById("tipo").value = linha.cells[2].innerText;
-    document.getElementById("Quantidade").value = quantidade.replace("unid", "").trim();
-    document.getElementById("Validade").value = validade?.trim() || "";
-    document.getElementById("restricoes").value = linha.cells[4].innerText;
+// ===============================
+// SALVAR FORMULÁRIO
+// ===============================
+form.addEventListener("submit", function (e) {
+    e.preventDefault();
 
-    document.getElementById("tituloModal").innerText = "Editar Cardápio";
+    let numero = document.getElementById("numero_pessoas").value;
+    let tipo = document.getElementById("tipo").value;
+    let tipoRefeicao = document.getElementById("tipo_refeicao").value;
+
+    if (linhaEditando) {
+        editarLinha(numero, tipo, tipoRefeicao);
+    } else {
+        adicionarLinha(numero, tipo, tipoRefeicao);
+    }
+
+    form.reset();
+    listaAlimentos = [];
+    atualizarListaAlimentos();
+    linhaEditando = null;
+
+    bootstrap.Modal.getInstance(document.getElementById("modalForm")).hide();
+});
+
+// ===============================
+// ADICIONAR LINHA
+// ===============================
+function adicionarLinha(numero, tipo, tipoRefeicao) {
+    let linha = tabela.insertRow();
+
+    linha.innerHTML = `
+        <td>${numero}</td>
+        <td>${tipo}</td>
+        <td>${tipoRefeicao || "-"}</td>
+        <td>${listaAlimentos.length} alimento(s)</td>
+        <td>
+            <button class="btn btn-info btn-sm" onclick="verAlimentos(this)">View</button>
+            <button class="btn btn-warning btn-sm" onclick="carregarEdicao(this)">Editar</button>
+            <button class="btn btn-danger btn-sm" onclick="excluirLinha(this)">Excluir</button>
+        </td>
+    `;
+
+    linha.dataset.alimentos = JSON.stringify([...listaAlimentos]);
+}
+
+// ===============================
+// EXCLUIR
+// ===============================
+function excluirLinha(btn) {
+    btn.parentNode.parentNode.remove();
+}
+
+// ===============================
+// EDITAR
+// ===============================
+function carregarEdicao(btn) {
+    linhaEditando = btn.parentNode.parentNode;
+
+    let alimentos = JSON.parse(linhaEditando.dataset.alimentos);
+
+    document.getElementById("numero_pessoas").value = linhaEditando.children[0].textContent;
+    document.getElementById("tipo").value = linhaEditando.children[1].textContent;
+    document.getElementById("tipo_refeicao").value =
+        linhaEditando.children[2].textContent === "-" ? "" : linhaEditando.children[2].textContent;
+
+    listaAlimentos = [...alimentos];
+    atualizarListaAlimentos();
+
+    document.getElementById("tituloModal").textContent = "Editar Cardápio";
+
     new bootstrap.Modal(document.getElementById("modalForm")).show();
-  }
-});
-
-// === BUSCA ===
-document.getElementById("buscar").addEventListener("keyup", () => {
-  const termo = document.getElementById("buscar").value.toLowerCase();
-  Array.from(tabela.rows).forEach(row => {
-    row.style.display = row.innerText.toLowerCase().includes(termo) ? "" : "none";
-  });
-});
-
-// === AVISOS AUTOMÁTICOS ===
-function atualizarAvisos() {
-  const avisoVenc = document.getElementById("avisoVencimento");
-  const avisoQtd = document.getElementById("avisoQuantidade");
-
-  if (!avisoVenc || !avisoQtd) return;
-
-  avisoVenc.innerHTML = "";
-  avisoQtd.innerHTML = "";
-
-  const hoje = new Date();
-  let proximos = 0, vencidos = 0, baixos = 0;
-
-  Array.from(tabela.rows).forEach(row => {
-    const instituicao = row.cells[0].innerText;
-    const qtdVal = row.cells[3].innerText.split(" - ");
-    const quantidade = parseInt(qtdVal[0]) || 0;
-    const validadeStr = qtdVal[1]?.trim();
-
-    // --- validade ---
-    if (validadeStr && /\d{2}\/\d{2}\/\d{4}/.test(validadeStr)) {
-      const [dia, mes, ano] = validadeStr.split("/").map(Number);
-      const dataValidade = new Date(ano, mes - 1, dia);
-      const diffDias = Math.ceil((dataValidade - hoje) / (1000 * 60 * 60 * 24));
-
-      if (diffDias < 0) {
-        avisoQtd.insertAdjacentHTML('beforeend',
-          `<li class="text-red-600 font-semibold">${instituicao} — vencido (${validadeStr})</li>`);
-        vencidos++;
-      } else if (diffDias <= 7) {
-        avisoVenc.insertAdjacentHTML('beforeend',
-          `<li>${instituicao} — ${validadeStr} (${diffDias} dias)</li>`);
-        proximos++;
-      }
-    }
-
-    // --- quantidade baixa ---
-    if (quantidade <= 5) {
-      avisoQtd.insertAdjacentHTML('beforeend',
-        `<li>${instituicao} — baixa quantidade (${quantidade} unid.)</li>`);
-      baixos++;
-    }
-  });
-
-  if (proximos === 0)
-    avisoVenc.innerHTML = `<li class="text-gray-500 italic">Nenhum produto próximo do vencimento.</li>`;
-  if (vencidos === 0 && baixos === 0)
-    avisoQtd.innerHTML = `<li class="text-gray-500 italic">Nenhum produto com baixa quantidade.</li>`;
 }
 
-window.addEventListener("DOMContentLoaded", carregarDados);
+function editarLinha(numero, tipo, tipoRefeicao) {
+    linhaEditando.children[0].textContent = numero;
+    linhaEditando.children[1].textContent = tipo;
+    linhaEditando.children[2].textContent = tipoRefeicao || "-";
+    linhaEditando.children[3].textContent = `${listaAlimentos.length} alimento(s)`;
+
+    linhaEditando.dataset.alimentos = JSON.stringify([...listaAlimentos]);
+}
+
+// ===============================
+// VIEW ALIMENTOS
+// ===============================
+function verAlimentos(btn) {
+  let linha = btn.closest("tr");
+  let alimentos = JSON.parse(linha.dataset.alimentos);
+
+  let ul = document.getElementById("listaViewAlimentos");
+  ul.innerHTML = "";
+
+  if (alimentos.length === 0) {
+    ul.innerHTML =
+      '<li class="list-group-item text-muted">Ops… nenhum alimento adicionado.</li>';
+  } else {
+    alimentos.forEach((a) => {
+      let li = document.createElement("li");
+      li.className = "list-group-item";
+      li.textContent = a;
+      ul.appendChild(li);
+    });
+  }
+
+  new bootstrap.Modal(
+    document.getElementById("modalViewAlimentos")
+  ).show();
+}
