@@ -1,130 +1,91 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gerar Cardápio</title>
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
-    <link rel="stylesheet" href="../css/botaoModoEscuro.css" />
-    <link rel="stylesheet" href="../css/background.css" />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
+    <link rel="stylesheet" href="../css/GerarCardápio.css" />
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
+  <body>
 
-  <div id="sidebar-container"></div>
 
-  <body class="p-4">
-    <h3 class="mb-4 text-success fw-bold">Gerar Cardápio</h3>
+    <div class="app">
+    <!-- Sidebar -->
+    <div id="sidebar-container"></div>
 
-    <div class="card p-4">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <div class="input-group w-50">
-          <input type="text" id="buscar" class="form-control" placeholder="Buscar cardápio..." />
-          <span class="input-group-text"><i class="bi bi-search"></i></span>
+
+
+      <div class="container">
+        <button class="btn-novo" id="btnNovo">+ Novo cardápio</button>
+        <h1>Gerar cardápio</h1>
+
+        <div class="card">
+          <table>
+            <thead>
+              <tr>
+                <th>instituição</th>
+                <th>Número de pessoas</th>
+                <th>Diário/Semanal</th>
+                <th>Priorizar</th>
+                <th>Restrições</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tabela">
+              <!-- Linhas serão adicionadas dinamicamente -->
+            </tbody>
+          </table>
         </div>
-
-        <button class="btn btn-success px-4 fw-semibold" data-bs-toggle="modal" data-bs-target="#modalForm">
-          + Adicionar cardápio
-        </button>
       </div>
 
-      <div class="table-responsive">
-        <table class="table align-middle text-center">
-          <thead>
-            <tr>
-              <th>Nº Pessoas</th>
-              <th>Tipo</th>
-              <th>Tipo de Refeição</th>
-              <th>Alimentos</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody id="tabelaCardapio"></tbody>
-        </table>
-      </div>
-    </div>
+      <!-- Modal -->
+      <div class="modal" id="modal">
+        <div class="modal-content">
+          <h2 id="tituloModal">Criar cardápio</h2>
 
-    <!-- ============================ -->
-    <!-- MODAL FORMULÁRIO -->
-    <!-- ============================ -->
-    <div class="modal fade" id="modalForm" tabindex="-1">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg rounded-3">
-          <div class="p-4">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <h5 id="tituloModal" class="modal-title text-success fw-bold">Adicionar Cardápio</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
+          <label>Nome da instituição </label>
+          <input
+            id="nome"
+            type="text"
+            placeholder="Digite o Nome da instituição"
+          />
 
-            <form id="formCardapio">
+          <label>Número de pessoas</label>
+          <input
+            id="pessoas"
+            type="text"
+            placeholder="Digite o número de pessoas"
+          />
 
-              <!-- Número de Pessoas -->
-              <div class="mb-3">
-                <input 
-                  type="number" 
-                  id="numero_pessoas" 
-                  class="form-control" 
-                  placeholder="Número de Pessoas"
-                  required
-                />
-              </div>
+          <label>Diário/Semanal</label>
+          <select id="tipo">
+            <option>Diario</option>
+            <option>semanal</option>
+          </select>
 
-              <!-- Tipo de Refeição (opcional) -->
-              <div class="mb-3">
-                <label class="form-label mt-2">Tipo de Refeição (opcional):</label>
-                <input type="text" id="tipo_refeicao" class="form-control" />
-              </div>
+          <label>Priorizar...</label>
+          <input
+            id="Priorizar"
+            type="text"
+            placeholder="Quantidade / Validade "
+          />
 
-              <!-- Tipo -->
-              <div class="mb-3">
-                <select id="tipo" class="form-control" required>
-                  <option value="Diário">Diário</option>
-                  <option value="Semanal">Semanal</option>
-                </select>
-              </div>
+          <label>Restrições</label>
+          <input
+            id="restricoes"
+            type="text"
+            placeholder="Checklist com as restrições"
+          />
 
-              <!-- ALIMENTOS -->
-              <div class="mb-3">
-                <label class="fw-semibold">Alimentos:</label>
-
-                <div class="input-group mb-2">
-                  <input type="text" id="alimentoInput" class="form-control" placeholder="Adicionar alimento..." />
-                  <button type="button" class="btn btn-primary" id="btnAddAlimento">
-                    <i class="bi bi-plus-lg"></i>
-                  </button>
-                </div>
-
-                <ul id="listaAlimentos" class="list-group"></ul>
-              </div>
-
-              <div class="d-flex justify-content-between mt-4">
-                <button type="reset" class="btn btn-secondary px-4">Limpar</button>
-                <button type="submit" class="btn btn-success px-4">Confirmar</button>
-              </div>
-            </form>
+          <div class="modal-footer">
+            <button class="btn-limpar" id="btnFechar">Cancelar</button>
+            <button class="btn-confirmar" id="btnConfirmar">Confirmar</button>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- ============================ -->
-    <!-- MODAL VIEW ALIMENTOS -->
-    <!-- ============================ -->
-    <div class="modal fade" id="modalViewAlimentos" tabindex="-1">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content p-4">
-          <h4 class="text-success fw-bold">Alimentos Adicionados</h4>
-          <ul id="listaViewAlimentos" class="list-group my-3"></ul>
-          <button class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- SCRIPTS -->
-    <script src="/scriptTemplete/loader.js"></script>
-    <script src="../scriptTemplete/GerarCardapio.js"></script>
     <script src="../scriptTemplete/carregarSidebar.js"></script>
+    <script src="../scriptTemplete/GerarCardápio.js"></script>
   </body>
 </html>

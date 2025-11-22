@@ -1,20 +1,13 @@
-/* ===============================
-   ESTILO - DASHBOARD NUTRICIONISTA
-   =============================== */
-
-/* TAILWIND BASE */
+/* Tailwind Custom Theme */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* --- CORES E VARIÁVEIS --- */
 :root {
   --green-dark: #2B9569;
-  --green-light: #E8F6EF;
-  --text-dark: #1F2937;
 }
 
-/* --- SIDEBAR --- */
+/* SIDEBAR */
 .sidebar {
   background-color: var(--green-dark);
   position: fixed;
@@ -41,7 +34,7 @@
   margin-left: 1rem;
 }
 
-/* --- SUBMENU --- */
+/* SUBMENU */
 .home {
   position: relative;
 }
@@ -58,41 +51,22 @@
   pointer-events: auto;
 }
 
-/* --- LAYOUT PRINCIPAL --- */
+/* MAIN CONTENT */
 body {
   margin-left: 4rem;
   background-color: #f3f4f6;
   font-family: 'Inter', sans-serif;
   transition: margin-left 0.3s ease;
-  color: var(--text-dark);
 }
 .sidebar:hover ~ .main-content {
   margin-left: 16rem;
 }
-
-main {
-  max-width: 1200px;
-}
-
-/* --- TÍTULOS --- */
-h1, h2, h3 {
-  font-family: 'Poppins', sans-serif;
-}
-h1 {
-  color: var(--green-dark);
-}
-h2 {
-  color: var(--green-dark);
-}
-
-/* --- CARDS --- */
-.card {
+.dashboard-container {
   background: white;
   border-radius: 1rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  border: 1px solid #e5e7eb;
-  padding: 1.5rem;
+  padding: 2rem;
+  margin-top: 2rem;
 }
 
 /* BOTÕES */
@@ -104,18 +78,10 @@ h2 {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   padding: 1rem 1.5rem;
   border-radius: 0.5rem;
-  margin-bottom: 0.5rem;
-  transition: transform 0.2s ease, background 0.2s ease;
+  transition: background 0.3s;
 }
-#historico li:hover {
-  transform: scale(1.02);
-  background-color: #dff1e9;
-}
-
-/* --- AVISOS --- */
-.card .bg-yellow-100,
-.card .bg-red-100 {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+.btn:hover {
+  background-color: #f3f4f6;
 }
 
 /* BOTÃO DE ADICIONAR INSUMO */
