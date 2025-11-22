@@ -1,181 +1,106 @@
-let map;
-let marker;
-
-const tabela = document.getElementById("tabelaInstituicoes");
-const form = document.getElementById("formInstituicao");
+const tabela = document.getElementById("tabelaNutricionistas");
+const form = document.getElementById("formNutricionista");
 let editandoLinha = null;
 
-// ======================================================
-//  MAPA
-// ======================================================
-function initMap() {
-  map = L.map("map").setView([-14.235, -51.9253], 4);
-
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: "&copy; OpenStreetMap contributors",
-  }).addTo(map);
-
-  marker = L.marker([-14.235, -51.9253]).addTo(map);
-}
-
-// Mostrar endereço no mapa
-async function mostrarNoMapa(enderecoCompleto) {
-  if (!map || !marker) return;
-
-  try {
-    const resp = await fetch(
-      `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(enderecoCompleto)}`
-    );
-
-    const data = await resp.json();
-
-    if (data.length > 0) {
-      const { lat, lon, display_name } = data[0];
-      map.setView([lat, lon], 15);
-      marker.setLatLng([lat, lon]);
-      marker.bindPopup(`<b>${display_name}</b>`).openPopup();
-    } else {
-      alert("Endereço não encontrado.");
-    }
-  } catch {
-    alert("Erro ao buscar endereço no mapa.");
-  }
-}
-
-// ======================================================
-//  LOCALSTORAGE
-// ======================================================
+// ---------- Persistência ----------
 function salvarDados() {
-  const dados = Array.from(tabela.rows).map((row) => ({
+  const dados = Array.from(tabela.rows).map(row => ({
     Nome: row.cells[0].innerText,
-    Tipo: row.cells[1].innerText,
-    Endereco: row.cells[2].innerText,
+    Tipo_da_instituição: row.cells[1].innerText,
+    Endereço: row.cells[2].innerText,
+    
+   
   }));
-
-  localStorage.setItem("instituicoes", JSON.stringify(dados));
+  localStorage.setItem("intituição nutricionista", JSON.stringify(dados));
 }
 
 function carregarDados() {
-  const dados = JSON.parse(localStorage.getItem("instituicoes")) || [];
-  dados.forEach((d) => adicionarLinha(d.Nome, d.Tipo, d.Endereco));
+  const dados = JSON.parse(localStorage.getItem("intituição nutricionista")) || [];
+  dados.forEach(d => adicionarLinha(d.Nome, d.Tipo_da_instituição, d.Endereço,));
 }
 
-// ======================================================
-//  TABELA
-// ======================================================
-function adicionarLinha(Nome, Tipo, Endereco) {
+// ---------- Função para adicionar linha ----------
+function adicionarLinha(Nome, Tipo_da_instituição, Endereço,) {
   const linha = tabela.insertRow();
-
   linha.innerHTML = `
     <td>${Nome}</td>
-    <td>${Tipo}</td>
-    <td>${Endereco}</td>
+    <td>${Tipo_da_instituição}</td>
+    <td>${Endereço}</td>
+    
+    
     <td>
-      <button class="btn btn-success btn-sm editar"><i class="bi bi-pencil"></i></button>
-      <button class="btn btn-danger btn-sm remover"><i class="bi bi-x"></i></button>
-      <button class="btn btn-info btn-sm verMapa"><i class="bi bi-geo-alt"></i></button>
+      <button class="btn btn-success btn-sm me-1 editar" aria-label="Editar"><i class="bi bi-pencil"></i></button>
+      <button class="btn btn-danger btn-sm remover" aria-label="Remover"><i class="bi bi-x"></i></button>
     </td>
   `;
-
-  salvarDados();
 }
 
-// ======================================================
-//  FORMULÁRIO
-// ======================================================
-form.addEventListener("submit", (e) => {
+// ---------- Salvar (adicionar ou editar) ----------
+form.addEventListener("submit", e => {
   e.preventDefault();
 
-  const Nome = document.getElementById("Nome").value.trim();
-  const Tipo = document.getElementById("Tipo_da_instituicao").value.trim();
-  const rua = document.getElementById("endereco").value.trim();
-  const bairro = document.getElementById("bairro").value.trim();
-  const cidade = document.getElementById("cidade").value.trim();
-  const estado = document.getElementById("estado").value.trim();
-  const cep = document.getElementById("cep").value.trim();
+  const Nome = document.getElementById("Nome").value;
+  const Tipo_da_instituição = document.getElementById("Tipo_da_instituição").value;
+  const Endereço = document.getElementById("Endereço").value;
+  
+  
 
-  if (!Nome || !Tipo || !rua || !cidade || !estado) {
-    alert("Preencha todos os campos obrigatórios!");
-    return;
-  }
-
-  // Monta endereço dinâmico
-  let EnderecoCompleto = rua;
-
-  if (bairro !== "") EnderecoCompleto += `, ${bairro}`;
-  EnderecoCompleto += `, ${cidade}, ${estado}`;
-  if (cep !== "") EnderecoCompleto += `, ${cep}`;
-
-  // Editar ou criar nova linha
   if (editandoLinha) {
     editandoLinha.cells[0].innerText = Nome;
-    editandoLinha.cells[1].innerText = Tipo;
-    editandoLinha.cells[2].innerText = EnderecoCompleto;
+    editandoLinha.cells[1].innerText = Tipo_da_instituição;
+    editandoLinha.cells[2].innerText = Endereço;
+    
+ 
     editandoLinha = null;
   } else {
-    adicionarLinha(Nome, Tipo, EnderecoCompleto);
+    adicionarLinha(Nome, Tipo_da_instituição, Endereço, );
   }
 
-  mostrarNoMapa(EnderecoCompleto);
   salvarDados();
   form.reset();
-
   bootstrap.Modal.getInstance(document.getElementById("modalForm")).hide();
-  document.getElementById("tituloModal").innerText = "Adicionar Instituição";
 });
 
-// ======================================================
-//  AÇÕES NA TABELA
-// ======================================================
-tabela.addEventListener("click", (e) => {
+// ---------- Editar / Remover ----------
+tabela.addEventListener("click", e => {
   const btn = e.target.closest("button");
   if (!btn) return;
-
   const linha = btn.closest("tr");
 
   if (btn.classList.contains("remover")) {
-    linha.remove();
-    salvarDados();
+    if (confirm("Deseja realmente remover este intituição?")) 
+      {
+      linha.remove();
+      salvarDados();
+      
+    }
   }
 
   if (btn.classList.contains("editar")) {
     editandoLinha = linha;
-
     document.getElementById("Nome").value = linha.cells[0].innerText;
-    document.getElementById("Tipo_da_instituicao").value = linha.cells[1].innerText;
-
-    let partes = linha.cells[2].innerText.split(",").map(x => x.trim());
-
-    document.getElementById("endereco").value = partes[0];
-    document.getElementById("bairro").value = partes[1] || "";
-    document.getElementById("cidade").value = partes[2] || "";
-    document.getElementById("estado").value = partes[3] || "";
-    document.getElementById("cep").value = partes[4] || "";
-
-    document.getElementById("tituloModal").innerText = "Editar Instituição";
+    document.getElementById("Tipo_da_instituição").value = linha.cells[1].innerText;
+    document.getElementById("Endereço").value = linha.cells[2].innerText;
+    
+    document.getElementById("modalLabel").innerText = "Editar intituição";
     new bootstrap.Modal(document.getElementById("modalForm")).show();
-  }
-
-  if (btn.classList.contains("verMapa")) {
-    mostrarNoMapa(linha.cells[2].innerText);
   }
 });
 
-// ======================================================
-//  BUSCA
-// ======================================================
+// ---------- Reset modal ----------
+document.getElementById("modalForm").addEventListener("hidden.bs.modal", () => {
+  editandoLinha = null;
+  document.getElementById("modalLabel").innerText = "Adicionar intituição ";
+  form.reset();
+});
+
+// ---------- Busca ----------
 document.getElementById("buscar").addEventListener("keyup", () => {
   const termo = document.getElementById("buscar").value.toLowerCase();
-
-  Array.from(tabela.rows).forEach((row) => {
+  Array.from(tabela.rows).forEach(row => {
     row.style.display = row.innerText.toLowerCase().includes(termo) ? "" : "none";
   });
 });
 
-// ======================================================
-//  INICIAR SISTEMA
-// ======================================================
-window.addEventListener("DOMContentLoaded", () => {
-  initMap();
-  carregarDados();
-});
+// ---------- Carregar dados ao iniciar ----------
+window.addEventListener("DOMContentLoaded", carregarDados);
