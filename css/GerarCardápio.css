@@ -1,133 +1,64 @@
-* {
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-}
-
 body {
-  margin: 0;
-  background-color: #f9f8f5;
+  font-family: "Segoe UI", sans-serif;
+}
+.content {
+  margin-left: 90px;
+  padding: 2rem;
+}
+
+h3 {
+  font-weight: 600;
   color: #555;
-}
-
-.container {
-  padding: 40px;
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-h1 {
-  font-size: 32px;
-  color: #7b7b7b;
-  margin-bottom: 20px;
-}
-
-.btn-novo {
-  background-color: #3e8b61;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 10px 20px;
-  float: right;
-  cursor: pointer;
-  font-weight: bold;
 }
 
 .card {
-  background-color: #fff;
+  border: none;
   border-radius: 12px;
-  padding: 20px;
-  margin-top: 60px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 10px;
-}
-
-th, td {
-  text-align: center;
-  padding: 12px;
-}
-
-tr {
-  background-color: #f2f2f2;
-  border-radius: 8px;
-}
-
-.btn-editar {
-  background-color: #a9d7a2;
+.btn-success {
+  background: #2e7d32;
   border: none;
   border-radius: 6px;
-  padding: 6px 14px;
-  cursor: pointer;
-  font-weight: 500;
-  margin-right: 6px;
 }
 
-.btn-deletar {
-  background-color: #e57373;
+.btn-danger {
+  background: #b71c1c;
   border: none;
   border-radius: 6px;
-  padding: 6px 14px;
-  cursor: pointer;
-  color: white;
-  font-weight: 500;
 }
 
-/* Modal */
-.modal {
-  display: none;
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.4);
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-content {
-  background-color: #fff;
-  padding: 25px;
-  border-radius: 10px;
-  width: 500px;
-}
-
-.modal-content h2 {
-  margin-top: 0;
+.table thead {
+  background: #f3f3f3;
   color: #555;
 }
 
-.modal-content input,
-.modal-content select {
-  width: 100%;
-  padding: 10px;
-  margin: 8px 0 16px 0;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+.table tbody tr {
+  background: #f9f9f9;
 }
 
-.modal-footer {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
+.table td,
+.table th {
+  vertical-align: middle;
 }
 
-.btn-limpar {
-  background-color: #ccc;
-  color: #333;
-  border: none;
-  border-radius: 6px;
-  padding: 8px 16px;
-  cursor: pointer;
+.input-group-text {
+  background: white;
+  border-left: none;
 }
 
-.btn-confirmar {
-  background-color: #3e8b61;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 8px 16px;
-  cursor: pointer;
+.form-control {
+  border-right: none;
+}
+
+/* --- AVISOS --- */
+.card .bg-yellow-100,
+.card .bg-red-100 {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card .bg-yellow-100:hover,
+.card .bg-red-100:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
