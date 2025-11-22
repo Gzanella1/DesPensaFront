@@ -9,14 +9,14 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <link rel="icon" type="image/png" href="assets/logo_perfil.png" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="../css/tabelaNutri.css" />
+  <link rel="stylesheet" href="../css/VisualizarEstoqueNutri.css" />
 </head>
 
 <div id="sidebar-container"></div>
 
 <body>
   <div class="content">
-    <h3 class="mb-4">visualizar estoque</h3>
+    <h3 class="mb-4 text-success fw-bold">visualizar estoque</h3>
 
     <div class="card p-4">
       <div class="d-flex justify-content-between align-items-center mb-4">
@@ -49,14 +49,16 @@
   </div>
 
   <!-- Modal -->
-  <div class="modal fade" id="modalForm" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form id="formNutricionista">
-          <div class="modal-header">
-            <h5 class="modal-title" id="modalLabel">nova instituição</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+   <div class="modal fade" id="modalForm" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg rounded-3">
+        <div class="p-4 relative bg-white rounded-lg">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 id="tituloModal" class="modal-title text-success fw-bold">Adicionar Instituição</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
           </div>
+
+          <form id="formNutricionista">
           <div class="modal-body">
             <input type="hidden" id="editIndex" />
             <input type="text" class="form-control mb-2" id="codigo" placeholder="codigo" required />
@@ -67,18 +69,20 @@
             <input type="text" class="form-control mb-2" id="Tipo" placeholder="Tipo" required />
           </div>
           <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">Salvar</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-              Cancelar
-            </button>
-          </div>
-        </form>
+           </div>
+            <div class="d-flex justify-content-between mt-4">
+              <button type="reset" class="btn btn-secondary px-4">Limpar</button>
+              <button type="submit" class="btn btn-success px-4">Confirmar</button>
+            </div>
+          </form>
+
+        </div>
       </div>
     </div>
   </div>
 
   <!-- Importa o JS -->
-  <script src="/DesPensaFront/scriptTemplete/VisualizarEstoqueNutri.js"></script>
+  <script src="../scriptTemplete/VisualizarEstoqueNutri.js"></script>
   <script src="../scriptTemplete/carregarSidebar.js"></script>
 </body>
 
