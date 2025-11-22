@@ -1,7 +1,6 @@
 body {
   font-family: "Segoe UI", sans-serif;
 }
-
 .content {
   margin-left: 90px;
   padding: 2rem;
@@ -51,4 +50,15 @@ h3 {
 
 .form-control {
   border-right: none;
+}
+
+/* --- AVISOS --- */
+.card .bg-yellow-100,
+.card .bg-red-100 {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card .bg-yellow-100:hover,
+.card .bg-red-100:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }

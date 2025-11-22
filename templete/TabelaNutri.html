@@ -1,24 +1,20 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Nutricionistas</title>
+  
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <link rel="icon" type="image/png" href="assets/logo_perfil.png" />
   <script src="https://cdn.tailwindcss.com"></script>
+  
   <link rel="stylesheet" href="../css/tabelaNutri.css">
-
-
+  <link rel="icon" type="image/png" href="assets/logo_perfil.png" />
 </head>
 
-<div id="sidebar-container"></div>
-
-
 <body>
-
+  <div id="sidebar-container"></div>
 
   <div class="content">
     <h3 class="mb-4">Nutricionistas</h3>
@@ -26,17 +22,17 @@
     <div class="card p-4">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <div class="input-group w-50">
-          <input type="text" id="buscar" class="form-control" placeholder="Nutricionistas..." aria-label="Buscar">
+          <input type="text" id="buscar" class="form-control" placeholder="Buscar nutricionista..." aria-label="Buscar">
           <span class="input-group-text"><i class="bi bi-search"></i></span>
         </div>
-        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalForm">
+        <button class="btn btn-success px-4 fw-semibold" data-bs-toggle="modal" data-bs-target="#modalForm">
           + Adicionar Nutricionista
         </button>
       </div>
 
       <div class="table-responsive">
-        <table class="table align-middle text-center">
-          <thead>
+        <table class="table table-striped align-middle text-center">
+          <thead class="table-light text-secondary">
             <tr>
               <th>Nome</th>
               <th>Instituição</th>
@@ -53,30 +49,30 @@
   </div>
 
   <!-- Modal -->
-  <div class="modal fade" id="modalForm" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form id="formNutricionista">
-          <div class="modal-header">
-            <h5 class="modal-title" id="modalLabel">Adicionar Nutricionista</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+  <div class="modal fade" id="modalForm" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg rounded-4">
+        <div class="p-4 bg-white rounded-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 id="modalLabel" class="modal-title text-success fw-bold">Adicionar Nutricionista</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
           </div>
           <div class="modal-body">
-            <input type="hidden" id="editIndex">
             <input type="text" class="form-control mb-2" id="nome" placeholder="Nome" required>
             <input type="text" class="form-control mb-2" id="instituicao" placeholder="Instituição" required>
             <input type="text" class="form-control mb-2" id="contato" placeholder="Contato" required>
 
-            <!-- Novos campos -->
             <select class="form-control mb-2" id="status" required>
               <option value="Ativo">Ativo</option>
               <option value="Inativo">Inativo</option>
             </select>
+
             <select class="form-control mb-2" id="frequencia" required>
               <option value="Diário">Diário</option>
               <option value="Semanal">Semanal</option>
             </select>
           </div>
+
           <div class="modal-footer">
             <button type="submit" class="btn btn-primary">Salvar</button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -86,9 +82,8 @@
     </div>
   </div>
 
-  <!-- Importa o JS -->
-  <script src="/scriptTemplete/TabelaNutri.js"></script>
+  <!-- Scripts -->
+  <script src="../scriptTemplete/TabelaNutri.js"></script>
   <script src="../scriptTemplete/carregarSidebar.js"></script>
 </body>
-
 </html>

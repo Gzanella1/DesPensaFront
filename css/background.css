@@ -1,0 +1,25 @@
+/* ======================================= */
+/* ARQUIVO: /css/background.css          */
+/* Gerencia o fundo global da aplicação  */
+/* ======================================= */
+
+/* 1. MODO CLARO (Padrão) */
+/* Este é o estilo que você escolheu no Hero Patterns */
+.main-content {
+  background-color: #f1f9f1;
+  background-image: url("data:image/svg+xml,%3Csvg width='24' height='40' viewBox='0 0 24 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 40c5.523 0 10-4.477 10-10V0C4.477 0 0 4.477 0 10v30zm22 0c-5.523 0-10-4.477-10-10V0c5.523 0 10 4.477 10 10v30z' fill='%2350b97d' fill-opacity='0.09' fill-rule='evenodd'/%3E%3C/svg%3E");
+
+  /* Garante que o fundo cubra toda a altura da tela */
+  min-height: 100vh;
+}
+
+
+/* 2. MODO ESCURO */
+/* Esta regra será ativada quando o script adicionar a classe 'dark' no <html> */
+html.dark .main-content {
+  /* Cor de fundo escura */
+  background-color: #1a1a1a !important;
+
+  /* Mesmo padrão, mas com 'fill' (cor) alterado para um cinza sutil (#444444) */
+  background-image: url("data:image/svg+xml,%3Csvg width='24' height='40' viewBox='0 0 24 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 40c5.523 0 10-4.477 10-10V0C4.477 0 0 4.477 0 10v30zm22 0c-5.523 0-10-4.477-10-10V0c5.523 0 10 4.477 10 10v30z' fill='%23444444' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E") !important;
+}
