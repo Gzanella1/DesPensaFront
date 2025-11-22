@@ -1,3 +1,4 @@
+# Copilot Instructions for DesPensaFront
 
 ## Project Overview
 DesPensaFront is a web application for managing pantry inventory and user profiles. The project is organized into clear front-end and back-end boundaries, with static assets and templates supporting the user interface.

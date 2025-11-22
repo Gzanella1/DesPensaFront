@@ -9,16 +9,24 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <link rel="stylesheet" href="/css/loader.css">
-    <script src="/scriptTemplete/injetarloader.js"></script>
-    <script src="/scriptTemplete/loader.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'green-dark': '#2B9569',
+                        'green-medium': '#2B9569',
+                        'green-light': '#2B9569',
+                    }
+                }
+            }
+        }
+    </script>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="/css/botaoModoEscuro.css">
-    <script src="/scriptTemplete/botaoModoEscuro.js"></script>
     <link rel="stylesheet" href="/css/sidebar.css">
-    <link rel="stylesheet" href="/css/background.css">
 </head>
 
 <body class="h-full">
