@@ -1,129 +1,91 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Instituição - Admin</title>
 
-    <!-- Loader -->
-    <link rel="stylesheet" href="/css/loader.css" />
-    <script src="/scriptTemplete/injetarloader.js"></script>
+<head>
+  <meta charset="UTF-8" />
+  <title> Instituição - Administrador</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="icon" type="image/png" href="assets/logo_perfil.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script src="/scriptTemplete/botaoModoEscuro.js"></script>
+
+  <link rel="stylesheet" href="../css/tabelaNutri.css" />
+  <link rel="stylesheet" href="/css/background.css" />
+
+  <link rel="stylesheet" href="/css/botaoModoEscuro.css">
+
+</head>
+
+<body class="h-full flex">
 
     <!-- Estilos locais -->
     <link rel="stylesheet" href="../css/IntituicaoAdmin.css" />
     <link rel="stylesheet" href="../css/botaoModoEscuro.css" />
     <link rel="stylesheet" href="../css/background.css">
 
-    <!-- Leaflet (Mapa gratuito) -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-        <script src="https://cdn.tailwindcss.com"></script>
+  <main class="main-content flex-1 p-8">
 
-    <style>
-      #map {
-        width: 100%;
-        height: 400px;
-        border-radius: 10px;
-      }
-    </style>
-  </head>
-<div id="sidebar-container"></div>
-  <body>
-    <div class="content container-fluid">
-      <h3 class="mb-4 text-success fw-bold">Instituições - Admin</h3>
-      <p>Adicionar instituição</p>
+    <h3 class="mb-4 text-4xl font-bold text-despensa-text-dark">Instituição - Administrador</h3>
 
-      <div class="row">
-        <!-- TABELA -->
-        <div class="col-lg-7">
-          <div class="card p-4 mb-3">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-              <div class="input-group w-50">
-                <input type="text" id="buscar" class="form-control" placeholder="Buscar instituição..." />
-                <span class="input-group-text"><i class="bi bi-search"></i></span>
-              </div>
+    <p class="text-gray-700 dark:text-gray-300"> Adicionar Instituição </p>
 
-              <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalForm">
-                Nova instituição
-              </button>
-            </div>
-
-            <div class="table-responsive">
-              <table class="table align-middle text-center">
-                <thead>
-                  <tr>
-                    <th>Nome</th>
-                    <th>Tipo</th>
-                    <th>Endereço</th>
-                    <th>Ações</th>
-                  </tr>
-                </thead>
-                <tbody id="tabelaInstituicoes"></tbody>
-              </table>
-            </div>
-          </div>
+    <div class="card p-4">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="input-group w-50">
+          <input type="text" id="buscar" class="form-control" placeholder="Buscar Instituição" aria-label="Buscar" />
+          <span class="input-group-text"><i class="bi bi-search"></i></span>
         </div>
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalForm">
+          + Nova Instituição
+        </button>
+      </div>
 
-        <!-- MAPA -->
-        <div class="col-lg-5">
-          <div class="card p-3 shadow-sm">
-            <h5 class="text-success fw-bold mb-2">Localização</h5>
-            <div id="map"></div>
-          </div>
-        </div>
+      <div class="table-responsive">
+        <table class="table align-middle text-center">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Tipo da instituição</th>
+              <th>Endereço</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tabelaNutricionistas"></tbody>
+        </table>
       </div>
     </div>
 
-    <!-- MODAL FORM -->
-    <div class="modal fade" id="modalForm" tabindex="-1">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg rounded-3">
-          <div class="p-4">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <h5 id="tituloModal" class="modal-title text-success fw-bold">Adicionar Instituição</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-
-            <form id="formInstituicao">
-              <div class="modal-body">
-                <input type="text" class="form-control mb-2" id="Nome" placeholder="Nome da instituição" required />
-
-                <input type="text" class="form-control mb-2" id="Tipo_da_instituicao" placeholder="Tipo da instituição" required />
-
-                <input type="text" class="form-control mb-2" id="endereco" placeholder="Rua" required />
-
-                <input type="text" class="form-control mb-2" id="bairro" placeholder="Bairro (opcional)" />
-
-                <input type="text" class="form-control mb-2" id="cep" placeholder="CEP (opcional)" />
-
-                <input type="text" class="form-control mb-2" id="cidade" placeholder="Cidade" required />
-
-                <input type="text" class="form-control mb-2" id="estado" placeholder="Estado" required />
-              </div>
-
-              <div class="d-flex justify-content-between mt-4">
-                <button type="reset" class="btn btn-secondary px-4">Limpar</button>
-                <button type="submit" class="btn btn-success px-4">Confirmar</button>
-              </div>
-            </form>
-
+  </main> <div class="modal fade" id="modalForm" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="formNutricionista">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">Nova Instituição</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
-        </div>
+          <div class="modal-body">
+            <input type="hidden" id="editIndex" />
+            <input type="text" class="form-control mb-2" id="Nome" placeholder="Nome" required />
+            <input type="text" class="form-control mb-2" id="Tipo_da_instituição" placeholder="Tipo_da_instituição" required />
+            <input type="text" class="form-control mb-2" id="Endereço" placeholder="Endereço" required />
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              Cancelar
+            </button>
+          </div>
+        </form>
       </div>
     </div>
+  </div>
 
-    <!-- Bootstrap -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/scriptTemplete/IntituicaoAdmin.js"></script>
+  <script src="../scriptTemplete/carregarSidebar.js"></script>
+</body>
 
-    <!-- Scripts do template -->
-    <script src="../scriptTemplete/loader.js"></script>
-    <script src="../scriptTemplete/carregarSidebar.js"></script>
-    <script src="../scriptTemplete/botaoModoEscuro.js"></script>
-
-    <!-- Nosso JS separado -->
-    <script src="../scriptTemplete/IntituicaoAdmin.js"></script>
-  </body>
 </html>

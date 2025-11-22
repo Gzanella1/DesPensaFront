@@ -94,99 +94,15 @@ h2 {
   border: 1px solid #e5e7eb;
   padding: 1.5rem;
 }
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(43, 149, 105, 0.2);
-}
 
-/* --- BOTÕES --- */
-.novo-insumo,
-button.bg-green-dark {
-  background-color: var(--green-dark);
-  color: #fff;
-  font-weight: 600;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  border: none;
-  cursor: pointer;
-  animation: pulseGlow 3s infinite;
-  transition: all 0.2s ease;
-  border-radius: 0.5rem;
-  padding: 0.6rem 1.5rem;
-}
-.novo-insumo:hover,
-button.bg-green-dark:hover {
-  background-color: #237b56;
-  transform: scale(1.05);
-}
-
-/* --- EFEITO DE PULSO NO BOTÃO --- */
-@keyframes pulseGlow {
-  0%, 100% {
-    box-shadow: 0 0 0 rgba(43, 149, 105, 0);
-  }
-  50% {
-    box-shadow: 0 0 14px rgba(43, 149, 105, 0.5);
-  }
-}
-
-/* --- MODAL --- */
-#formInsumo {
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-}
-
-/* --- ANIMAÇÃO MODAL --- */
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
-.animate-fadeIn {
-  animation: fadeIn 0.25s ease-in-out;
-}
-
-/* --- TABELA DE ESTOQUE --- */
-#listaInsumos {
-  overflow-x: auto;
-  border-radius: 0.75rem;
-}
-
-#listaInsumos table {
-  border-collapse: collapse;
-  width: 100%;
-  font-size: 0.9rem;
-  border-radius: 0.75rem;
-  overflow: hidden;
-}
-
-#listaInsumos th {
-  background-color: var(--green-dark);
-  color: white;
-  font-weight: 600;
-}
-
-#listaInsumos td,
-#listaInsumos th {
-  padding: 0.75rem;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-#listaInsumos tr:hover {
-  background-color: var(--green-light);
-}
-
-/* Bordas arredondadas no cabeçalho */
-#listaInsumos thead tr:first-child th:first-child {
-  border-top-left-radius: 0.75rem;
-}
-#listaInsumos thead tr:first-child th:last-child {
-  border-top-right-radius: 0.75rem;
-}
-
-/* --- HISTÓRICO --- */
-#historico li {
-  background-color: var(--green-light);
-  border-left: 4px solid var(--green-dark);
-  padding: 0.6rem 1rem;
+/* BOTÕES */
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  padding: 1rem 1.5rem;
   border-radius: 0.5rem;
   margin-bottom: 0.5rem;
   transition: transform 0.2s ease, background 0.2s ease;
@@ -201,16 +117,47 @@ button.bg-green-dark:hover {
 .card .bg-red-100 {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.card .bg-yellow-100:hover,
-.card .bg-red-100:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+/* BOTÃO DE ADICIONAR INSUMO */
+.novo-insumo,
+button.bg-green-dark {
+  background-color: var(--green-dark);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  border: none;
+  cursor: pointer;
+  animation: pulseGlow 3s infinite;
 }
 
-/* --- RODAPÉ --- */
-footer {
-  color: #6b7280;
-  font-size: 0.9rem;
-  margin-top: 2rem;
-  text-align: center;
+.novo-insumo:hover,
+button.bg-green-dark:hover {
+  background-color: #237b56;
+  transform: scale(1.05);
+  transition: all 0.2s ease;
+}
+
+/* EFEITO DE PULSO SUAVE NO BOTÃO */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 rgba(43, 149, 105, 0);
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(43, 149, 105, 0.4);
+  }
+}
+
+/* MODAL */
+#formInsumo {
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* ANIMAÇÃO DO MODAL */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.25s ease-in-out;
 }
