@@ -161,3 +161,16 @@ button.bg-green-dark:hover {
 .animate-fadeIn {
   animation: fadeIn 0.25s ease-in-out;
 }
+.card .bg-yellow-100:hover,
+.card .bg-red-100:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* --- RODAPÉ --- */
+footer {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin-top: 2rem;
+  text-align: center;
+}
