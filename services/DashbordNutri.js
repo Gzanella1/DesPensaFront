@@ -1,238 +1,307 @@
-const API_BASE_URL = "http://localhost:8080/api";
-const ID_ESTOQUE_ATUAL = 1; // Simulação: Isso viria do login/sessão
+// CONFIGURAÇÕES DA API
+// IMPORTANTE: Ajuste para a URL correta do seu backend
+const API_BASE_URL = "http://localhost:8080/api"; 
+const ID_ESTOQUE = 1; 
 
+// INICIALIZAÇÃO
 document.addEventListener("DOMContentLoaded", () => {
-    carregarEstoque();
-    carregarHistorico();
+    console.log("Dashboard carregado. Iniciando busca de dados...");
     carregarAlertas();
-    
-    // Configura o botão de salvar do modal
-    // Note: Removi o onclick do HTML para gerenciar aqui, ou mantenha e chame a função.
+    carregarEstoque(); // <--- Agora vai carregar automático
+    carregarHistorico(); 
 });
 
-// --- 1. POST: Adicionar Novo Insumo ---
-async function confirmarFormulario() {
-    const btnConfirmar = document.querySelector('#formInsumo button.bg-green-dark');
-    const textoOriginal = btnConfirmar.innerText;
-    btnConfirmar.innerText = "Salvando...";
-    btnConfirmar.disabled = true;
-
-    // Mapeamento dos campos do HTML para o DTO do Java
-    const payload = {
-        nome: document.getElementById('tipo').value, // Usando campo 'tipo' como Nome do Produto
-        quantidade: parseInt(document.getElementById('quantidade').value),
-        validade: document.getElementById('validade').value,
-        idEstoque: ID_ESTOQUE_ATUAL,
-        preco: 0.0, // Campo obrigatório no DTO, mas não tem no form (valor padrão)
-        
-        // O campo 'endereco' (origem) não vai direto para a entidade Alimento, 
-        // mas se você ajustou o DTO para aceitar 'origem' na criação, adicione aqui.
-    };
-
-    if (!payload.nome || !payload.quantidade || !payload.validade) {
-        alert("Por favor, preencha Nome, Quantidade e Validade.");
-        btnConfirmar.innerText = textoOriginal;
-        btnConfirmar.disabled = false;
-        return;
-    }
-
-    try {
-        const response = await fetch(`${API_BASE_URL}/alimentos`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-        });
-
-        if (response.ok) {
-            alert("Insumo cadastrado com sucesso!");
-            fecharFormulario();
-            limparFormulario();
-            // Recarrega as listas
-            carregarEstoque();
-            carregarHistorico(); 
-        } else {
-            const erro = await response.text();
-            alert("Erro ao salvar: " + erro);
-        }
-    } catch (error) {
-        console.error("Erro de rede:", error);
-        alert("Erro de conexão com o servidor.");
-    } finally {
-        btnConfirmar.innerText = textoOriginal;
-        btnConfirmar.disabled = false;
-    }
-}
-
-// --- 2. GET: Visualizar Estoque (Lista de Alimentos) ---
+/**
+ * 1. Busca os itens do estoque (Card Central)
+ */
 async function carregarEstoque() {
-    const container = document.getElementById('listaInsumos');
-    container.innerHTML = '<p class="text-gray-500 animate-pulse">Carregando estoque...</p>';
+    const listaInsumos = document.getElementById("listaInsumos");
+    
+    // Loading
+    listaInsumos.innerHTML = `
+        <div class="flex flex-col items-center justify-center py-8 text-gray-400 animate-pulse">
+            <i class="bi bi-arrow-repeat text-4xl mb-2 animate-spin"></i>
+            <p>Atualizando estoque...</p>
+        </div>`;
 
     try {
-        // Supondo que você tenha um endpoint GET /api/alimentos
-        // Se tiver filtro por estoque: /api/alimentos/estoque/${ID_ESTOQUE_ATUAL}
-        const response = await fetch(`${API_BASE_URL}/alimentos`); 
+        const response = await fetch(`${API_BASE_URL}/estoque/${ID_ESTOQUE}`);
+        if (!response.ok) throw new Error("Erro ao buscar itens");
+
+        const dados = await response.json();
         
-        if (!response.ok) throw new Error("Erro ao buscar alimentos");
+        // Tenta achar onde está a lista de itens no JSON
+        let itens = [];
+        if (dados.itens) itens = dados.itens;
+        else if (dados.insumos) itens = dados.insumos;
+        else if (Array.isArray(dados)) itens = dados; 
 
-        const alimentos = await response.json();
+        listaInsumos.innerHTML = ""; 
 
-        if (alimentos.length === 0) {
-            container.innerHTML = '<p class="text-gray-500">Nenhum insumo cadastrado.</p>';
+        if (!itens || itens.length === 0) {
+            listaInsumos.innerHTML = `
+                <div class="flex flex-col items-center justify-center py-8 text-gray-400">
+                    <i class="bi bi-inbox text-4xl mb-2"></i>
+                    <p>Estoque vazio.</p>
+                </div>`;
             return;
         }
 
-        let html = '<ul class="divide-y divide-gray-100">';
-        alimentos.forEach(item => {
-            // Filtra visualmente apenas os deste estoque (caso a API retorne tudo)
-            if (item.estoque && item.estoque.idEstoque !== ID_ESTOQUE_ATUAL) return;
+        const ul = document.createElement("ul");
+        ul.className = "space-y-2";
 
-            const dataValidade = new Date(item.validade).toLocaleDateString('pt-BR');
-            
-            html += `
-            <li class="py-3 flex justify-between items-center hover:bg-gray-50 transition p-2 rounded">
+        itens.forEach(item => {
+            // Cores baseadas na quantidade
+            let badgeColor = "bg-green-100 text-green-700";
+            if(item.quantidade <= 2) badgeColor = "bg-red-100 text-red-700";
+            else if(item.quantidade <= 5) badgeColor = "bg-yellow-100 text-yellow-700";
+
+            const validade = item.dataValidade 
+                ? new Date(item.dataValidade).toLocaleDateString('pt-BR') 
+                : "N/A";
+
+            const li = document.createElement("li");
+            li.className = "flex justify-between items-center p-3 bg-gray-50 rounded hover:bg-gray-100 border border-gray-100 transition";
+            li.innerHTML = `
                 <div>
-                    <p class="font-bold text-gray-800">${item.nome}</p>
-                    <p class="text-xs text-gray-500">Validade: ${dataValidade}</p>
+                    <span class="font-medium text-gray-800 block">${item.nome || "Item"}</span>
+                    <span class="text-xs text-gray-500">Val: ${validade}</span>
                 </div>
-                <div class="text-right">
-                    <span class="bg-green-100 text-green-800 py-1 px-3 rounded-full text-xs font-bold">
-                        ${item.quantidade} un
-                    </span>
-                </div>
-            </li>`;
+                <span class="px-2 py-1 rounded text-xs font-bold ${badgeColor}">
+                    ${item.quantidade} un
+                </span>
+            `;
+            ul.appendChild(li);
         });
-        html += '</ul>';
-        container.innerHTML = html;
+
+        listaInsumos.appendChild(ul);
+
+    } catch (error) {
+        console.error("Erro ao carregar estoque:", error);
+        listaInsumos.innerHTML = `
+            <div class="text-center py-4 text-red-500 text-sm">
+                <i class="bi bi-wifi-off block text-xl mb-1"></i>
+                Erro de Conexão.
+            </div>`;
+    }
+}
+
+/**
+ * 2. Busca os alertas
+ */
+async function carregarAlertas() {
+    const listaVencimento = document.getElementById("avisoVencimento");
+    const listaQuantidade = document.getElementById("avisoQuantidade");
+
+    listaVencimento.innerHTML = '<li class="text-gray-400 text-xs animate-pulse">Buscando...</li>';
+    listaQuantidade.innerHTML = '<li class="text-gray-400 text-xs animate-pulse">Buscando...</li>';
+
+    try {
+        const url = `${API_BASE_URL}/estoque/${ID_ESTOQUE}`;
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("Erro HTTP");
         
-        // Aproveita os dados para verificar validade no front (se o endpoint de alertas não cobrir)
-        verificarVencimentosFront(alimentos);
+        const dados = await response.json();
+        let alertas = [];
+        if (Array.isArray(dados)) alertas = dados;
+        else if (dados.alertas) alertas = dados.alertas;
+
+        listaVencimento.innerHTML = "";
+        listaQuantidade.innerHTML = "";
+
+        let contVencimento = 0;
+        let contQuantidade = 0;
+
+        alertas.forEach(alerta => {
+            const itemLi = criarElementoAlerta(alerta);
+            const tiposValidade = ["VALIDADE_PROXIMA", "ESTOQUE_VENCIDO"];
+            
+            if (tiposValidade.includes(alerta.tipoAlerta)) {
+                listaVencimento.appendChild(itemLi);
+                contVencimento++;
+            } else {
+                listaQuantidade.appendChild(itemLi);
+                contQuantidade++;
+            }
+        });
+
+        if (contVencimento === 0) listaVencimento.innerHTML = `<li class="text-green-600 italic text-xs"><i class="bi bi-check-circle-fill me-1"></i> Tudo em dia!</li>`;
+        if (contQuantidade === 0) listaQuantidade.innerHTML = `<li class="text-green-600 italic text-xs"><i class="bi bi-check-circle-fill me-1"></i> Estoque seguro.</li>`;
 
     } catch (error) {
         console.error(error);
-        container.innerHTML = '<p class="text-red-500">Erro ao carregar dados.</p>';
+        const erroMsg = `<li class="text-red-400 text-xs">Erro ao buscar alertas.</li>`;
+        listaVencimento.innerHTML = erroMsg;
+        listaQuantidade.innerHTML = erroMsg;
     }
 }
 
-// --- 3. GET: Histórico de Movimentação ---
+function criarElementoAlerta(alerta) {
+    const li = document.createElement("li");
+    let cor = "border-blue-500 text-blue-500";
+    if (alerta.nivel === "CRITICA") cor = "border-red-600 text-red-600";
+    else if (alerta.nivel === "ALTA") cor = "border-orange-500 text-orange-500";
+    else if (alerta.nivel === "MEDIA") cor = "border-yellow-500 text-yellow-600";
+
+    const dataF = new Date(alerta.data).toLocaleDateString('pt-BR');
+    li.className = `text-sm border-l-4 ${cor.split(' ')[0]} pl-3 py-2 mb-2 bg-white shadow-sm rounded-r`;
+    li.innerHTML = `
+        <div class="font-bold text-gray-700 text-xs">${alerta.tipoAlerta}</div>
+        <div class="text-gray-600 leading-tight">${alerta.mensagem}</div>
+        <div class="text-[10px] text-gray-400 mt-1">${dataF} • ${alerta.nivel}</div>
+    `;
+    return li;
+}
+
+/**
+ * 3. Busca Histórico
+ */
+
+/**
+ * Busca o histórico de movimentações (entradas e saídas)
+ */
 async function carregarHistorico() {
-    const container = document.getElementById('historico');
+    const listaHistorico = document.getElementById("historico");
     
+    // 1. Feedback visual de carregamento
+    listaHistorico.innerHTML = `
+        <li class="text-gray-400 text-center text-xs animate-pulse py-4 flex flex-col items-center">
+            <i class="bi bi-arrow-repeat animate-spin text-xl mb-2"></i>
+            Buscando dados...
+        </li>`;
+
     try {
-        const response = await fetch(`${API_BASE_URL}/movimentacoes/estoque/${ID_ESTOQUE_ATUAL}`);
-        if (!response.ok) throw new Error("Erro API Movimentação");
+        // AJUSTE AQUI SE SUA ROTA FOR DIFERENTE (Ex: /movimentacoes)
+        const url = `${API_BASE_URL}/estoque/${ID_ESTOQUE}/historico`;
+        console.log(`[DEBUG] Buscando histórico em: ${url}`);
 
-        const movimentacoes = await response.json();
+        const response = await fetch(url);
 
-        if (movimentacoes.length === 0) {
-            container.innerHTML = '<li class="text-gray-500 italic">Nenhuma movimentação.</li>';
+        if (!response.ok) {
+            throw new Error(`Erro HTTP: ${response.status}`);
+        }
+
+        const dados = await response.json();
+        console.log("[DEBUG] Histórico recebido:", dados);
+
+        // 2. Normaliza os dados (Aceita Array direto, Pageable do Spring ou objeto encapsulado)
+        let movimentacoes = [];
+        if (Array.isArray(dados)) {
+            movimentacoes = dados;
+        } else if (dados.content) { 
+            movimentacoes = dados.content; // Se usar Page<Movimentacao> no Java
+        } else if (dados.historico) {
+            movimentacoes = dados.historico;
+        }
+
+        // 3. Verifica se está vazio
+        listaHistorico.innerHTML = "";
+        
+        if (!movimentacoes || movimentacoes.length === 0) {
+            listaHistorico.innerHTML = `
+                <li class="text-gray-400 italic text-center py-4 text-xs">
+                    <i class="bi bi-calendar-x mb-1 block text-lg"></i>
+                    Nenhuma movimentação registrada.
+                </li>`;
             return;
         }
 
-        let html = '';
+        // 4. Renderiza cada item
         movimentacoes.forEach(mov => {
-            const dataMov = new Date(mov.data).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute:'2-digit'});
-            const isEntrada = mov.tipo === 'ENTRADA';
-            const corTexto = isEntrada ? 'text-green-600' : 'text-red-600';
-            const icone = isEntrada ? 'bi-arrow-down-circle' : 'bi-arrow-up-circle';
+            // Tenta pegar o tipo. Se vier null, assume SAIDA por segurança visual
+            // Verifique se no Java é "ENTRADA", "COMPRA", "SAIDA", "CONSUMO", etc.
+            const tipoString = mov.tipoMovimentacao || mov.tipo || "SAIDA"; 
+            const isEntrada = tipoString === "ENTRADA" || tipoString === "COMPRA";
 
-            html += `
-            <li class="flex items-center justify-between border-b border-gray-100 pb-2 last:border-0">
+            // Definição de Cores e Ícones
+            const corTexto = isEntrada ? "text-green-700" : "text-red-700";
+            const bgIcone = isEntrada ? "bg-green-100 text-green-600" : "bg-red-100 text-red-600";
+            const iconeClass = isEntrada ? "bi-arrow-down-short" : "bi-arrow-up-short";
+            const sinal = isEntrada ? "+" : "-";
+
+            // Formatação de Data
+            // Tenta pegar 'dataMovimentacao' ou 'data'. Se falhar, usa data atual.
+            const dataRaw = mov.dataMovimentacao || mov.data || new Date();
+            const dataObj = new Date(dataRaw);
+            const dataFormatada = dataObj.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+            const horaFormatada = dataObj.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+            // Nome do Item (ajuste conforme seu DTO: nomeItem, itemNome, produto, etc)
+            const nomeItem = mov.nomeItem || mov.itemNome || "Item desconhecido";
+            const motivo = mov.motivo || (isEntrada ? "Entrada" : "Saída");
+
+            const li = document.createElement("li");
+            li.className = "flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition-all";
+
+            li.innerHTML = `
                 <div class="flex items-center gap-3">
-                    <i class="bi ${icone} ${corTexto} text-xl"></i>
-                    <div>
-                        <p class="font-medium text-gray-700">
-                            ${mov.alimento ? mov.alimento.nome : 'Item excluído'}
-                        </p>
-                        <p class="text-xs text-gray-400">${mov.origem || mov.observacao || 'Sem detalhes'}</p>
+                    <div class="w-8 h-8 rounded-full ${bgIcone} flex items-center justify-center shrink-0">
+                        <i class="bi ${iconeClass} text-lg"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-sm font-semibold text-gray-700 leading-tight">${nomeItem}</span>
+                        <span class="text-[10px] text-gray-400 mt-0.5">
+                            ${dataFormatada} às ${horaFormatada} • ${motivo}
+                        </span>
                     </div>
                 </div>
-                <div class="text-right">
-                    <p class="font-bold ${corTexto}">${isEntrada ? '+' : '-'}${mov.quantidade}</p>
-                    <p class="text-xs text-gray-400">${dataMov}</p>
+                <div class="font-bold ${corTexto} text-sm whitespace-nowrap">
+                    ${sinal}${mov.quantidade} un
                 </div>
-            </li>`;
+            `;
+            
+            listaHistorico.appendChild(li);
         });
-        container.innerHTML = html;
 
     } catch (error) {
-        container.innerHTML = '<li class="text-red-500">Falha ao carregar histórico.</li>';
-    }
-}
-
-// --- 4. GET: Alertas de Baixo Estoque ---
-async function carregarAlertas() {
-    const containerQtd = document.getElementById('avisoQuantidade');
-    
-    try {
-        const response = await fetch(`${API_BASE_URL}/movimentacoes/alertas/${ID_ESTOQUE_ATUAL}`);
-        
-        if (response.status === 204) {
-            containerQtd.innerHTML = '<li class="text-gray-500 italic">Estoque em níveis seguros.</li>';
-            return;
-        }
-
-        const alertas = await response.json();
-        
-        let html = '';
-        alertas.forEach(item => {
-            html += `
-            <li class="flex items-center justify-between text-red-600 py-1">
-                <span><i class="bi bi-exclamation-circle-fill mr-2"></i> ${item.nome}</span>
-                <span class="font-bold text-sm">${item.quantidade} un</span>
+        console.error("Erro fatal ao carregar histórico:", error);
+        listaHistorico.innerHTML = `
+            <li class="text-red-500 text-xs text-center py-2 bg-red-50 rounded border border-red-100">
+                <i class="bi bi-exclamation-circle me-1"></i> Erro ao carregar dados.
             </li>`;
-        });
-        containerQtd.innerHTML = html;
-
-    } catch (error) {
-        console.error("Erro alertas", error);
     }
 }
 
-// --- Helper: Verificar Vencimento (Frontend Logic) ---
-function verificarVencimentosFront(alimentos) {
-    const containerVenc = document.getElementById('avisoVencimento');
-    const hoje = new Date();
-    const diasAlerta = 7; // Alertar se vencer em 7 dias
-    
-    let listaVencendo = alimentos.filter(item => {
-        const validade = new Date(item.validade);
-        const diffTempo = validade - hoje;
-        const diffDias = Math.ceil(diffTempo / (1000 * 60 * 60 * 24)); 
-        return diffDias <= diasAlerta;
-    });
-
-    if (listaVencendo.length === 0) {
-        containerVenc.innerHTML = '<li class="text-gray-500 italic">Nenhum produto próximo do vencimento.</li>';
-        return;
-    }
-
-    let html = '';
-    listaVencendo.forEach(item => {
-        const validade = new Date(item.validade);
-        // Se já venceu, mostra vermelho escuro, se vai vencer, amarelo escuro
-        const jaVenceu = validade < hoje;
-        const classeCor = jaVenceu ? 'text-red-800' : 'text-yellow-800';
-        const textoData = validade.toLocaleDateString('pt-BR');
-
-        html += `
-        <li class="py-1 ${classeCor} flex justify-between">
-            <span>${item.nome}</span>
-            <span class="text-xs font-bold border border-current px-1 rounded">${jaVenceu ? 'VENCIDO' : textoData}</span>
-        </li>`;
-    });
-    containerVenc.innerHTML = html;
-}
-
-// --- Funções de UI do Modal (Já existentes, mantendo compatibilidade) ---
-function abrirFormulario() {
-    document.getElementById("formInsumo").classList.remove("hidden");
-}
-
-function fecharFormulario() {
-    document.getElementById("formInsumo").classList.add("hidden");
-}
-
+// --- FORMULÁRIO ---
+function abrirFormulario() { document.getElementById("formInsumo").classList.remove("hidden"); }
+function fecharFormulario() { document.getElementById("formInsumo").classList.add("hidden"); }
 function limparFormulario() {
-    document.querySelectorAll('#formInsumo input').forEach(input => input.value = '');
+    ["tipo", "quantidade", "validade", "instituicao", "checklist", "endereco"]
+        .forEach(id => document.getElementById(id).value = "");
+}
+
+async function confirmarFormulario() {
+    const nome = document.getElementById("tipo").value;
+    const qtd = document.getElementById("quantidade").value;
+    const val = document.getElementById("validade").value;
+
+    if (!nome || !qtd || !val) { alert("Preencha os campos obrigatórios!"); return; }
+
+    const item = {
+        nome: nome,
+        quantidade: parseInt(qtd),
+        dataValidade: val + "T00:00:00",
+        estoqueId: ID_ESTOQUE
+    };
+
+    try {
+        const resp = await fetch(`${API_BASE_URL}/insumos`, { // Ajuste a rota se necessário
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(item)
+        });
+        if(resp.ok) {
+            alert("Salvo!");
+            limparFormulario();
+            fecharFormulario();
+            carregarEstoque(); // Atualiza a tela
+            carregarAlertas();
+            carregarHistorico();
+        } else {
+            alert("Erro ao salvar.");
+        }
+    } catch (e) {
+        console.error(e);
+        alert("Erro de conexão.");
+    }
 }

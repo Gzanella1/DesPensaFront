@@ -59,6 +59,7 @@
             <h2 class="text-xl font-semibold text-green-800 flex items-center gap-2">
               <i class="bi bi-box-seam text-2xl"></i> Estoque Atual
             </h2>
+            <!-- Chama carregarEstoque() ao clicar -->
             <button onclick="carregarEstoque()" class="text-green-600 hover:text-green-800" title="Atualizar">
                 <i class="bi bi-arrow-clockwise text-xl"></i>
             </button>
@@ -79,6 +80,7 @@
             <h2 class="text-xl font-semibold text-green-800 flex items-center gap-2">
               <i class="bi bi-clock-history text-2xl"></i> Últimas Movimentações
             </h2>
+            <!-- Chama carregarHistorico() ao clicar -->
             <button onclick="carregarHistorico()" class="text-green-600 hover:text-green-800" title="Atualizar">
                 <i class="bi bi-arrow-clockwise text-xl"></i>
             </button>
@@ -96,6 +98,7 @@
             <h2 class="text-xl font-semibold text-green-800 flex items-center gap-2">
               <i class="bi bi-exclamation-triangle text-2xl"></i> Alertas
             </h2>
+            <!-- Chama carregarAlertas() ao clicar -->
             <button onclick="carregarAlertas()" class="text-green-600 hover:text-green-800" title="Atualizar">
                 <i class="bi bi-arrow-clockwise text-xl"></i>
             </button>
@@ -139,14 +142,14 @@
       </div>
 
       <div class="space-y-4">
-        <!-- Campo Nome (Mapeado para 'tipo' no JS para compatibilidade) -->
+        <!-- Campo Nome -->
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Nome do Alimento</label>
             <input type="text" id="tipo" placeholder="Ex: Arroz Integral, Feijão..."
                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all" />
         </div>
 
-        <!-- Campos Opcionais (Visual apenas, ou expansão futura) -->
+        <!-- Campos Opcionais -->
         <div class="grid grid-cols-2 gap-4">
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Instituição</label>
@@ -176,7 +179,7 @@
             </div>
         </div>
         
-        <!-- Campo Endereço (Visual) -->
+        <!-- Campo Endereço -->
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Endereço / Origem</label>
             <input type="text" id="endereco" placeholder="Ex: Doação Mercado X"
@@ -198,12 +201,10 @@
   </div>
 
   <!-- Scripts -->
-  <!-- Certifique-se que o caminho está correto conforme sua estrutura de pastas -->
-  <script src="../scriptTemplete/DashbordNutri.js"></script>
+  <script src="../services/DashbordNutri.js"></script>
   <script src="../scriptTemplete/carregarSidebar.js"></script>
 
   <style>
-      /* Pequeno ajuste para scrollbars personalizadas nos cards */
       .custom-scrollbar::-webkit-scrollbar {
           width: 6px;
       }
@@ -217,7 +218,6 @@
       .custom-scrollbar::-webkit-scrollbar-thumb:hover {
           background: #a3d9a3;
       }
-      /* Animação do Modal */
       @keyframes fadeIn {
           from { opacity: 0; transform: scale(0.95); }
           to { opacity: 1; transform: scale(1); }
