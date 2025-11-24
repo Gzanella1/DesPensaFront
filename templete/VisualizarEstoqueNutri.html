@@ -10,22 +10,23 @@
   <link rel="icon" type="image/png" href="assets/logo_perfil.png" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="../css/VisualizarEstoqueNutri.css" />
+  
 </head>
 
 <div id="sidebar-container"></div>
 
-<body>
+<body class="p-4">
   <div class="content">
-    <h3 class="mb-4 text-success fw-bold">visualizar estoque</h3>
+    <h3 class="mb-4 text-success fw-bold">Visualizar Estoque</h3>
 
     <div class="card p-4">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <div class="input-group w-50">
-          <input type="text" id="buscar" class="form-control" placeholder="Busca Insumo..." aria-label="Buscar" />
+          <input type="text" id="buscar" class="form-control" placeholder="Busca Insumo..." aria-label="Buscar" onkeyup="filtrarTabela()" />
           <span class="input-group-text"><i class="bi bi-search"></i></span>
         </div>
-        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalForm">
-          Nova Insumo
+        <button class="btn btn-success" onclick="abrirModalNovo()">
+          Novo Insumo
         </button>
       </div>
 
@@ -33,55 +34,101 @@
         <table class="table align-middle text-center">
           <thead>
             <tr>
-              <th>codigo</th>
+              <th>Código</th>
               <th>Nome Do Alimento</th>
               <th>Validade</th>
               <th>Quantidade</th>
               <th>Tipo</th>
-
+              <th>Calorias</th>
               <th>Ações</th>
             </tr>
           </thead>
-          <tbody id="tabelaNutricionistas"></tbody>
+          <tbody id="tabelaAlimentos"></tbody>
         </table>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal -->
-   <div class="modal fade" id="modalForm" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content border-0 shadow-lg rounded-3">
-        <div class="p-4 relative bg-white rounded-lg">
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 id="tituloModal" class="modal-title text-success fw-bold">Adicionar Instituição</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-          </div>
-
-          <form id="formNutricionista">
-          <div class="modal-body">
-            <input type="hidden" id="editIndex" />
-            <input type="text" class="form-control mb-2" id="codigo" placeholder="codigo" required />
-            <input type="text" class="form-control mb-2" id="Nome_Do_Alimento" placeholder="Nome Do Alimento"
-              required />
-            <input type="text" class="form-control mb-2" id="Validade" placeholder="Validade" required />
-            <input type="text" class="form-control mb-2" id="Quantidade" placeholder="Quantidade" required />
-            <input type="text" class="form-control mb-2" id="Tipo" placeholder="Tipo" required />
-          </div>
-          <div class="modal-footer">
-           </div>
-            <div class="d-flex justify-content-between mt-4">
-              <button type="reset" class="btn btn-secondary px-4">Limpar</button>
-              <button type="submit" class="btn btn-success px-4">Confirmar</button>
-            </div>
-          </form>
-
+        <div id="loading" class="text-center py-3 d-none">
+           <div class="spinner-border text-success" role="status"></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Importa o JS -->
+  <div class="modal fade" id="modalForm" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content border-0 shadow-lg rounded-3">
+        <div class="p-4 relative bg-white rounded-lg">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 id="tituloModal" class="modal-title text-success fw-bold">Adicionar Insumo</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+          </div>
+
+          <form id="formAlimento">
+            <div class="modal-body">
+              <input type="hidden" id="alimentoId" />
+
+              <div class="row g-2">
+                <div class="col-md-4">
+                    <label class="form-label text-muted small">Código</label>
+                    <input type="text" class="form-control mb-2" id="codigo" placeholder="Cód. Barras" />
+                </div>
+                
+                <div class="col-md-8">
+                    <label class="form-label text-muted small">Nome do Alimento</label>
+                    <input type="text" class="form-control mb-2" id="nome" placeholder="Ex: Arroz" required />
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label text-muted small">Validade</label>
+                    <input type="date" class="form-control mb-2" id="dataValidade" required />
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label text-muted small">Qtd.</label>
+                    <input type="number" class="form-control mb-2" id="quantidade" placeholder="0" required />
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label text-muted small">Unidade</label>
+                    <select id="unidadeMedida" class="form-control mb-2">
+                        <option value="un">un</option>
+                        <option value="kg">kg</option>
+                        <option value="g">g</option>
+                        <option value="l">L</option>
+                        <option value="pct">pct</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label text-muted small">Tipo (Categoria)</label>
+                    <select id="categoria" class="form-control mb-2" required>
+                        <option value="" disabled selected>Selecione...</option>
+                        <option value="CEREAL">Cereal / Grãos</option>
+                        <option value="PROTEINA">Proteína / Carnes</option>
+                        <option value="LATICINIO">Laticínio</option>
+                        <option value="FRUTA">Fruta</option>
+                        <option value="VERDURA">Verdura / Legume</option>
+                        <option value="OUTROS">Outros</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label text-muted small">Calorias (kcal)</label>
+                    <input type="number" step="0.1" class="form-control mb-2" id="valorCalorico" placeholder="0.0" />
+                </div>
+              </div>
+
+            </div>
+            
+            <div class="d-flex justify-content-between mt-4">
+              <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-success px-4">Confirmar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../services/VisualizarEstoqueNutri.js"></script>
   <script src="../scriptTemplete/VisualizarEstoqueNutri.js"></script>
   <script src="../scriptTemplete/carregarSidebar.js"></script>
 </body>
