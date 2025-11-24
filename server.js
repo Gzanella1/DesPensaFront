@@ -30,6 +30,9 @@ app.use(express.static(path.join(__dirname, "templete")));
 app.use("/asset", express.static(path.join(__dirname, "asset")));
 app.use("/css", express.static(path.join(__dirname, "css")));
 app.use("/scriptTemplete", express.static(path.join(__dirname, "scriptTemplete")));
+app.use("/services", express.static(path.join(__dirname, "services")));
+
+
 
 // Logger simples para debugar pedidos
 app.use((req, res, next) => {
