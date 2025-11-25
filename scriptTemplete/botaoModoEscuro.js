@@ -122,3 +122,82 @@ function showToast(message, type = 'error') {
 
   }, DURATION);
 }
+
+/* =================================================== */
+/* FUNÇÃO GLOBAL 'apiFetch' (Wrapper de API)         */
+/* (Cole abaixo da função 'showToast')               */
+/* =================================================== */
+
+/**
+ * Faz uma chamada de API centralizada, lidando com erros
+ * e spinners automaticamente.
+ *
+ * @param {string} url - A URL da API.
+ * @param {object} options - As opções do fetch (method, body, headers).
+ * @param {object} [handlers] - (Opcional) Funções para controlar UI.
+ * @param {function} [handlers.spinnerStart] - Função para LIGAR o spinner.
+ * @param {function} [handlers.spinnerStop] - Função para DESLIGAR o spinner.
+ * @param {string} [handlers.successToast] - Mensagem para toast de SUCESSO.
+ * @returns {Promise<any>} - Os dados da resposta (em JSON).
+ */
+async function apiFetch(url, options = {}, handlers = {}) {
+    
+    // 1. LIGA O SPINNER (se a função foi fornecida)
+    if (handlers.spinnerStart) {
+        handlers.spinnerStart();
+    }
+
+    try {
+        const response = await fetch(url, options);
+
+        // 2. SE A RESPOSTA DER ERRO (ex: 404, 500, 401)
+        if (!response.ok) {
+            let errorMsg = `Erro ${response.status}: ${response.statusText}`;
+            
+            // Tenta pegar uma mensagem de erro mais detalhada do JSON da API
+            try {
+                const errorData = await response.json();
+                errorMsg = errorData.message || errorData.error || errorMsg;
+            } catch (e) {
+                // Ignora se o corpo do erro não for JSON
+            }
+            
+            throw new Error(errorMsg); // Joga o erro para o 'catch'
+        }
+
+        // 3. SE DER SUCESSO
+
+        // Mostra o toast de sucesso (se a mensagem foi fornecida)
+        if (handlers.successToast) {
+            showToast(handlers.successToast, 'success');
+        }
+
+        // Retorna os dados em JSON (ou nulo se for um 204 No Content)
+        if (response.status === 204) {
+            return null;
+        }
+        return await response.json();
+
+    } catch (error) {
+        
+        // ===============================================
+        // A AUTOMAÇÃO ACONTECE AQUI!
+        // ===============================================
+        // Qualquer erro de 'fetch' ou 'throw' cai aqui
+        // e AUTOMATICAMENTE dispara o toast de erro.
+        console.error('Falha na chamada da API:', error);
+        showToast(error.message || 'Falha na conexão de rede.');
+        
+        // Re-joga o erro para que a função que chamou (na página)
+        // possa parar sua execução (ex: não tentar desenhar um gráfico)
+        throw error;
+
+    } finally {
+        
+        // 5. DESLIGA O SPINNER (se a função foi fornecida)
+        // O 'finally' garante que isso rode mesmo se der erro.
+        if (handlers.spinnerStop) {
+            handlers.spinnerStop();
+        }
+    }
+}
