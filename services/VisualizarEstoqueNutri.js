@@ -1,3 +1,6 @@
+
+/*
+
 // =========================================================
 // CONFIGURAÇÕES GLOBAIS
 // =========================================================
@@ -186,6 +189,233 @@ function abrirModalNovo() {
         window.modalInstance.show();
     } else {
         // Fallback caso o modalInstance não tenha iniciado
+        const modalEl = document.getElementById('modalForm');
+        new bootstrap.Modal(modalEl).show();
+    }
+}*/
+
+
+// =========================================================
+// CONFIGURAÇÕES GLOBAIS
+// =========================================================
+const API_URL = "http://localhost:8080/api/alimentos";
+const ESTOQUE_ID = 1; // ID fixo para teste
+
+// =========================================================
+// INICIALIZAÇÃO
+// =========================================================
+window.onload = () => {
+    if (typeof carregarSidebar === 'function') carregarSidebar();
+
+    const modalEl = document.getElementById('modalForm');
+    if (modalEl) {
+        window.modalInstance = new bootstrap.Modal(modalEl);
+    }
+
+    configurarFormulario();
+    listarAlimentos();
+};
+
+// =========================================================
+// 1. FUNÇÃO PARA LISTAR
+// =========================================================
+async function listarAlimentos() {
+    const tabela = document.getElementById('tabelaAlimentos');
+    const loading = document.getElementById('loading');
+
+    tabela.innerHTML = '';
+    if (loading) loading.classList.remove('d-none');
+
+    try {
+        const response = await fetch(`${API_URL}/estoque/${ESTOQUE_ID}`);
+        if (!response.ok) throw new Error("Erro ao consultar API Java");
+        const lista = await response.json();
+
+        if (lista.length === 0) {
+            tabela.innerHTML = `<tr><td colspan="7" class="text-muted">Nenhum alimento encontrado no estoque.</td></tr>`;
+            return;
+        }
+
+        lista.forEach(item => {
+            const tr = document.createElement('tr');
+            
+            const nome = item.nome || "Sem Nome";
+            const codigo = item.codigo || "-";
+            const validade = formatarDataVisual(item.dataValidade); // Função renomeada para clareza
+            const qtd = item.quantidade || 0;
+            const uni = item.unidadeMedida || "";
+            const cat = item.categoria || "OUTROS";
+            const cal = item.valorCalorico || "-";
+            const id = item.idAlimento || item.id; 
+
+            tr.innerHTML = `
+                <td>${codigo}</td>
+                <td class="fw-bold text-start ps-4">${nome}</td>
+                <td>${validade}</td>
+                <td>${qtd} <small class="text-muted">${uni}</small></td>
+                <td><span class="badge bg-light text-dark border">${cat}</span></td>
+                <td>${cal}</td>
+                <td>
+                    <button class="btn btn-sm btn-outline-primary me-1" onclick="prepararEdicao(${id})">
+                        <i class="bi bi-pencil-fill"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" onclick="deletarAlimento(${id})">
+                        <i class="bi bi-trash-fill"></i>
+                    </button>
+                </td>
+            `;
+            tabela.appendChild(tr);
+        });
+
+    } catch (error) {
+        console.error("Erro ao listar:", error);
+        tabela.innerHTML = `<tr><td colspan="7" class="text-danger">Erro de conexão com o servidor.</td></tr>`;
+    } finally {
+        if (loading) loading.classList.add('d-none');
+    }
+}
+
+// =========================================================
+// NOVO: 1.5 PREPARAR EDIÇÃO (Ao clicar no lápis)
+// =========================================================
+async function prepararEdicao(id) {
+    try {
+        // Busca os dados atuais do item no banco para garantir que estão atualizados
+        const res = await fetch(`${API_URL}/${id}`);
+        if(!res.ok) throw new Error("Erro ao buscar detalhes do item");
+        
+        const item = await res.json();
+
+        // Preenche o formulário com os dados recebidos
+        document.getElementById('alimentoId').value = item.idAlimento || item.id; // Campo Oculto
+        document.getElementById('codigo').value = item.codigo || "";
+        document.getElementById('nome').value = item.nome || "";
+        document.getElementById('dataValidade').value = item.dataValidade || ""; // Precisa estar em YYYY-MM-DD
+        document.getElementById('quantidade').value = item.quantidade || "";
+        document.getElementById('unidadeMedida').value = item.unidadeMedida || "un";
+        document.getElementById('categoria').value = item.categoria || "";
+        document.getElementById('valorCalorico').value = item.valorCalorico || "";
+
+        // Ajusta o título do modal
+        document.getElementById('tituloModal').innerText = "Editar Insumo";
+
+        // Abre o modal
+        if (window.modalInstance) window.modalInstance.show();
+
+    } catch (error) {
+        console.error(error);
+        alert("Erro ao carregar dados para edição.");
+    }
+}
+
+// =========================================================
+// 2. FUNÇÃO PARA DELETAR
+// =========================================================
+async function deletarAlimento(id) {
+    if (!confirm("Tem certeza que deseja remover este item?")) return;
+
+    try {
+        const res = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+            listarAlimentos(); 
+        } else {
+            alert("Erro ao excluir.");
+        }
+    } catch (error) {
+        console.error(error);
+        alert("Erro de conexão.");
+    }
+}
+
+// =========================================================
+// 3. CONFIGURAR FORMULÁRIO (SALVAR - POST ou PUT)
+// =========================================================
+function configurarFormulario() {
+    const form = document.getElementById('formAlimento'); // Ajustado para o ID correto do form no HTML
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // Pega o ID do campo oculto
+        const id = document.getElementById('alimentoId').value;
+        
+        const dados = {
+            nome: document.getElementById('nome').value,
+            codigo: document.getElementById('codigo').value,
+            categoria: document.getElementById('categoria').value,
+            quantidade: document.getElementById('quantidade').value,
+            unidadeMedida: document.getElementById('unidadeMedida').value,
+            dataValidade: document.getElementById('dataValidade').value,
+            valorCalorico: document.getElementById('valorCalorico').value,
+            estoqueId: ESTOQUE_ID
+        };
+
+        try {
+            let method = "POST";
+            let url = API_URL;
+
+            // LÓGICA DE EDIÇÃO: Se tiver ID, usa PUT e adiciona o ID na URL
+            if (id) {
+                method = "PUT";
+                url = `${API_URL}/${id}`;
+            }
+
+            const res = await fetch(url, {
+                method: method,
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(dados)
+            });
+
+            if (res.ok) {
+                alert(id ? "Atualizado com sucesso!" : "Salvo com sucesso!");
+                if (window.modalInstance) window.modalInstance.hide();
+                form.reset();
+                listarAlimentos();
+            } else {
+                alert("Erro ao salvar no banco.");
+            }
+        } catch (error) {
+            console.error(error);
+            alert("Erro de conexão.");
+        }
+    });
+}
+
+// =========================================================
+// 4. FUNÇÕES AUXILIARES
+// =========================================================
+function formatarDataVisual(dataISO) {
+    if (!dataISO) return "-";
+    const [ano, mes, dia] = dataISO.split("-");
+    return `${dia}/${mes}/${ano}`;
+}
+
+function filtrarTabela() {
+    const termo = document.getElementById("buscar").value.toLowerCase();
+    const linhas = document.getElementById("tabelaAlimentos").getElementsByTagName("tr");
+
+    for (let linha of linhas) {
+        const texto = linha.innerText.toLowerCase();
+        linha.style.display = texto.includes(termo) ? "" : "none";
+    }
+}
+
+// ABERTURA DO MODAL (BOTAO NOVO INSUMO)
+function abrirModalNovo() {
+    const form = document.getElementById('formAlimento');
+    if (form) form.reset();
+
+    // IMPORTANTE: Limpar o ID escondido para indicar que é um NOVO cadastro
+    document.getElementById('alimentoId').value = "";
+    
+    // Resetar título
+    const titulo = document.getElementById('tituloModal');
+    if(titulo) titulo.innerText = "Adicionar Insumo";
+
+    if (window.modalInstance) {
+        window.modalInstance.show();
+    } else {
         const modalEl = document.getElementById('modalForm');
         new bootstrap.Modal(modalEl).show();
     }
