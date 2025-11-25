@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("🚀 Redirecionando...");
 
         setTimeout(() => {
-          window.location.href = "../index.html";
+          window.location.href = "../dashboard-perfil.html";
         }, 1500);
       } else {
         showAlert("Usuário ou senha incorretos.", "error");

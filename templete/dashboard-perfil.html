@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="pt-BR" class="h-full">
 
 <head>
@@ -17,132 +17,304 @@
                         'despensa-green-dark': '#2B9569',
                         'despensa-green-medium': '#42A92D',
                         'despensa-green-light': '#A5C96F',
-                        'despensa-offwhite': '#EFEFEF',
-                        'despensa-text-dark': '#333333',
-                        'despensa-text-light': '#f0f0f0',
+                        'despensa-offwhite': '#F3F4F6',
+                        'despensa-dark-bg': '#1F2937',
+                        'despensa-card-dark': '#374151',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
                     }
                 }
             }
         }
     </script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
     <link rel="stylesheet" href="/css/sidebar.css">
     <link rel="stylesheet" href="/css/dashboard-perfil.css">
     <link rel="stylesheet" href="/css/botaoModoEscuro.css">
-    <link rel="stylesheet" href="/css/background.css">
-    <link rel="stylesheet" href="/css/toast.css">
 
+    <link rel="stylesheet" href="/css/toast.css">
     <link rel="stylesheet" href="/css/loader.css">
+
     <script src="/scriptTemplete/injetarloader.js"></script>
     <script src="/scriptTemplete/botaoModoEscuro.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-gauge@0.3.0/dist/chartjs-gauge.min.js"></script>
-
 </head>
 
-<body class="h-full flex">
+<body class="h-full flex bg-despensa-offwhite dark:bg-gray-900 transition-colors duration-300">
 
-    <div id="sidebar-container">
-    </div>
+    <div id="sidebar-container" class="z-50"></div>
 
-    <main class="main-content flex-1 p-8 bg-despensa-offwhite">
+    <main class="main-content flex-1 p-6 lg:p-10 overflow-y-auto">
 
-        <div class="relative">
-            <div id="dark-mode-toggle-container" class="absolute top-0 right-0 z-10">
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
+            <div>
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white">
+                    Visão Geral
+                </h1>
+                <p class="text-gray-500 dark:text-gray-400 mt-1">Bem-vindo ao seu painel de controle.</p>
+            </div>
+
+            <div id="dark-mode-toggle-container" class="bg-white dark:bg-gray-800 p-2 rounded-full shadow-sm border border-gray-200 dark:border-gray-700">
                 <label class="inline-flex items-center cursor-pointer">
                     <input id="theme-toggle" type="checkbox" class="sr-only peer">
-                    <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700
-                 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full
-                 peer-checked:after:border-white
-                 after:content[''] after:absolute after:top-0.5 after:start-[2px]
-                 after:bg-white after:border-gray-300 after:border after:rounded-full
-                 after:h-5 after:w-5 after:transition-all
-                 peer-checked:bg-green-600 dark:peer-checked:bg-green-600"></div>
-                    <span class="ms-3 text-sm font-semibold text-gray-900 dark:text-gray-300">
-                        Modo Escuro
+                    <div class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-2 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-despensa-green-dark"></div>
+                    <span class="ms-3 text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">
+                        <i class="bi bi-moon-stars-fill" id="icon-theme"></i>
                     </span>
                 </label>
             </div>
-        </div>
+        </header>
 
-        <h1 class="text-4xl font-bold text-despensa-text-dark mb-10">Dashboard do Perfil</h1>
-
+        <!-- MÉTRICAS -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-            <div class="bg-white p-6 rounded-lg shadow-md text-center">
-                <p class="text-gray-500 text-sm">Itens na Despensa</p>
-                <p class="text-5xl font-extrabold text-despensa-green-dark mt-2" id="totalItens">125</p>
+            <!-- CARD 1 -->
+            <div class="bg-white dark:bg-despensa-card-dark p-6 rounded-xl shadow-sm border-l-4 border-despensa-green-dark">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm">Despensa</p>
+                        <h3 class="text-4xl font-bold text-despensa-green-dark dark:text-green-400" id="totalItens">20</h3>
+                        <p class="text-xs text-gray-400 mt-1">Itens totais</p>
+                    </div>
+                    <div class="p-3 bg-green-100 dark:bg-green-900/30 rounded-full text-despensa-green-dark">
+                        <i class="bi bi-box-seam text-2xl"></i>
+                    </div>
+                </div>
             </div>
-            <div class="bg-white p-6 rounded-lg shadow-md text-center">
-                <p class="text-gray-500 text-sm">Próximos a Vencer</p>
-                <p class="text-5xl font-extrabold text-red-500 mt-2" id="vencendoItens">12</p>
+
+            <!-- CARD 2 -->
+            <div class="bg-white dark:bg-despensa-card-dark p-6 rounded-xl shadow-sm border-l-4 border-red-500">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm">Atenção</p>
+                        <h3 class="text-4xl font-bold text-red-500 dark:text-red-400" id="vencendoItens">2</h3>
+                        <p class="text-xs text-gray-400 mt-1">Vencem em breve</p>
+                    </div>
+                    <div class="p-3 bg-red-100 dark:bg-red-900/30 rounded-full text-red-500">
+                        <i class="bi bi-exclamation-triangle text-2xl"></i>
+                    </div>
+                </div>
             </div>
-            <div class="bg-white p-6 rounded-lg shadow-md text-center">
-                <p class="text-gray-500 text-sm">Receitas Salvas</p>
-                <p class="text-5xl font-extrabold text-blue-500 mt-2" id="totalReceitas">48</p>
+
+            <!-- CARD 3 -->
+            <div class="bg-white dark:bg-despensa-card-dark p-6 rounded-xl shadow-sm border-l-4 border-blue-500">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm">Receitas</p>
+                        <h3 class="text-4xl font-bold text-blue-500 dark:text-blue-400" id="totalReceitas">48</h3>
+                        <p class="text-xs text-gray-400 mt-1">Salvas no perfil</p>
+                    </div>
+                    <div class="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-full text-blue-500">
+                        <i class="bi bi-journal-bookmark text-2xl"></i>
+                    </div>
+                </div>
             </div>
-            <div class="bg-white p-6 rounded-lg shadow-md text-center">
-                <p class="text-gray-500 text-sm">Desperdício Estimado</p>
-                <p class="text-5xl font-extrabold text-orange-500 mt-2" id="desperdicio">5%</p>
+
+            <!-- CARD 4 -->
+            <div class="bg-white dark:bg-despensa-card-dark p-6 rounded-xl shadow-sm border-l-4 border-orange-500">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm">Desperdício</p>
+                        <h3 class="text-4xl font-bold text-orange-500 dark:text-orange-400" id="desperdicio">5%</h3>
+                        <p class="text-xs text-gray-400 mt-1">Estimativa mensal</p>
+                    </div>
+                    <div class="p-3 bg-orange-100 dark:bg-orange-900/30 rounded-full text-orange-500">
+                        <i class="bi bi-trash3 text-2xl"></i>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
+        <!-- GRÁFICOS -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
 
-            <div class="bg-white p-6 rounded-lg shadow-md relative">
-
-                <div id="cardSpinnerCategorias" class="absolute inset-0 bg-white/75 dark:bg-gray-800/75
-                        flex items-center justify-center rounded-lg z-20 hidden">
-                    <i class="bi bi-arrow-repeat animate-spin
-                            text-4xl text-despensa-green-dark"></i>
+            <!-- GRÁFICO CATEGORIAS -->
+            <div class="bg-white dark:bg-despensa-card-dark p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2">
+                        <i class="bi bi-pie-chart text-despensa-green-dark"></i> Itens por Categoria
+                    </h2>
                 </div>
 
-                <h2 class="text-2xl font-semibold text-despensa-text-dark mb-4">Itens por Categoria</h2>
-                <div class="chart-container">
+                <div class="relative w-full h-64 flex justify-center">
                     <canvas id="categoriasChart"></canvas>
                 </div>
             </div>
 
-            <div class="bg-white p-6 rounded-lg shadow-md relative">
-
-                <div id="cardSpinnerOrganizacao" class="absolute inset-0 bg-white/75 dark:bg-gray-800/75
-                        flex items-center justify-center rounded-lg z-20 hidden">
-                    <i class="bi bi-arrow-repeat animate-spin
-                            text-4xl text-despensa-green-dark"></i>
+            <!-- GRÁFICO ORGANIZAÇÃO -->
+            <div class="bg-white dark:bg-despensa-card-dark p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2">
+                        <i class="bi bi-speedometer2 text-despensa-green-dark"></i> Nível de Organização
+                    </h2>
                 </div>
 
-                <h2 class="text-2xl font-semibold text-despensa-text-dark mb-4">Nível de Organização</h2>
-                <div class="chart-container">
+                <div class="relative w-full h-64 flex justify-center">
                     <canvas id="organizacaoGauge"></canvas>
                 </div>
             </div>
         </div>
 
-        <div class="flex flex-wrap justify-center gap-6">
-            <a href="buscaUsuario.html"
-                class="flex-1 min-w-[200px] max-w-[300px] bg-despensa-green-dark text-white px-6 py-4 rounded-lg shadow-lg
-                      hover:bg-despensa-green-medium transition-colors duration-300 text-center font-semibold text-lg flex items-center justify-center gap-3 no-underline">
-                <i class="bi-search text-2xl"></i> Buscar Usuário
-            </a>
-            <a href="meu-perfil.html"
-                class="flex-1 min-w-[200px] max-w-[300px] bg-blue-600 text-white px-6 py-4 rounded-lg shadow-lg
-                      hover:bg-blue-700 transition-colors duration-300 text-center font-semibold text-lg flex items-center justify-center gap-3 no-underline">
-                <i class="bi-person-circle text-2xl"></i> Meu Perfil
-            </a>
-            <a href="/templete/outra-pagina-do-sidebar.html"
-                class="flex-1 min-w-[200px] max-w-[300px] bg-purple-600 text-white px-6 py-4 rounded-lg shadow-lg
-                      hover:bg-purple-700 transition-colors duration-300 text-center font-semibold text-lg flex items-center justify-center gap-3 no-underline">
-                <i class="bi-list-ul text-2xl"></i> Gerenciar Listas
-            </a>
+        <!-- AÇÕES RÁPIDAS -->
+        <div class="mb-6">
+            <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4">Ações Rápidas</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <a href="buscaUsuario.html"
+                    class="group bg-white dark:bg-despensa-card-dark p-4 rounded-xl shadow-sm border-l-4 border-despensa-green-dark flex items-center gap-4 no-underline">
+                    <div class="bg-green-100 dark:bg-green-900/30 p-3 rounded-lg text-despensa-green-dark">
+                        <i class="bi-search text-xl"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-800 dark:text-white">Buscar Usuário</h4>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Encontre amigos e perfis</p>
+                    </div>
+                </a>
+
+                <a href="meu-perfil.html"
+                    class="group bg-white dark:bg-despensa-card-dark p-4 rounded-xl shadow-sm border-l-4 border-blue-600 flex items-center gap-4 no-underline">
+                    <div class="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-lg text-blue-600">
+                        <i class="bi-person-circle text-xl"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-800 dark:text-white">Editar Perfil</h4>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Atualize seus dados</p>
+                    </div>
+                </a>
+
+                <a href="/templete/outra-pagina-do-sidebar.html"
+                    class="group bg-white dark:bg-despensa-card-dark p-4 rounded-xl shadow-sm border-l-4 border-purple-600 flex items-center gap-4 no-underline">
+                    <div class="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-lg text-purple-600">
+                        <i class="bi-list-ul text-xl"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-800 dark:text-white">Gerenciar Listas</h4>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Compras e despensa</p>
+                    </div>
+                </a>
+
+            </div>
         </div>
 
     </main>
 
     <script src="/scriptTemplete/loader.js"></script>
     <script src="/scriptTemplete/carregarSidebar.js"></script>
-    <script src="/scriptTemplete/dashboard-perfil.js"></script>
 
-    <div id="toast-container" class="fixed top-8 right-8 z-[100] w-full max-w-sm space-y-3">
-    </div>
+    
+    <!-- ============================= -->
+    <!-- SCRIPTS DOS GRÁFICOS          -->
+    <!-- ============================= -->
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    // Paleta do projeto
+    const colors = {
+        primary: '#2B9569',
+        secondary: '#42A92D',
+        tertiary: '#A5C96F',
+        warning: '#F59E0B',
+        danger: '#EF4444',
+        gray: '#E5E7EB'
+    };
+
+    // ================================
+    // GRÁFICO 1 — CATEGORIAS
+    // ================================
+    const ctxCategoria = document.getElementById('categoriasChart');
+
+    if (ctxCategoria) {
+        new Chart(ctxCategoria, {
+            type: 'doughnut',
+            data: {
+                labels: ['Grãos', 'Laticínios', 'Proteínas', 'Limpeza', 'Outros'],
+                datasets: [{
+                    data: [35, 15, 25, 10, 15],
+                    backgroundColor: [
+                        colors.primary,
+                        colors.secondary,
+                        colors.tertiary,
+                        colors.warning,
+                        '#6366F1'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            usePointStyle: true,
+                            boxWidth: 12
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // ================================
+    // GRÁFICO 2 — ORGANIZAÇÃO (GAUGE)
+    // ================================
+    const ctxGauge = document.getElementById('organizacaoGauge');
+    const notaOrganizacao = 85;
+
+    const centerTextPlugin = {
+        id: 'centerText',
+        beforeDraw(chart) {
+            const { ctx, width, height } = chart;
+            ctx.save();
+            ctx.font = "bold 32px Inter";
+            ctx.fillStyle = colors.primary;
+            ctx.textAlign = "center";
+            ctx.fillText(notaOrganizacao + "%", width / 2, height / 1.35);
+
+            ctx.font = "16px Inter";
+            ctx.fillStyle = "#6B7280";
+            ctx.fillText("Excelente", width / 2, height / 1.1);
+
+            ctx.restore();
+        }
+    };
+
+    if (ctxGauge) {
+        new Chart(ctxGauge, {
+            type: 'doughnut',
+            data: {
+                labels: ['Organização', 'Faltante'],
+                datasets: [{
+                    data: [notaOrganizacao, 100 - notaOrganizacao],
+                    backgroundColor: [
+                        notaOrganizacao > 70 ? colors.primary : colors.warning,
+                        colors.gray
+                    ],
+                    borderWidth: 0,
+                    circumference: 180,
+                    rotation: 270
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '80%',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: false }
+                }
+            },
+            plugins: [centerTextPlugin]
+        });
+    }
+
+});
+</script>
+
 </body>
 
 </html>

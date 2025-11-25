@@ -1,235 +1,263 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="scroll-smooth">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gestão de Materiais</title>
-  <link rel="icon" type="image/png" href="/asset/despensa2-ico-01.png" />
-  <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DesPensa Inteligente - Sua Cozinha Organizada</title>
+    <link rel="icon" type="image/png" href="/asset/newlogo - simbolo.jpeg" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'despensa-green-dark': '#2B9569',
+                        'despensa-green-medium': '#42A92D',
+                        'despensa-green-light': '#A5C96F',
+                        'despensa-offwhite': '#EFEFEF',
+                        'despensa-text-dark': '#333333',
+                        'despensa-text-light': '#f0f0f0',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Animação suave para o menu mobile */
+        @keyframes slideFadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-slideFadeIn {
+            animation: slideFadeIn 0.3s ease-out;
+        }
+    </style>
 </head>
 
-<body>
+<body class="font-sans bg-despensa-offwhite text-despensa-text-dark">
 
-  <div class="app">
-    <!-- Sidebar -->
-    <div id="sidebar-container"></div>
-    <!-- Conteúdo principal -->
-         <!--modal para fornecedor-->
-    <div id="modalFornecedor"
-      class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div class="bg-white p-8 rounded-2xl w-full max-w-lg shadow-2xl transform transition-all duration-300">
-        <div class="flex items-center justify-between mb-6">
-          <h2 class="text-2xl font-bold text-gray-800">Novo Fornecedor</h2>
-          <button onclick="abrirModalFornecedor()" class="text-gray-400 hover:text-gray-600 transition-colors">
-          </button>
+    <nav class="fixed top-0 left-0 w-full bg-white shadow-md z-50 py-4 px-8 flex justify-between items-center">
+
+        <div class="flex items-center">
+            <img src="/asset/new logo.jpeg" alt="Logo DesPensa" class="h-16 mr-18">
+            
         </div>
 
-        <div class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Nome</label>
-            <input id="nomeFornecedor"
-              class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-medium focus:border-transparent transition-all"
-              placeholder="Insira o nome do fornecedor" />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">CNPJ</label>
-            <textarea id="cnpjFornecedor"
-              class="w-full border border-gray-300 rounded-lg p-3 resize-none focus:ring-2 focus:ring-green-medium focus:border-transparent transition-all"
-              placeholder="Insira o CNPJ"></textarea>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Telefone</label>
-            <textarea id="telefoneFornecedor"
-              class="w-full border border-gray-300 rounded-lg p-3  resize-none focus:ring-2 focus:ring-green-medium focus:border-transparent transition-all"
-              placeholder="Insira o telefone"></textarea>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-            <textarea id="emailFornecedor"
-              class="w-full border border-gray-300 rounded-lg p-3 resize-none focus:ring-2 focus:ring-green-medium focus:border-transparent transition-all"
-              placeholder="Insira o email"></textarea>
-          </div>
-          <p id="mensagemFornecedor" class="text-center text-white bg-green-medium rounded-lg p-2 hidden"></p>
+        <button id="menu-toggle" class="text-3xl text-despensa-green-dark md:hidden focus:outline-none">
+            <i class="bi bi-list"></i>
+        </button>
+
+        <div class="hidden md:flex items-center">
+            <ul class="flex space-x-8 text-lg font-medium">
+                <li><a href="#funcionalidades"
+                        class="hover:text-despensa-green-dark transition-colors duration-200">Funcionalidades</a></li>
+                <li><a href="#para-quem-e" class="hover:text-despensa-green-dark transition-colors duration-200">Para quem
+                        é</a></li>
+                <li><a href="#sobre" class="hover:text-despensa-green-dark transition-colors duration-200">Sobre</a></li>
+                <li><a href="#contato" class="hover:text-despensa-green-dark transition-colors duration-200">Entre em
+                        contato</a></li>
+            </ul>
+            
         </div>
 
-        <div class="flex justify-end space-x-3 mt-6">
-          <button onclick="fecharModal()"
-            class="px-6 py-3 text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors font-medium">Cancelar</button>
-          <button onclick="salvarFornecedor()"
-            class="px-6 py-3 bg-gradient-to-r from-green-dark to-green-medium text-white rounded-lg hover:shadow-lg transform hover:scale-110 transition-all duration-300 font-medium">Cadastrar
-            Fornecedor</button>
-        </div>
-      </div>
-    </div>
-    <!--modal para venda-->
-    <div id="modalVenda"
-      class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div class="bg-white p-8 rounded-2xl w-full max-w-lg shadow-2xl transform transition-all duration-300">
-        <div class="flex items-center justify-between mb-6">
-          <h2 class="text-2xl font-bold text-gray-800">Nova Venda</h2>
-          <button onclick="abrirModalVenda()" class="text-gray-400 hover:text-gray-600 transition-colors">
-          </button>
-        </div>
-
-        <div class="space-y-4">
-          <div>
-            <label  class="block text-gray-700 text-sm font-semibold mb-2">Item</label>
-            <select id="selectColheita"
-              class="border border-gray-300 rounded-lg p-3 w-full focus:ring-2 focus:ring-green-light focus:border-transparent">
-              <option value="">Selecione o Item</option>
-            </select>
-          </div>
-          <div class="flex gap-4">
-            <div class="flex-1">
-              <label class="block text-sm font-medium text-gray-700 mb-2">Quantidade</label>
-              <input id="quantidadeVendida"
-                class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-medium focus:border-transparent"
-                placeholder="Insira a quantidade" />
+        <ul id="nav-links"
+            class="hidden absolute top-full left-0 w-full bg-white flex-col items-center gap-6 py-6 shadow-md md:hidden animate-slideFadeIn">
+            
+            <li><a href="#funcionalidades"
+                    class="hover:text-despensa-green-dark transition-colors duration-200">Funcionalidades</a></li>
+            <li><a href="#para-quem-e" class="hover:text-despensa-green-dark transition-colors duration-200">Para quem
+                    é</a></li>
+            <li><a href="#sobre" class="hover:text-despensa-green-dark transition-colors duration-200">Sobre</a></li>
+            <li><a href="#contato" class="hover:text-despensa-green-dark transition-colors duration-200">Entre em
+                    contato</a></li>
+            <li>
+                <a href="/templete/CarlosLogin.html"
+                    class="bg-despensa-green-dark text-white px-6 py-2 rounded-full font-semibold hover:bg-despensa-green-medium transition-colors duration-200">
+                    LOGIN
+                </a>
+            </li>
+        </ul>
+        <a href="/LogInscreem.html" class="bg-despensa-green-dark text-white px-6 py-2 rounded-full font-semibold hover:bg-despensa-green-medium transition-colors duration-200">LOGIN</a>
+    </nav>
+    <main class="">
+        <section id="hero"
+            class="h-screen flex items-center justify-center bg-cover bg-center text-center text-white relative"
+            style="background-image: url('/asset/background-home.jpg');">
+            <div class="absolute inset-0 bg-black opacity-50"></div>
+            <div class="relative z-10 p-8 max-w-3xl">
+                <h1 class="text-6xl font-extrabold mb-4 drop-shadow-lg">Sua cozinha sob controle, inteligente e sem desperdício</h1>
+                <p class="text-xl mb-8 drop-shadow-md">Gerencie sua despensa, planeje refeições e descubra receitas deliciosas com facilidade.</p>
+                <a href="#funcionalidades" class="bg-despensa-green-dark text-white px-10 py-4 rounded-full text-xl font-bold hover:bg-despensa-green-medium transition-colors duration-300 shadow-lg">Saiba Mais</a>
             </div>
+        </section>
 
-            <div class="w-32">
-              <label class="block text-sm font-medium text-gray-700 mb-2">Unidade</label>
-              <select id="unidadeMedidaVenda"
-                class="border border-gray-300 rounded-lg p-3 w-full focus:ring-2 focus:ring-green-light focus:border-transparent">
-                <option value="">UN</option>
-              </select>
+        <section id="funcionalidades" class="py-20 px-8 bg-despensa-offwhite">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-5xl font-bold text-center mb-16 text-despensa-green-dark">Funcionalidades Essenciais</h2>
+                <div class="grid md:grid-cols-3 gap-12">
+                    <div
+                        class="bg-white p-8 rounded-lg shadow-xl text-center hover:shadow-2xl transition-shadow duration-300">
+                        <i class="bi-box-seam-fill text-6xl text-despensa-green-medium mb-6"></i>
+                        <h3 class="text-2xl font-bold mb-4">Gestão de Inventário</h3>
+                        <p class="text-gray-700">Mantenha um registro preciso de todos os itens da sua despensa,
+                            geladeira e freezer. Saiba o que você tem, onde está e a validade de cada produto.</p>
+                    </div>
+                    <div
+                        class="bg-white p-8 rounded-lg shadow-xl text-center hover:shadow-2xl transition-shadow duration-300">
+                        <i class="bi-journals text-6xl text-despensa-green-medium mb-6"></i>
+                        <h3 class="text-2xl font-bold mb-4">Planejamento de Refeições</h3>
+                        <p class="text-gray-700">Crie planos de refeição semanais ou mensais, otimizando o uso dos seus
+                            ingredientes e minimizando o desperdício.</p>
+                    </div>
+                    <div
+                        class="bg-white p-8 rounded-lg shadow-xl text-center hover:shadow-2xl transition-shadow duration-300">
+                        <i class="bi-receipt-cutoff text-6xl text-despensa-green-medium mb-6"></i>
+                        <h3 class="text-2xl font-bold mb-4">Listas de Compras Inteligentes</h3>
+                        <p class="text-gray-700">Gere listas de compras automáticas com base nos itens que estão acabando
+                            ou nas receitas que você planejou.</p>
+                    </div>
+                    <div
+                        class="bg-white p-8 rounded-lg shadow-xl text-center hover:shadow-2xl transition-shadow duration-300">
+                        <i class="bi-book-half text-6xl text-despensa-green-medium mb-6"></i>
+                        <h3 class="text-2xl font-bold mb-4">Sugestão de Receitas</h3>
+                        <p class="text-gray-700">Descubra novas receitas personalizadas com base nos ingredientes que
+                            você já tem em casa.</p>
+                    </div>
+                    <div
+                        class="bg-white p-8 rounded-lg shadow-xl text-center hover:shadow-2xl transition-shadow duration-300">
+                        <i class="bi-cloud-fill text-6xl text-despensa-green-medium mb-6"></i>
+                        <h3 class="text-2xl font-bold mb-4">Acesso em Qualquer Lugar</h3>
+                        <p class="text-gray-700">Acesse sua despensa e suas receitas de qualquer dispositivo, a qualquer
+                            momento.</p>
+                    </div>
+                    <div
+                        class="bg-white p-8 rounded-lg shadow-xl text-center hover:shadow-2xl transition-shadow duration-300">
+                        <i class="bi-graph-up-arrow text-6xl text-despensa-green-medium mb-6"></i>
+                        <h3 class="text-2xl font-bold mb-4">Estatísticas de Consumo</h3>
+                        <p class="text-gray-700">Entenda seus hábitos de consumo e minimize o desperdício com relatórios
+                            inteligentes.</p>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Preço Unitário</label>
-            <input id="precoUnitario"
-              class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-medium focus:border-transparent transition-all"
-              placeholder="Insira o preço da Unidade" />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Comprador</label>
-            <input id="comprador"
-              class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-medium focus:border-transparent transition-all"
-              placeholder="Insira o nome e sobrenome do comprador" />
-          </div>
+        </section>
 
-        </div>
+        <section id="para-quem-e" class="py-20 px-8 bg-despensa-green-light text-despensa-text-dark">
+            <div class="max-w-6xl mx-auto text-center">
+                <h2 class="text-5xl font-bold mb-16 text-despensa-text-dark">Quem se Beneficia da DesPensa?</h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
+                    <div class="bg-white p-8 rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300">
+                        <i class="bi-house-fill text-5xl text-despensa-green-dark mb-4"></i>
+                        <h3 class="text-2xl font-bold mb-2">Organizações Ocupadas</h3>
+                        <p class="text-gray-700">Simplifique o planejamento de refeições e a lista de compras para ter
+                            mais tempo livre.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300">
+                        <i class="bi-person-fill text-5xl text-despensa-green-dark mb-4"></i>
+                        <h3 class="text-2xl font-bold mb-2">Indivíduos Conscientes</h3>
+                        <p class="text-gray-700">Reduza o desperdício de alimentos e economize dinheiro no supermercado.
+                        </p>
+                    </div>
 
-        <div class="flex justify-end space-x-3 mt-6">
-          <button onclick="fecharModalVenda()"
-            class="px-6 py-3 text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors font-medium">Cancelar</button>
-          <button onclick="registrarVenda()"
-            class="px-6 py-3 bg-gradient-to-r from-green-dark to-green-medium text-white rounded-lg hover:shadow-lg transform hover:scale-110 transition-all duration-300 font-medium">Registrar
-            Venda
-          </button>
-        </div>
-      </div>
-    </div>
-    <!-- Main Content -->
-    <div class="flex-1 ml-16 p-4 sm:p-6 lg:p-8">
-      <!-- Header com botão -->
-      <div class="flex items-center justify-between mb-8">
-        <div>
-          <h1 class="text-2xl lg:text-3xl font-bold text-gray-800">Gestão Financeira</h1>
-        </div>
+                    <div class="bg-white p-8 rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300">
+                        <i class="bi-heart-fill text-5xl text-despensa-green-dark mb-4"></i>
+                        <h3 class="text-2xl font-bold mb-2">Pessoas com Restrições Alimentares</h3>
+                        <p class="text-gray-700">Acompanhe ingredientes para dietas específicas e personalize suas buscas
+                            por receitas.</p>
+                    </div>
 
-      </div>
-      <!-- Enhanced cards with gradients and better responsive grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-10">
-        <!-- Card Saldo -->
-        <div class="bg-white rounded-2xl shadow-lg p-6 card-hover border border-green-100">
-          <div class="flex items-center justify-between mb-4">
-            <div class="flex items-center">
-              <div
-                class="w-12 h-12 bg-gradient-to-br from-green-100 to-green-200 rounded-xl flex items-center justify-center shadow-sm">
-                <svg class="w-6 h-6 text-green-medium" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M7 14l5-5 5 5z" />
-                </svg>
-              </div>
-              <span class="ml-3 text-gray-600 font-medium">Saldo Do Mês</span>
+                </div>
             </div>
-          </div>
-          <div id="receitaMes" class="text-2xl lg:text-3xl font-bold text-gray-800 mb-1">Carregando..</div>
-        </div>
+        </section>
 
-        <!-- Card Receita -->
-        <div class="bg-white rounded-2xl shadow-lg p-6 card-hover border border-blue-100">
-          <div class="flex items-center justify-between mb-4">
-            <div class="flex items-center">
-              <div
-                class="w-12 h-12 bg-gradient-to-br from-green-100 to-green-200 rounded-xl flex items-center justify-center shadow-sm">
-                <svg class="w-6 h-6 text-green-medium" fill="currentColor" viewBox="0 0 24 24">
-                  <path
-                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-                </svg>
-              </div>
-              <span class="ml-3 text-gray-600 font-medium">Receita Total da Propriedade</span>
+        <section id="sobre" class="py-20 px-8 bg-white">
+            <div class="max-w-6xl mx-auto text-center">
+                <h2 class="text-5xl font-bold mb-12 text-despensa-green-dark">Sobre a DesPensa</h2>
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                    <div class="md:w-1/2 text-left">
+                        <p class="text-lg leading-relaxed mb-6">
+                            A DesPensa nasceu da necessidade de otimizar o gerenciamento de alimentos e combater o
+                            desperdício nas cozinhas brasileiras. Acreditamos que, com a tecnologia certa, é possível
+                            transformar a forma como as pessoas interagem com seus ingredientes, tornando a experiência
+                            culinária mais inteligente, econômica e prazerosa.
+                        </p>
+                        <p class="text-lg leading-relaxed">
+                            Nossa missão é empoderar os usuários a tomar decisões alimentares mais conscientes, planejar
+                            refeições de forma eficiente e descobrir um universo de receitas, tudo isso enquanto
+                            contribuem para um consumo mais sustentável e reduzem o impacto ambiental. Junte-se a nós
+                            nessa jornada por uma cozinha mais organizada e um planeta mais verde!
+                        </p>
+                    </div>
+                    <div class="md:w-1/2">
+                        <img src="/asset/imagem-sobre-despensa.jpg" alt="Time DesPensa"
+                            class="rounded-lg shadow-xl w-full">
+                    </div>
+                </div>
             </div>
-          </div>
-          <div id="receita" class="text-2xl lg:text-3xl font-bold text-gray-800 mb-1">Carregando...</div>
+        </section>
 
-        </div>
+        <section id="contato" class="py-20 px-8 bg-despensa-green-dark text-white">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-5xl font-bold mb-12">Fale Conosco</h2>
+                <p class="text-xl mb-12">Tem dúvidas, sugestões ou quer saber mais sobre como a DesPensa pode
+                    transformar sua cozinha? Envie uma mensagem!</p>
 
-        <!-- Card Fornecedores -->
-        <div class="bg-white rounded-2xl shadow-lg p-6 card-hover border border-blue-100">
-          <div class="flex items-center justify-between mb-4">
-            <div class="flex items-center">
-              <div
-                class="w-12 h-12 bg-gradient-to-br from-green-100 to-green-200 rounded-xl flex items-center justify-center shadow-sm">
-                <svg class="w-6 h-6 text-green-medium" fill="currentColor" viewBox="0 0 24 24">
-                  <path
-                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-                </svg>
-              </div>
-              <span class="ml-3 text-gray-600 font-medium">Fornecedores</span>
+                <form action="#" method="POST"
+                    class="bg-white p-8 rounded-lg shadow-xl text-left text-despensa-text-dark">
+                    <div class="mb-6">
+                        <label for="nome-contato" class="block text-gray-700 text-sm font-bold mb-2">Seu Nome:</label>
+                        <input type="text" id="nome-contato" name="nome" required
+                            class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                    <div class="mb-6">
+                        <label for="email-contato" class="block text-gray-700 text-sm font-bold mb-2">Seu Email:</label>
+                        <input type="email" id="email-contato" name="email" required
+                            class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                    <div class="mb-6">
+                        <label for="mensagem-contato" class="block text-gray-700 text-sm font-bold mb-2">Mensagem:</label>
+                        <textarea id="mensagem-contato" name="mensagem" rows="6" required
+                            class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit"
+                            class="bg-despensa-green-dark text-white px-10 py-3 rounded-full text-lg font-bold hover:bg-despensa-green-medium transition-colors duration-300 shadow-lg">Enviar
+                            Mensagem</button>
+                    </div>
+                </form>
             </div>
-          </div>
-          <div id="fornecedores" class="text-2xl lg:text-3xl font-bold text-gray-800 mb-1">0</div>
-          <button onclick="abrirModalFornecedor()"
-            class="bg-gradient-to-r from-green-medium to-green-dark hover:from-green-dark hover:to-green-medium text-white px-6 py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 font-medium">
-            + Adicionar Fornecedor
-          </button>
-        </div>
+        </section>
+    </main>
 
-
-      </div>
-
-      <!-- Enhanced main content with better responsive layout -->
-      <div class="grid grid-cols-1  gap-6 lg:gap-8">
-        <!-- Tabela de Transações -->
-        <div class="xl:col-span-2">
-          <div class="bg-white rounded-2xl shadow-lg p-6 lg:p-8 border border-white/20">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
-              <div>
-                <h2 class="text-xl lg:text-2xl font-bold text-gray-800">Transações</h2>
-
-              </div>
-              <button onclick="abrirModalVenda()"
-                class="bg-gradient-to-r from-green-medium to-green-dark hover:from-green-dark hover:to-green-medium text-white px-6 py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 font-medium">
-                + Nova Transação
-              </button>
+    <footer class="bg-despensa-text-dark text-despensa-offwhite py-8 text-center">
+        <div class="max-w-6xl mx-auto">
+            <p>&copy; 2025 DesPensa. Todos os direitos reservados.</p>
+            <div class="flex justify-center space-x-6 mt-4">
+                <a href="#" class="text-despensa-offwhite hover:text-despensa-green-light transition-colors duration-200"><i
+                        class="bi-instagram text-2xl"></i></a>
+                <a href="#" class="text-despensa-offwhite hover:text-despensa-green-light transition-colors duration-200"><i
+                        class="bi-facebook text-2xl"></i></a>
+                <a href="#" class="text-despensa-offwhite hover:text-despensa-green-light transition-colors duration-200"><i
+                        class="bi-twitter text-2xl"></i></a>
             </div>
-
-            <div class="overflow-x-auto rounded-xl border border-gray-100">
-              <table class="w-full">
-                <thead class="bg-gradient-to-r from-gray-50 to-gray-100">
-                  <tr>
-                    <th class="text-center py-4 px-6 font-semibold text-gray-700">Item</th>
-                    <th class="text-center py-4 px-6 font-semibold text-gray-700">Quantidade</th>
-                    <th class="text-center py-4 px-6 font-semibold text-gray-700">Unidade de Medida</th>
-                    <th class="text-center py-4 px-6 font-semibold text-gray-700">Valor</th>
-                    <th class="text-center py-4 px-6 font-semibold text-gray-700">Comprador</th>
-                    <th class="text-center py-4 px-6 font-semibold text-gray-700">Data</th>
-                  </tr>
-                </thead>
-                <tbody id="vendas" class="divide-y divide-gray-100 overflow-y-auto space-y-3 max-h-96">
-                </tbody>
-              </table>
-            </div>
-          </div>
         </div>
-      </div>
-    </div>
-  </div>
+    </footer>
 
-  </div>
-  <script src="../scriptTemplete/carregarSidebar.js"></script>
+    <script src="/templete/js/menu-home.js" defer></script>
 </body>
 
 </html>
