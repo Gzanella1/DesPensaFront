@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <title>Nutricionistas</title>
-  
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -14,16 +14,24 @@
 </head>
 
 <body>
+  <!-- Sidebar permanece exatamente igual a sua versão antiga -->
   <div id="sidebar-container"></div>
+<script src="https://cdn.tailwindcss.com"></script>
 
-  <div class="content">
-    <h3 class="mb-4">Nutricionistas</h3>
+  <div class="content container my-5">
+    <h3 class="mb-4 text-success fw-bold">Nutricionistas</h3>
 
-    <div class="card p-4">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <div class="input-group w-50">
-          <input type="text" id="buscar" class="form-control" placeholder="Buscar nutricionista..." aria-label="Buscar">
-          <span class="input-group-text"><i class="bi bi-search"></i></span>
+    <div class="card shadow-sm rounded-4 p-4">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 mb-4">
+        <div class="input-group w-100 w-md-50 shadow-sm rounded-3">
+          <input
+            type="text"
+            id="buscar"
+            class="form-control border-0"
+            placeholder="Buscar nutricionista..."
+            aria-label="Buscar"
+          />
+          <span class="input-group-text bg-white border-0"><i class="bi bi-search text-success"></i></span>
         </div>
         <button class="btn btn-success px-4 fw-semibold" data-bs-toggle="modal" data-bs-target="#modalForm">
           + Adicionar Nutricionista
@@ -57,27 +65,46 @@
             <h5 id="modalLabel" class="modal-title text-success fw-bold">Adicionar Nutricionista</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
           </div>
-          <div class="modal-body">
-            <input type="text" class="form-control mb-2" id="nome" placeholder="Nome" required>
-            <input type="text" class="form-control mb-2" id="instituicao" placeholder="Instituição" required>
-            <input type="text" class="form-control mb-2" id="contato" placeholder="Contato" required>
 
-            <select class="form-control mb-2" id="status" required>
-              <option value="Ativo">Ativo</option>
-              <option value="Inativo">Inativo</option>
-            </select>
+          <form id="formNutricionista">
+            <input type="hidden" id="editIndex" />
 
-            <select class="form-control mb-2" id="frequencia" required>
-              <option value="Diário">Diário</option>
-              <option value="Semanal">Semanal</option>
-            </select>
-          </div>
+            <div class="mb-3">
+              <input type="text" id="nome" placeholder="Nome" class="form-control shadow-sm" required />
+            </div>
+            <div class="mb-3">
+              <input
+                type="text"
+                id="instituicao"
+                placeholder="Instituição"
+                class="form-control shadow-sm"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <input type="text" id="contato" placeholder="Contato" class="form-control shadow-sm" required />
+            </div>
+            <div class="mb-3">
+              <select id="status" class="form-select shadow-sm" required>
+                <option value="" disabled selected>Selecione o status</option>
+                <option value="Ativo">Ativo</option>
+                <option value="Inativo">Inativo</option>
+              </select>
+            </div>
+            <div class="mb-4">
+              <select id="frequencia" class="form-select shadow-sm" required>
+                <option value="" disabled selected>Selecione a frequência</option>
+                <option value="Diário">Diário</option>
+                <option value="Semanal">Semanal</option>
+              </select>
+            </div>
 
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">Salvar</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          </div>
-        </form>
+            <div class="d-flex justify-content-between mt-4">
+              <button type="reset" class="btn btn-outline-secondary px-4 fw-semibold">Limpar</button>
+              <button type="submit" class="btn btn-success px-4 fw-semibold">Confirmar</button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
