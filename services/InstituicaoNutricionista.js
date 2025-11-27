@@ -286,7 +286,7 @@
     
     // !!! IMPORTANTE: Defina aqui qual ID deve aparecer no topo.
     // Pode vir do localStorage: localStorage.getItem('idInstituicaoUsuario')
-    const ID_INSTITUICAO_ATUAL = 602; 
+    const ID_INSTITUICAO_ATUAL = 1; 
 
     document.addEventListener('DOMContentLoaded', () => {
         // ... seus inits anteriores ...

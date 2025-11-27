@@ -2,115 +2,157 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nutricionistas</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 
   <link rel="stylesheet" href="../css/tabelaNutri.css" />
   <link rel="icon" type="image/png" href="assets/logo_perfil.png" />
 </head>
 
-<body>
-  <!-- Sidebar permanece exatamente igual a sua versão antiga -->
+<body class="bg-light">
+  
   <div id="sidebar-container"></div>
-<script src="https://cdn.tailwindcss.com"></script>
 
   <div class="content container my-5">
     <h3 class="mb-4 text-success fw-bold">Nutricionistas</h3>
 
-    <div class="card shadow-sm rounded-4 p-4">
+    <div class="card shadow-sm rounded-4 p-4 border-0">
+      
       <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 mb-4">
         <div class="input-group w-100 w-md-50 shadow-sm rounded-3">
           <input
             type="text"
             id="buscar"
             class="form-control border-0"
-            placeholder="Buscar nutricionista..."
+            placeholder="Buscar por nome, CPF ou login..."
             aria-label="Buscar"
           />
           <span class="input-group-text bg-white border-0"><i class="bi bi-search text-success"></i></span>
         </div>
-        <button class="btn btn-success px-4 fw-semibold" data-bs-toggle="modal" data-bs-target="#modalForm">
+        <button class="btn btn-success px-4 fw-semibold shadow-sm" data-bs-toggle="modal" data-bs-target="#modalForm">
           + Adicionar Nutricionista
         </button>
       </div>
 
       <div class="table-responsive">
-        <table class="table table-striped align-middle text-center">
+        <table class="table table-hover align-middle text-center">
           <thead class="table-light text-secondary">
             <tr>
               <th>Nome</th>
               <th>Instituição</th>
-              <th>Contato</th>
+              <th>Contato (Email)</th>
               <th>Status</th>
-              <th>Diário/Semanal</th>
+              <th>Acesso</th>
               <th>Ações</th>
             </tr>
           </thead>
-          <tbody id="tabelaNutricionistas"></tbody>
+          <tbody id="tabelaNutricionistas">
+            </tbody>
         </table>
       </div>
     </div>
   </div>
 
-  <!-- Modal -->
   <div class="modal fade" id="modalForm" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content border-0 shadow-lg rounded-4">
-        <div class="p-4 bg-white rounded-4">
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 id="modalLabel" class="modal-title text-success fw-bold">Adicionar Nutricionista</h5>
+        
+        <div class="modal-header border-bottom-0 pb-0">
+            <h5 id="modalLabel" class="modal-title text-success fw-bold ms-2">Dados do Nutricionista</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-          </div>
+        </div>
 
-          <form id="formNutricionista">
+        <form id="formNutricionista">
+          <div class="modal-body">
+            
             <input type="hidden" id="editIndex" />
 
-            <div class="mb-3">
-              <input type="text" id="nome" placeholder="Nome" class="form-control shadow-sm" required />
-            </div>
-            <div class="mb-3">
-              <input
-                type="text"
-                id="instituicao"
-                placeholder="Instituição"
-                class="form-control shadow-sm"
-                required
-              />
-            </div>
-            <div class="mb-3">
-              <input type="text" id="contato" placeholder="Contato" class="form-control shadow-sm" required />
-            </div>
-            <div class="mb-3">
-              <select id="status" class="form-select shadow-sm" required>
-                <option value="" disabled selected>Selecione o status</option>
-                <option value="Ativo">Ativo</option>
-                <option value="Inativo">Inativo</option>
-              </select>
-            </div>
-            <div class="mb-4">
-              <select id="frequencia" class="form-select shadow-sm" required>
-                <option value="" disabled selected>Selecione a frequência</option>
-                <option value="Diário">Diário</option>
-                <option value="Semanal">Semanal</option>
-              </select>
+            <div class="row g-2">
+                
+                <div class="col-md-3">
+                    <label class="form-label text-muted small">Código</label>
+                    <input type="number" class="form-control mb-2" id="codigo" placeholder="Auto" />
+                </div>
+
+                <div class="col-md-5">
+                    <label class="form-label text-muted small">Data Criação</label>
+                    <input type="date" class="form-control mb-2" id="dataCriacao" required />
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label text-muted small">Status</label>
+                    <select id="ativo" class="form-control mb-2" required>
+                        <option value="true" selected>Ativo</option>
+                        <option value="false">Inativo</option>
+                    </select>
+                </div>
+
+                <div class="col-md-8">
+                    <label class="form-label text-muted small">Nome Completo</label>
+                    <input type="text" class="form-control mb-2" id="nome" placeholder="Ex: Giovani da Silva" required />
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label text-muted small">CPF</label>
+                    <input type="text" class="form-control mb-2" id="cpf" placeholder="000.000.000-00" required />
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label text-muted small">URL Foto Perfil</label>
+                    <input type="text" class="form-control mb-2" id="fotoPerfil" placeholder="https://meuservidor.com/imagem.jpg" />
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label text-muted small">E-mail</label>
+                    <input type="email" class="form-control mb-2" id="email" placeholder="joao.silva@example.com" required />
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label text-muted small">Login</label>
+                    <input type="text" class="form-control mb-2" id="login" placeholder="joaosilva" required />
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label text-muted small">Senha</label>
+                    <input type="password" class="form-control mb-2" id="senha" placeholder="******" required />
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label text-muted small">Tipo de Acesso</label>
+                    <select id="tipoAcesso" class="form-control mb-2" required>
+                        <option value="NUTRICIONISTA">Nutricionista</option>
+                        <option value="ADMIN">Administrador</option>
+                    </select>
+                </div>
+<!-- Seleção da Instituição (Obrigatório para o Backend) -->
+                            <div class="mb-3">
+                                <label class="form-label small text-muted">Vincular à Instituição</label>
+                                <select class="form-select" id="instituicaoSelect" required>
+                                    <option value="" selected disabled>Carregando instituições...</option>
+                                </select>
+                            </div>
+    
+
+            </div> <div class="d-flex justify-content-between mt-4">
+              <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-success px-4">Confirmar</button>
             </div>
 
-            <div class="d-flex justify-content-between mt-4">
-              <button type="reset" class="btn btn-outline-secondary px-4 fw-semibold">Limpar</button>
-              <button type="submit" class="btn btn-success px-4 fw-semibold">Confirmar</button>
-            </div>
-          </form>
-        </div>
+          </div>
+        </form>
+
       </div>
     </div>
   </div>
 
-  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  
   <script src="../scriptTemplete/carregarSidebar.js"></script>
   <script src="../services/TabelaNutri.js"></script>
+
 </body>
 </html>
